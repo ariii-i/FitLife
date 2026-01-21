@@ -1,18 +1,34 @@
 import { create } from "zustand";
+import { sanityClient } from "../lib/sanity";
 
-export const useExersiseStore = create((set) => ({
-    exercises: [
-        { id: '1', name: 'Bench Press', mmuscleGroup: 'Chest', equipment: 'Barbell' },
-        { id: '2', name: 'Squat', mmuscleGroup: 'Legs', equipment: 'Barbell' },
-        { id: '3', name: 'Deadlift', mmuscleGroup: 'Back', equipment: 'Barbell' },
-        { id: '4', name: 'Pull-ups', mmuscleGroup: 'Back', equipment: 'Bodyweight' }
-    ],
+export const useExerciseStore = create((set) => ({
+  exercises: [],
 
-    addExercise: (exercise) => set((state) => ({
-        exercises: [...state.exercises, { ...exercise, id: Date.now().toString() }]
-    })),
+  fetchExercises: async () => {
+    const data = await sanityClient.fetch(`
+      *[_type == "exercise"]{
+        _id,
+        name,
+        muscleGroup,
+        equipment
+      }
+    `);
+    set({ exercises: data });
+  },
 
-    deleteExercise: (id) => set((state) => ({
-        exercises: state.exercises.filter(ex => ex.id !== id)
-    }))
-}))
+  //sanity ma save first ma
+  addExercise: async (exercise, cb) => {
+    const newExercise = {
+      _type: "exercise",
+      ...exercise,
+    }
+    await sanityClient.create(newExercise);
+    cb?.()
+  },
+
+  deleteExercise: (id)=>{
+    sanityClient.delete(id);
+    set((state)=>({exercises:state.exercises.filter((ex)=> ex._id !==id)}))
+  }
+
+}));
