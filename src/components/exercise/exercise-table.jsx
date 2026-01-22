@@ -1,8 +1,14 @@
 import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import { useExerciseStore } from "../../store/excersiseStore";
+import { useForm } from "react-hook-form";
 
 export function ExerciseTable() {
-    const { exercises, deleteExercise } = useExerciseStore();
+    const { reset } = useForm()
+    const { exercises, deleteExercise, fetchExercises, editExercise } = useExerciseStore();
+
+    // const onEdit = () => {
+    //     return (0)
+    // }
 
     const columns = [
         {
@@ -23,11 +29,19 @@ export function ExerciseTable() {
         {
             // header:"Delete",
             id: "action",
-            cell: (info) => {
-                return <div><button onClick={() => deleteExercise(info.row.original._id)}>
-                    Delete
-                </button>
-                <button>Edit</button></div>
+            cell: ({ row }) => {
+                const exerciseVal = row.original;
+
+                return <div>
+                    <button onClick={() => deleteExercise(row.original._id, async () => {
+                        await fetchExercises()
+                    })}
+                        className="bg-red-600 text-white rounded-xl px-2 hover:bg-red-700">
+                        Delete
+                    </button>
+                    {/* <button className="bg-teal-900 text-white rounded-xl px-2 hover:bg-teal-950"
+                        onClick={() => onEdit(exerciseVal)}>Edit</button> */}
+                </div>
             }
         }
     ]

@@ -1,33 +1,24 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { Layout } from "../components/layout/Layout";
-import { AddWorkoutForm } from "../components/workouts/AddWorkoutForm";
-import { WorkoutTable } from "../components/workouts/WorkoutTable";
+import { AddWorkoutForm } from "../components/workout/workout-form";
+import { useWorkoutStore } from "../store/workout-Store";
+import { useExerciseStore } from "../store/excersiseStore";
+import { WorkoutCards } from "../components/workout/workout-card";
 
 export function Workouts() {
-    const [worksouts, setWorkouts] = useState([
-        {
-            title: "Chest & Triceps",
-            day: "Monday",
-            duration: 60
-        }, {
-            title: "Back & Biceps",
-            day: "Wednesday",
-            duration: 55,
-        }, {
-            title: "Leg",
-            day: "Friday",
-            duration: 70
-        }
-    ])
+    const {fetchWorkouts}=useWorkoutStore()
+    const {fetchExercises}=useExerciseStore()
 
-    const addWorkout=(workout)=>{
-        setWorkouts((prev)=>[...prev, workout])
-    }
+    useEffect(()=>{
+        fetchWorkouts();
+        fetchExercises();
+    }, [])
+    
     return (
         <Layout>
             <h1 className="text-2xl font-bold">Workouts</h1>
-            <AddWorkoutForm onAdd={addWorkout} />
-            <WorkoutTable data={worksouts} />
+            <AddWorkoutForm/>
+            <WorkoutCards/>
         </Layout>
     )
 }

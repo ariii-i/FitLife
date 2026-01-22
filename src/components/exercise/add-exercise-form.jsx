@@ -8,7 +8,6 @@ export function AddExercisesForm() {
     const onSubmit = async (data) => {
         console.log("adding", data);
         await addExercise(data, async() => {
-           debugger
             await fetchExercises()
         })
         reset();
