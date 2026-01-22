@@ -26,9 +26,24 @@ export const useExerciseStore = create((set) => ({
     cb?.()
   },
 
-  deleteExercise: (id)=>{
-    sanityClient.delete(id);
-    set((state)=>({exercises:state.exercises.filter((ex)=> ex._id !==id)}))
-  }
+  deleteExercise: async (id, cb) => {
+    await sanityClient.delete(id);
+    
+    set((state) => ({ exercises: state.exercises.filter((ex) => ex._id !== id) }))
+    cb?.()
+  },
+
+  editExercise: async (id, updatedFields) => {
+    const updated = await sanityClient
+      .patch(id)
+      .set(updatedFields)
+      .commit();
+    
+    set((state) => ({
+      exercises: state.exercises.map((ex) =>
+        ex._id === id ? updated : ex
+      ),
+    }));
+  },
 
 }));
