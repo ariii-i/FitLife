@@ -1,35 +1,75 @@
-import { useForm } from "react-hook-form"
+"use client";
+
+import * as React from "react";
+import { useForm } from "react-hook-form";
 import { useExerciseStore } from "../../store/excersiseStore";
+import {
+    Drawer,
+    DrawerContent,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+    DrawerClose
+} from "@/components/ui/drawer";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export function AddExercisesForm() {
     const { register, handleSubmit, reset } = useForm();
     const { addExercise, fetchExercises } = useExerciseStore();
+    const [open, setOpen] = React.useState(false);
 
     const onSubmit = async (data) => {
-        console.log("adding", data);
-        await addExercise(data, async() => {
-            await fetchExercises()
-        })
+        await addExercise(data, async () => await fetchExercises());
         reset();
+        setOpen(false);
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-3 shadow rounded-xl px-3 py-2">
-            <input type="text"
-                placeholder="Exercise name"
-                {...register("name")}
-                className="border border-gray-900 rounded-xl px-3 py-2" />
+        <Drawer open={open} onOpenChange={setOpen}>
+            <DrawerTrigger asChild>
+                <span>
+                    <Button variant="default" className="bg-teal-900 text-white rounded-xl px-3 py-2 hover:bg-teal-950">Add Exercise</Button>
+                </span>
+            </DrawerTrigger>
 
-            <input
-                {...register("muscleGroup")}
-                placeholder="Muscle group"
-                className="border border-gray-900 rounded-xl px-3 py-2" />
+            <DrawerContent className="fixed inset-0 z-50 flex items-center justify-center">
 
-            <input placeholder="Equipment"
-                {...register("equipment")}
-                className="border border-gray-900 rounded-xl px-3 py-2" />
+                <div className="bg-teal-100 p-6 rounded-xl shadow-lg w-full max-w-md">
+                    <DrawerHeader className="flex justify-between items-center">
+                        <DrawerTitle>Add New Exercise</DrawerTitle>
 
-            <button className="bg-teal-900 text-white hover:bg-teal-950 rounded-xl px-3 py-2 max-w-45">Add Excersise</button>
-        </form>
-    )
+                        <DrawerClose asChild>
+                            <Button variant="destructive">Close</Button>
+                        </DrawerClose>
+                    </DrawerHeader>
+
+                    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-3 pt-4">
+                        <Input 
+                            {...register("name")} 
+                            placeholder="Exercise Name" 
+                            className="rounded-xl" />
+
+                        <Input 
+                            {...register("muscleGroup")} 
+                            placeholder="Muscle Group" 
+                            className="rounded-xl" />
+
+                        <Input 
+                            {...register("equipment")} 
+                            placeholder="Equipment" 
+                            className="rounded-xl" />
+
+                        <Button 
+                            type="submit" 
+                            className="bg-teal-900 hover:bg-teal-950 text-white rounded-xl">
+                            Add Exercise
+                        </Button>
+
+                    </form>
+                </div>
+                
+            </DrawerContent>
+        </Drawer>
+    );
 }

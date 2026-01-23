@@ -47,7 +47,7 @@ export function AddWorkoutForm() {
 
                 <div className="flex flex-col gap-2">
                     {exercises.map((ex) => (
-                        <label key={ex._id} className="flex-col border rounded-xl px-3 py-2">
+                        <label key={ex._id} className="flex-col border border-gray-900 rounded-xl px-3 py-2">
                             <input
                                 type="checkbox"
                                 value={ex._id}
