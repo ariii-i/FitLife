@@ -22,7 +22,7 @@ export function AddWorkoutForm() {
                 type="text"
                 {...register("title", { required: true })}
                 placeholder="Exercise Name"
-                className="border border-gray-900 rounded-xl px-3 py-2" />
+                className="border border-gray-900 rounded-xl px-3 py-2 mt-0" />
 
             <input
                 placeholder="Day"

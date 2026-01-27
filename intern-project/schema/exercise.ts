@@ -10,16 +10,12 @@ export const exercise= defineType({
             type: "string",
             title: "Exercise Name",
         },
-
-        {
-            name: "muscleGroup",
-            type: "string",
-            title: "Muscle Group"
-        },
         
         {
-            name:"equipment",
-            type:"string",
-            title:"Equipment",
-        }]
+            name: "userId",
+            type: "string",
+            title: "User ID",
+            validation: rule => rule.required() 
+        }
+    ]
 })
