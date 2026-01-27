@@ -5,10 +5,11 @@ import {
     DialogDescription,
     DialogTitle,
     DialogTrigger
-} from "@radix-ui/react-dialog";
+} from "../ui/dialog";
 import { Button } from "../ui/button";
 import { useWorkoutLogStore } from "../../store/workout-Store";
 import { useForm } from "react-hook-form";
+import { Input } from "../ui/input";
 
 export function WorkoutLog() {
     const { logs, addLogs, updateLogs } = useWorkoutLogStore();
@@ -45,11 +46,17 @@ export function WorkoutLog() {
                     />
 
                     <input
-                        {...register("Duration")}
+                        {...register("Start time")}
                         placeholder="Duration"
                         type="time"
                         className="border border-gray-900 rounded-xl px-3 py-2"
                     />
+
+                    <Input
+                        {...register("EndTime")}
+                        placeholder="Weight (kg)"
+                        type="number" />
+
 
                     <input
                         {...register("Weight")}
