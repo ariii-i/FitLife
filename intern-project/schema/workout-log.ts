@@ -12,15 +12,36 @@ export const workoutLog = defineType({
     }),
 
     defineField({
+      name: "sessionId",
+      type: "string",
+      validation: rule => rule.required()
+    }),
+
+    defineField({
       name: "exercises",
-      type: "array",
-      of: [{ type: "reference", to: [{ type: "exercise" }] }],
+      type: "reference",
+      to: [{ type: "exercise" }],
     }),
 
     defineField({
       name: "workouts",
-      type: "array",
-      of: [{ type: "reference", to: [{ type: "workout" }] }],
+      type: "reference",
+      to: [{ type: "workout" }],
+    }),
+
+    defineField({
+      name: "sets",
+      type: "number",
+    }),
+
+    defineField({
+      name: "reps",
+      type: "number",
+    }),
+
+    defineField({
+      name: "weight",
+      type: "number"
     }),
 
     defineField({
@@ -43,14 +64,6 @@ export const workoutLog = defineType({
       type: "number",
     }),
 
-    defineField({
-      name: "sets",
-      type: "number",
-    }),
 
-    defineField({
-      name: "reps",
-      type: "number",
-    }),
   ],
 })

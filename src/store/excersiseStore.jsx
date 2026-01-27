@@ -4,46 +4,19 @@ import { sanityClient } from "../lib/sanity";
 export const useExerciseStore = create((set) => ({
   exercises: [],
 
-  fetchExercises: async () => {
-    const data = await sanityClient.fetch(`
-      *[_type == "exercise"]{
+  setExercises: (exercises) => set({ exercises }),
+
+  addExercise: (exercise) =>
+    set((state) => ({ exercises: [...state.exercises, exercise] })),
+
+  fetchExercises: async () =>{
+    const data= await sanityClient.fetch(`
+      *[_type=="exercise"]{
         _id,
-        name,
-        muscleGroup,
-        equipment
+        name
       }
-    `);
-    set({ exercises: data });
-  },
-
-  //sanity ma save first ma
-  addExercise: async (exercise, cb) => {
-    const newExercise = {
-      _type: "exercise",
-      ...exercise,
-    }
-    await sanityClient.create(newExercise);
-    cb?.()
-  },
-
-  deleteExercise: async (id, cb) => {
-    await sanityClient.delete(id);
-    
-    set((state) => ({ exercises: state.exercises.filter((ex) => ex._id !== id) }))
-    cb?.()
-  },
-
-  editExercise: async (id, updatedFields) => {
-    const updated = await sanityClient
-      .patch(id)
-      .set(updatedFields)
-      .commit();
-    
-    set((state) => ({
-      exercises: state.exercises.map((ex) =>
-        ex._id === id ? updated : ex
-      ),
-    }));
-  },
-
+    `)
+    set({exercises:data})
+    console.log("data ho la", data)
+  }
 }));
