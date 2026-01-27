@@ -39,7 +39,7 @@ export function ExerciseTable() {
                         className="bg-red-600 text-white rounded-xl px-2 hover:bg-red-700">
                         Delete
                     </button>
-                    {/* <button className="bg-teal-900 text-white rounded-xl px-2 hover:bg-teal-950"
+                    {/* <button className="bg-stone-900 text-white rounded-xl px-2 hover:bg-stone-950"
                         onClick={() => onEdit(exerciseVal)}>Edit</button> */}
                 </div>
             }

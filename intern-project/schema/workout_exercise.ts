@@ -1,38 +1,39 @@
 import { defineField, defineType } from "sanity";
 
-export const workout_exercise=defineType({
-    name:"workout_exercise",
-    type:"document",
-    title:"Workout Exercise",
-    fields:[ 
+export const workout_exercise = defineType({
+    name: "workout_exercise",
+    type: "document",
+    title: "Workout Exercise",
+    fields: [
         defineField({
-            name:"userId",
-            type:"string",
-            title:"User Id",
+            name: "userId",
+            type: "string",
+            title: "User Id",
             validation: rule => rule.required()
         }),
 
         defineField({
-            name:"exercise",
-            type:"reference",
-            to:[{type:"exercise"}]
+            name: "exercise",
+            type: "reference",
+            to: [{ type: "exercise" }]
         }),
 
         defineField({
-            name:"workout",
-            type:"reference",
-            to:[{type:"workout"}]
+            name: "workout",
+            type: "reference",
+            to: [{ type: "workout" }]
         }),
 
         defineField({
-            name:"set",
-            type:"number",
-            title:"Sets"
+            name: "plannedSets",
+            type: "number",
+            title: "Planned Sets"
         }),
 
         defineField({
-            name:"reps",
-            type:"number"
+            name: "plannedReps",
+            type: "number",
+            title: "Planned Reps"
         })
     ]
 })

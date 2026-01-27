@@ -29,13 +29,13 @@ export function AddExercisesForm() {
         <Drawer open={open} onOpenChange={setOpen}>
             <DrawerTrigger asChild>
                 <span>
-                    <Button variant="default" className="bg-teal-900 text-white rounded-xl px-3 py-2 hover:bg-teal-950">Add Exercise</Button>
+                    <Button variant="default" className="bg-stone-900 text-white rounded-xl px-3 py-2 hover:bg-stone-950">Add Exercise</Button>
                 </span>
             </DrawerTrigger>
 
             <DrawerContent className="fixed inset-0 z-50 flex items-center justify-center">
 
-                <div className="bg-teal-100 p-6 rounded-xl shadow-lg w-full max-w-md">
+                <div className="bg-stone-100 p-6 rounded-xl shadow-lg w-full max-w-md">
                     <DrawerHeader className="flex justify-between items-center">
                         <DrawerTitle>Add New Exercise</DrawerTitle>
 
@@ -62,7 +62,7 @@ export function AddExercisesForm() {
 
                         <Button 
                             type="submit" 
-                            className="bg-teal-900 hover:bg-teal-950 text-white rounded-xl">
+                            className="bg-stone-900 hover:bg-stone-950 text-white rounded-xl">
                             Add Exercise
                         </Button>
 
