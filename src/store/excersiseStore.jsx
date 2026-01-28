@@ -9,14 +9,23 @@ export const useExerciseStore = create((set) => ({
   addExercise: (exercise) =>
     set((state) => ({ exercises: [...state.exercises, exercise] })),
 
-  fetchExercises: async () =>{
-    const data= await sanityClient.fetch(`
-      *[_type=="exercise"]{
+  fetchExercises: async () => {
+    const data = await sanityClient.fetch(`
+      *[_type=="exercise"] | order(date desc){
         _id,
         name
       }
     `)
-    set({exercises:data})
+    set({ exercises: data })
     console.log("data ho la", data)
-  }
+  },
+
+  deleteExercise: async (id) => {
+    await sanityClient.delete(id)
+    set((state) => ({
+      exercises: state.exercises.filter((ex) => ex._id !== id)
+    }))
+  },
+
+  
 }));
