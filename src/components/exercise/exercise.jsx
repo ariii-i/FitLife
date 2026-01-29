@@ -2,12 +2,13 @@ import { useForm } from "react-hook-form";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTrigger } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { toast } from "sonner";
+import { toast, Toaster } from "sonner";
 import { sanityClient } from "../../lib/sanity";
 import { useExerciseStore } from "../../store/excersiseStore";
+import { Plus } from "lucide-react";
 
 export function ExercisePlan() {
-    const { addExercise } = useExerciseStore();
+    const { exercises, addExercise } = useExerciseStore();
 
     const { register, handleSubmit, reset } = useForm()
 
@@ -17,9 +18,9 @@ export function ExercisePlan() {
             return
         }
 
-        try{
-            const created= await sanityClient.create({
-                _type:"exercise",
+        try {
+            const created = await sanityClient.create({
+                _type: "exercise",
                 name: data.exercise,
             })
 
@@ -29,7 +30,7 @@ export function ExercisePlan() {
             reset()
         }
 
-        catch (err){
+        catch (err) {
             console.log("Error", err)
             toast.error("Faied to add exercise")
         }
@@ -37,17 +38,24 @@ export function ExercisePlan() {
 
     return (
         <Dialog>
-            <DialogTrigger asChild>
-                <Button variant="outline">Create a plan</Button>
-            </DialogTrigger>
+            <div className="flex justify-between items-center">
+                <DialogDescription>
+                    {exercises.length} exercises
+                </DialogDescription>
+
+                <DialogTrigger asChild>
+                    <Button><Plus /> Add Exercise</Button>
+                </DialogTrigger>
+            </div>
 
             <DialogContent >
                 <DialogDescription className="font-bold text-2xl">
                     Exercises
                 </DialogDescription>
-                <form onSubmit={handleSubmit(onSubmit)} className="text-sm space-y-3">
+                
+                <form onSubmit={handleSubmit(onSubmit)} className="text-sm font-medium space-y-3">
                     <label>Exercise Name</label>
-                    <Input {...register("exercise")} placeholder="e.g. Bench Press" />
+                    <Input {...register("exercise",)} placeholder="e.g. Bench Press" />
 
                     <Button type="submit" variant="outline">Add </Button>
                 </form>

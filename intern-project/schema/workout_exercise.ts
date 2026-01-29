@@ -6,13 +6,6 @@ export const workout_exercise = defineType({
     title: "Workout Exercise",
     fields: [
         defineField({
-            name: "userId",
-            type: "string",
-            title: "User Id",
-            validation: rule => rule.required()
-        }),
-
-        defineField({
             name: "exercise",
             type: "reference",
             to: [{ type: "exercise" }]

@@ -1,81 +1,102 @@
 import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogTitle,
-    DialogTrigger
-} from "../ui/dialog";
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerTitle,
+    DrawerTrigger,
+
+} from "../ui/drawer";
 import { Button } from "../ui/button";
-import { useWorkoutLogStore } from "../../store/workout-Store";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
+import { useExerciseStore } from "../../store/excersiseStore";
+import { Card, CardContent } from "../ui/card";
+import { useState } from "react";
+import { Plus } from "lucide-react";
 
 export function WorkoutLog() {
-    const { logs, addLogs, updateLogs } = useWorkoutLogStore();
-    const { register, handleSubmit, reset } = useForm();
+    // const { logs, addLogs, updateLogs } = useWorkoutLogStore();
+    const { exercises } = useExerciseStore();
+    console.log("try", exercises)
+    const { register, handleSubmit, reset, setValue } = useForm();
+
+    const [selectedExercise, setSelectedExercise] = useState(null)
+
+    const onSubmit=(data)=>{
+        console.log(data)
+        reset()
+    }
 
     return (
-        <Dialog>
-            <form>
-                <DialogTrigger asChild>
-                    <Button variant="outline">Add Workout</Button>
-                </DialogTrigger>
+        <Drawer direction="left">
 
-                <DialogContent>
-                    <DialogTitle>Workout Form</DialogTitle>
+            <div className="flex justify-between items-center p-2 ">
+                <DrawerDescription>
+                    plans
+                </DrawerDescription>
 
-                    <label>Workout Name</label>
-
-                    <input
-                        {...register("name")} placeholder="Workout Name"
-                        className="border border-gray-900 rounded-xl px-3 py-2" />
-
-                    <input
-                        {...register("Sets")}
-                        placeholder="Number of Sets"
-                        type="number"
-                        className="border border-gray-900 rounded-xl px-3 py-2"
-                    />
-
-                    <input
-                        {...register("Reps")}
-                        placeholder="Number of Reps"
-                        type="number"
-                        className="border border-gray-900 rounded-xl px-3 py-2"
-                    />
-
-                    <input
-                        {...register("Start time")}
-                        placeholder="Duration"
-                        type="time"
-                        className="border border-gray-900 rounded-xl px-3 py-2"
-                    />
-
-                    <Input
-                        {...register("EndTime")}
-                        placeholder="Weight (kg)"
-                        type="number" />
+                <DrawerTrigger asChild>
+                    <Button variant="outline"><Plus /> Create a Workout Plan</Button>
+                </DrawerTrigger>
+            </div>
 
 
-                    <input
-                        {...register("Weight")}
-                        placeholder="Weight (kg)"
-                        type="number"
-                        className="border border-gray-900 rounded-xl px-3 py-2"
-                    />
+            <DrawerContent className="w-130 gap-3 px-4 py-6 h-screen">
+                <DrawerTitle>Workout Plan</DrawerTitle>
 
-                    <DialogClose>
-                        <Button variant="outline">Cancel</Button>
-                    </DialogClose>
+                <div className="border rounded-md p-4 overflow-y-auto">
+                    <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+                        <div>
+                            <label className="text-sm font-medium">Workout Name</label>
+                            <Input
+                                {...register("name")}
+                                type="text"
+                            />
+                        </div>
 
-                    <Button type="submit">Add</Button>
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium">Exercises</label>
+                            {exercises.map((ex) => (
+                                <Card key={ex._id} onClick={() => {
+                                    setSelectedExercise(ex)
+                                    setValue("exerciseId", ex._id)}}  className={`space-y-3 ${selectedExercise?._id === ex._id ? "border-primary bg-primary/10" : "hover:bg-muted"}`}>
+                                    <CardContent className="p-3 text-sm font-medium">
+                                        {ex.name}
+                                    </CardContent>
+                                </Card>
+                            ))}
+                        </div>
 
-                </DialogContent>
+                        <div className="border rounded-md shadow p-3 space-y-3">
+                            <p className="text-sm font-medium">Exercise Details</p>
 
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="space-y-1">
+                                    <label className="text-sm">Sets</label>
+                                    <Input {...register("sets")}
+                                        type="number" min={0} />
+                                </div>
 
+                                <div className="space-y-1">
+                                    <label className="text-sm">Reps</label>
+                                    <Input {...register("reps")}
+                                        type="number" min={1} />
+                                </div>
+                            </div>
 
-            </form>
-        </Dialog>
+                            <Button type="button" variant="secondary" >Add set</Button>
+
+                        </div>
+                        <Button type="submit" >Save Workout</Button>
+                    </form>
+                </div>
+
+                <DrawerClose >
+                    <Button>Close</Button>
+                </DrawerClose>
+
+            </DrawerContent>
+        </Drawer >
     )
 }

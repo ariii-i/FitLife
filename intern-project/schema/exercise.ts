@@ -10,12 +10,5 @@ export const exercise = defineType({
             type: "string",
             title: "Exercise Name",
         },
-
-        {
-            name: "userId",
-            type: "string",
-            title: "User ID",
-            validation: rule => rule.required()
-        }
     ]
 })

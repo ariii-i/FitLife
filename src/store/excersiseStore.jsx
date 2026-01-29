@@ -27,5 +27,16 @@ export const useExerciseStore = create((set) => ({
     }))
   },
 
-  
+  editExercises: async (id, updatedField) => {
+    const update = await sanityClient.patch(id)
+      .set(updatedField)
+      .commit()
+
+    set((state) => ({
+      exercises: state.exercises.map((ex) =>
+        ex._id === id ? update : ex)
+    }))
+  },
+
+
 }));
