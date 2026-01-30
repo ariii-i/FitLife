@@ -6,12 +6,12 @@ export const workout = defineType({
     type: "document",
 
     fields: [
-        defineField({
-            name: "userId",
-            type: "string",
-            title: "User ID",
-            validation: rule => rule.required()
-        }),
+        // defineField({
+        //     name: "userId",
+        //     type: "string",
+        //     title: "User ID",
+        //     validation: rule => rule.required()
+        // }),
 
         defineField({
             name: "name",

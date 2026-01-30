@@ -12,9 +12,10 @@ export const workoutLog = defineType({
     }),
 
     defineField({
-      name: "workout_exercises",
+      name: "workoutExercises",
       type: "reference",
-      to: [{ type: "exercise" }],
+      to: [{ type: "workout_exercise" }],
+      validation: rule=> rule.required()
     }),
 
     defineField({
@@ -51,7 +52,6 @@ export const workoutLog = defineType({
       name: "duration",
       type: "number",
     }),
-
 
   ],
 })
