@@ -8,10 +8,10 @@ export function DashboardCard() {
                 Welcome back! Heres your fitness overview
             </CardDescription>
 
-            <div className="flex gap-2 justify-center">
+            <div className=" grid grid-cols-2 gap-2">
                 <Card>
                     <CardContent className="font-medium text-sm">Current Streaks
-                        <Flame className="text-red-500" />
+                        <Flame className="text-red-500 " />
                         x days in a row
                     </CardContent>
                 </Card>

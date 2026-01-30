@@ -1,11 +1,13 @@
 import { Toaster } from "sonner";
-import { Sidebar } from "./Sidebar";
+import { Footer } from "./Footer";
 
 export function Layout({ children }) {
     return (
-        <div className="min-h-screen pb-16 bg-stone-100 p-4">
-            {children}
-            <Sidebar />
+        <div className="flex flex-col bg-stone-100 h-full">
+            <div className="flex-1 p-4 pb-16">
+                {children}
+            </div>
+            <Footer />
             <Toaster position="top-center" richColors />
         </div>
     )

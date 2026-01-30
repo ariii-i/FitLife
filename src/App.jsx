@@ -12,16 +12,17 @@ import { Login } from './pages/Login';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/workouts" element={<Workouts />} />
-        <Route path="/exercises" element={<Exercises />} />
-        <Route path="/progress" element={<Progress />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-      
-    </BrowserRouter>
+    <div className='max-w-screen-md h-screen mx-auto '>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/workouts" element={<Workouts />} />
+          <Route path="/exercises" element={<Exercises />} />
+          <Route path="/progress" element={<Progress />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 
