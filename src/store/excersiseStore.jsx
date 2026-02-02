@@ -11,7 +11,7 @@ export const useExerciseStore = create((set) => ({
 
   fetchExercises: async () => {
     const data = await sanityClient.fetch(`
-      *[_type=="exercise"] | order(date desc){
+      *[_type=="exercise"] | order(_createdAt desc){
         _id,
         name
       }

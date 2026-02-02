@@ -15,8 +15,10 @@ export function Exercises() {
 
   return (
     <Layout>
-      <h1 className="text-2xl font-bold mb-4">Exercises</h1>
-      <ExercisePlan/>
+      <div className="flex justify-between">
+        <h1 className="text-2xl font-bold mb-4">Exercises</h1>
+        <ExercisePlan/>
+      </div>
       <DisplayExercises/>
     </Layout>
   )

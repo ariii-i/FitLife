@@ -2,13 +2,13 @@ import { useForm } from "react-hook-form";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTrigger } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import { sanityClient } from "../../lib/sanity";
 import { useExerciseStore } from "../../store/excersiseStore";
 import { Plus } from "lucide-react";
 
 export function ExercisePlan() {
-    const { exercises, addExercise } = useExerciseStore();
+    const { addExercise } = useExerciseStore();
 
     const { register, handleSubmit, reset } = useForm()
 
@@ -38,21 +38,20 @@ export function ExercisePlan() {
 
     return (
         <Dialog>
-            <div className="flex justify-between items-center">
-                <DialogDescription>
-                    {exercises.length} exercises
-                </DialogDescription>
+            <div>
 
                 <DialogTrigger asChild>
-                    <Button><Plus /> Add Exercise</Button>
+                    <Button><Plus /></Button>
                 </DialogTrigger>
             </div>
 
+
             <DialogContent >
+
                 <DialogDescription className="font-bold text-2xl">
                     Exercises
                 </DialogDescription>
-                
+
                 <form onSubmit={handleSubmit(onSubmit)} className="text-sm font-medium space-y-3">
                     <label>Exercise Name</label>
                     <Input {...register("exercise",)} placeholder="e.g. Bench Press" />
