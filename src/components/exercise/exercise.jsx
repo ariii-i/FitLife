@@ -8,7 +8,7 @@ import { useExerciseStore } from "../../store/excersiseStore";
 import { Plus } from "lucide-react";
 
 export function ExercisePlan() {
-    const { exercises, addExercise } = useExerciseStore();
+    const { addExercise } = useExerciseStore();
 
     const { register, handleSubmit, reset } = useForm()
 
@@ -38,7 +38,7 @@ export function ExercisePlan() {
 
     return (
         <Dialog>
-            <div className="">
+            <div>
 
                 <DialogTrigger asChild>
                     <Button><Plus /></Button>
