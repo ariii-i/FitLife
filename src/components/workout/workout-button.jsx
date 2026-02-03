@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { WorkoutPlan } from "./workout-plan";
-import { WorkoutHistory } from "./workout-history";
 import { Drawer, DrawerDescription } from "../ui/drawer";
 import { useWorkoutStore } from "../../store/workoutStore";
+import { WorkoutForms } from "./workout-form/form";
 
 export function WorkoutButton() {
     const {workouts}=useWorkoutStore();
@@ -29,10 +28,11 @@ export function WorkoutButton() {
                 </Button>
             </div>
 
-            <div>
-                {view === "plan" && <WorkoutPlan />}
+            {/* <div>
+                {view === "plan" && <WorkoutForms />}
                 {view === "history" && <WorkoutHistory />}
-            </div>
+            </div> */}
         </div>
+        
     )
 }

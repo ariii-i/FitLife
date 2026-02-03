@@ -27,6 +27,12 @@ export const workout_exercise = defineType({
             name: "plannedReps",
             type: "number",
             title: "Planned Reps"
+        }),
+
+        defineField({
+            name:"selected",
+            type:"boolean",
+            title:"Selected"
         })
     ]
 })

@@ -1,13 +1,9 @@
-import { useExerciseStore } from "../../store/excersiseStore"
-import { Card, CardContent, CardDescription } from "../ui/card"
-import { Button } from "../ui/button"
-import { SquarePen } from 'lucide-react';
-import { Trash2 } from 'lucide-react';
-import { EditExerciseBox } from "./edit-exercise";
+import { useExerciseStore } from "../../store/excersiseStore";
+import { Card, CardContent, CardDescription } from "../ui/card";
 
 export function DisplayExercises() {
 
-    const { exercises, deleteExercise } = useExerciseStore()
+    const { exercises } = useExerciseStore()
 
     if (!exercises || exercises.length === 0) {
         return (
