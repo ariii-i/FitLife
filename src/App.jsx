@@ -12,7 +12,7 @@ import { Login } from './pages/Login';
 
 function App() {
   return (
-    <div className='max-w-screen-md h-screen mx-auto '>
+    <div className='max-w-screen-md h-screen mx-auto'>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Dashboard />} />

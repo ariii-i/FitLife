@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Layout } from "../components/layout/Layout";
 import { useExerciseStore } from "../store/excersiseStore";
-import { ExercisePlan } from "../components/exercise/exercise";
+import { ExerciseForm } from "../components/exercise/exercise-form";
 import { DisplayExercises } from "../components/exercise/display-exercise";
 
 
@@ -17,9 +17,9 @@ export function Exercises() {
     <Layout>
       <div className="flex justify-between">
         <h1 className="text-2xl font-bold mb-4">Exercises</h1>
-        <ExercisePlan/>
+        <ExerciseForm />
       </div>
-      <DisplayExercises/>
+      <DisplayExercises />
     </Layout>
   )
 }
