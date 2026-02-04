@@ -1,17 +1,17 @@
+import { Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useWorkoutExerciseStore } from "../../../store/workout-exercise";
 import { sanityClient } from "../../../lib/sanity";
-import { Button } from "../../ui/button";
-import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from "../../ui/drawer";
-import { Card, CardContent } from "../../ui/card"
-import { Input } from "../../ui/input";
-import { Plus, Trash2 } from "lucide-react";
-import { ExerciseFieldArray } from "./fieldSet";
 import { useExerciseStore } from "../../../store/excersiseStore";
+import { useWorkoutExerciseStore } from "../../../store/workout-exercise";
+import { Button } from "../../ui/button";
+import { Card } from "../../ui/card";
+import { Drawer, DrawerContent, DrawerTitle } from "../../ui/drawer";
+import { Input } from "../../ui/input";
+import { ExerciseFieldArray } from "./fieldSet";
 
 export const WorkoutForms = () => {
-    const { fetchWorkoutExercise } = useWorkoutExerciseStore()
+    const { fetchWorkoutExercises, workoutExercises } = useWorkoutExerciseStore()
     const { register, handleSubmit, setValue, control } = useForm({
         defaultValues: {
             exercises: [{
@@ -22,7 +22,6 @@ export const WorkoutForms = () => {
 
         }
     });
-
     const [open, setOpen] = useState(false);
 
     const onSubmit = async (data) => {
@@ -38,12 +37,12 @@ export const WorkoutForms = () => {
             transaction.create({
                 ...rest,
                 workout: {
+                    _type: "reference",
                     _ref: response._id,
-                    _type: "workout"
                 },
                 exercise: {
+                    _type: "reference",
                     _ref: _id,
-                    _type: "exercise"
                 },
                 plannedSets: Number(rest.plannedSets),
                 plannedReps: Number(rest.plannedReps),
@@ -55,7 +54,7 @@ export const WorkoutForms = () => {
         await transaction.commit()
 
         setOpen(false);
-        fetchWorkoutExercise();
+        fetchWorkoutExercises();
     }
 
 
@@ -77,14 +76,15 @@ export const WorkoutForms = () => {
                             <Input {...register("name", { required: true })} type="text" placeholder="e.g. leg day" className="rounded-xl" />
                         </div>
 
-                        <ExerciseList />
+                        {/* <ExerciseList /> */}
 
                         <ExerciseFieldArray control={control} register={register} setValue={setValue} />
 
-                        <Button type="submit" >Add Workout</Button>
+                        <Button type="submit" >Save Workout</Button>
                     </form>
 
                     <Button onClick={() => setOpen(false)} variant="secondary">Close</Button>
+
                 </DrawerContent>
             </Drawer >
         </div>
@@ -93,26 +93,25 @@ export const WorkoutForms = () => {
 
 const ExerciseList = () => {
     const { exercises } = useExerciseStore();
-    const {workoutExercises}=useWorkoutExerciseStore();
+    const { workoutExercises } = useWorkoutExerciseStore();
 
     return (
-        <div className="overflow-y-auto space-y-2">
-            <div className="flex justify-between text-sm">
-                <div className="flex font-semibold text-md"> Exercises</div>
+        <div className=" ">
+            <div className="flex justify-between items-center text-xs">
+                <div className="flex font-semibold text-lg"> Exercises</div>
                 {exercises.length} {exercises.length <= 1 ? 'item' : 'items'}
             </div>
 
-            {exercises.map((ex) =>
-                <Card>
-                    <CardContent className="flex items-center justify-between">
+            <div className="overflow-y-auto space-y-2">
+                {exercises.map((ex) =>
+                    <Card className="flex items-center justify-between p-1 px-2">
                         <span>{ex.name}</span>
                         <Button variant="ghost"><Trash2 /></Button>
-                    </CardContent>
-                </Card>
-            )}
-            <pre>
-                {JSON.stringify(workoutExercises, null, 2)}
-            </pre>
+
+                    </Card>
+                )}
+            </div>
+            
         </div>
     )
 }

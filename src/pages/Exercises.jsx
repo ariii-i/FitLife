@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { Layout } from "../components/layout/Layout";
 import { useExerciseStore } from "../store/excersiseStore";
-import { ExerciseForm } from "../components/exercise/exercise-form";
-import { DisplayExercises } from "../components/exercise/display-exercise";
+import { ExerciseForm } from "../components/exercise/exerciseForm";
+import { DisplayExercises } from "../components/exercise/displayExercise";
 
 
 export function Exercises() {

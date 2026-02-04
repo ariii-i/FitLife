@@ -8,6 +8,7 @@ import { Workouts } from './pages/Workouts';
 import { Exercises } from './pages/Exercises';
 import { Progress } from './pages/Progress';
 import { Login } from './pages/Login';
+import { WorkoutDetail } from './pages/WorkoutDetail';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path="/workouts" element={<Workouts />} />
           <Route path="/exercises" element={<Exercises />} />
           <Route path="/progress" element={<Progress />} />
+          <Route path="/workout-detail/:workoutId" element={<WorkoutDetail/>} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
