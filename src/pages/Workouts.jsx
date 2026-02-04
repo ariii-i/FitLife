@@ -16,7 +16,7 @@ export function Workouts() {
     useEffect(() => {
         fetchExercises();
         fetchWorkouts();
-        // fetchWorkoutExercises();
+        fetchWorkoutExercises();
     }, [])
 
     return (
