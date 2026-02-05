@@ -91,27 +91,3 @@ export const WorkoutForms = () => {
     )
 }
 
-const ExerciseList = () => {
-    const { exercises } = useExerciseStore();
-    const { workoutExercises } = useWorkoutExerciseStore();
-
-    return (
-        <div className=" ">
-            <div className="flex justify-between items-center text-xs">
-                <div className="flex font-semibold text-lg"> Exercises</div>
-                {exercises.length} {exercises.length <= 1 ? 'item' : 'items'}
-            </div>
-
-            <div className="overflow-y-auto space-y-2">
-                {exercises.map((ex) =>
-                    <Card className="flex items-center justify-between p-1 px-2">
-                        <span>{ex.name}</span>
-                        <Button variant="ghost"><Trash2 /></Button>
-
-                    </Card>
-                )}
-            </div>
-            
-        </div>
-    )
-}

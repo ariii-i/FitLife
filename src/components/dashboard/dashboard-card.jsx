@@ -1,7 +1,9 @@
+import { ExerciseList } from "../workout/workout-list";
+
 export function DashboardCard(){
     return(
         <div>
-            h
+            <ExerciseList/>
         </div>
     )
 }

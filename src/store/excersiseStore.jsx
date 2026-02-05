@@ -17,7 +17,6 @@ export const useExerciseStore = create((set) => ({
       }
     `)
     set({ exercises: data })
-    console.log("data ho la", data)
   },
 
   deleteExercise: async (id) => {

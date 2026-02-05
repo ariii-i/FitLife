@@ -48,10 +48,10 @@ export const WorkoutField = () => {
                 <li key={w._id} className="flex justify-between items-center border-b border-stone-300 py-6 px-3 font-semibold text-xl">
                     <Link to={`/workout-detail/:${w._id}`} rel="stylesheet" href="">
                         <div>{w.name}</div>
+                    <span className="text-sm block font-normal">{getSetsandReps(w._id)}</span>
                     </Link>
 
-                    {getSetsandReps(w._id)}
-                    {/* <span className="text-xs block font-light">{getSetsandReps(w._id)}</span> */}
+                    {/* {getSetsandReps(w._id)} */}
 
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
