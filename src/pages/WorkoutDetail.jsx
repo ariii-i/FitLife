@@ -1,50 +1,37 @@
 import { useParams } from "react-router-dom";
 import { Layout } from "../components/layout/Layout";
 import { useWorkoutExerciseStore } from "../store/workout-exercise";
+import { useExerciseStore } from "../store/excersiseStore";
 import { useWorkoutStore } from "../store/workoutStore";
 import { useEffect } from "react";
 
 export const WorkoutDetail = () => {
   const { workoutId } = useParams();
 
-  const { workoutExercises, fetchWorkoutExercises } =
-    useWorkoutExerciseStore();
+  const { exercises } = useExerciseStore();
   const { workouts, fetchWorkouts } = useWorkoutStore();
+  const { workoutExercises, fetchWorkoutExercises } = useWorkoutExerciseStore();
 
-  useEffect(() => {
-    fetchWorkouts();
-    fetchWorkoutExercises(); 
-  }, []);
+  useEffect(()=>{
+    fetchWorkouts()
+    fetchWorkoutExercises()
+  },[])
+  const workout = workouts.filter((w) => w._id != workoutId);
 
-  const workout = workouts.find((w) => w._id === workoutId);
+  // console.log("id",workoutId)
+  // console.log("id",typeof(workoutId))
 
-  const exercises = workoutExercises.filter((we) => we.workout._id === workoutId);
-  console.log("ALL workoutExercises:", workoutExercises);
-console.log("workoutId from URL:", workoutId);
-
-
-  return (
+  console.log("workoutss", workouts)
+  console.log("WORKOUTS data", workout)
+  return(
     <Layout>
-      <h1 className="text-2xl font-bold mb-4">
-        {workout?.name || "Workout"}
-        
-      </h1>
+      <pre>
+        {JSON.stringify(workouts, null,2)}
+      </pre>
+      <h2>{workouts.name}</h2>
+      <div>
 
-      {exercises.length === 0 ? (
-        <p className="text-stone-500">No exercises added.</p>
-      ) : (
-        exercises.map((ex) => (
-          <div
-            key={ex._id}
-            className="border rounded-xl p-3 mb-2 flex justify-between"
-          >
-            <span className="font-medium">{ex.exercise.name}</span>
-            <span className="text-stone-600">
-              {ex.plannedSets} sets × {ex.plannedReps} reps
-            </span>
-          </div>
-        ))
-      )}
+      </div>
     </Layout>
-  );
+  )
 };
