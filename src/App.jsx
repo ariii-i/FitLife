@@ -6,7 +6,7 @@ import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { Dashboard } from './pages/Dashboard';
 import { Workouts } from './pages/Workouts';
 import { Exercises } from './pages/Exercises';
-import { Progress } from './pages/Progress';
+import { Profile } from './pages/Profile';
 import { Login } from './pages/Login';
 import { WorkoutDetail } from './pages/WorkoutDetail';
 
@@ -19,7 +19,7 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/workouts" element={<Workouts />} />
           <Route path="/exercises" element={<Exercises />} />
-          <Route path="/progress" element={<Progress />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/workout-detail/:workoutId" element={<WorkoutDetail/>} />
           <Route path="/login" element={<Login />} />
         </Routes>
