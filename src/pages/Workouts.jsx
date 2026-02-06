@@ -20,13 +20,13 @@ export function Workouts() {
     }, [])
 
     return (
-        <Layout>
+        <div>
             <div className="flex justify-between">
                 <h1 className="text-2xl font-bold mb-4">Workouts</h1>
                 <WorkoutForms />
             </div>
             <WorkoutButton />
             <WorkoutField />
-        </Layout>
+        </div>
     )
 }

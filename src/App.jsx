@@ -9,19 +9,24 @@ import { Exercises } from './pages/Exercises';
 import { Profile } from './pages/Profile';
 import { Login } from './pages/Login';
 import { WorkoutDetail } from './pages/WorkoutDetail';
+import { Session } from './pages/Session';
+import { Layout } from './components/layout/Layout';
 
 
 function App() {
   return (
     <div className='max-w-screen-md h-screen mx-auto'>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/workouts" element={<Workouts />} />
-          <Route path="/exercises" element={<Exercises />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/workout-detail/:workoutId" element={<WorkoutDetail/>} />
-          <Route path="/login" element={<Login />} />
+        <Routes >
+          <Route element={<Layout />}>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/workouts" element={<Workouts />} />
+            <Route path="/exercises" element={<Exercises />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/workout-detail/:workoutId" element={<WorkoutDetail />} />
+            <Route path="/workout-detail/:workoutId/session/:sessionId" element={<Session />} />
+            <Route path="/login" element={<Login />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </div>

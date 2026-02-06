@@ -14,12 +14,12 @@ export function Exercises() {
   }, []);
 
   return (
-    <Layout>
+    <div>
       <div className="flex justify-between">
         <h1 className="text-2xl font-bold mb-4">Exercises</h1>
         <ExerciseForm />
       </div>
       <DisplayExercises />
-    </Layout>
+    </div>
   )
 }
