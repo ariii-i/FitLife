@@ -46,7 +46,7 @@ export const WorkoutField = () => {
         <ul >
             {workouts.map((w) => (
                 <li key={w._id} className="flex justify-between items-center border-b border-stone-300 py-6 px-3 font-semibold text-xl">
-                    <Link to={`/workout-detail/:${w._id}`} rel="stylesheet" href="">
+                    <Link to={`/workout-detail/${w._id}`} rel="stylesheet" href="">
                         <div>{w.name}</div>
                     <span className="text-sm block font-normal">{getSetsandReps(w._id)}</span>
                     </Link>
@@ -59,7 +59,7 @@ export const WorkoutField = () => {
                         </DropdownMenuTrigger>
 
                         <DropdownMenuContent>
-                            <DropdownMenuItem variant="ghost" className="w-full justify-start" onClick={() => navigate('/DetailsField')}>Details</DropdownMenuItem>
+                            {/* <DropdownMenuItem variant="ghost" className="w-full justify-start" onClick={() => navigate('/DetailsField')}>Details</DropdownMenuItem> */}
                             <DropdownMenuItem variant="ghost" className="w-full justify-start">Edit</DropdownMenuItem>
                             <DropdownMenuItem onClick={() => onDelete(w._id)} variant="ghost" className="text-red-500 w-full justify-start">Delete</DropdownMenuItem>
                         </DropdownMenuContent>

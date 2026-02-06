@@ -19,6 +19,19 @@ export const useWorkoutExerciseStore = create((set) => ({
         set({workoutExercises: data})
     },
 
+    fetchDetail:async(workoutId)=>{
+        return await sanityClient.fetch(`
+            *[_type == "workout_exercise" && workout._ref == $workoutId]{
+                _id,
+                plannedSets,
+                plannedReps,
+                workout -> {_id, name},
+                exercise -> {_id, name}
+            }`,
+            {workoutId:workoutId}
+        )
+    },
+    
     addWorkoutExercises: async ({
         workoutId,
         exerciseId,

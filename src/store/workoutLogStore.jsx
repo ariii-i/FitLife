@@ -5,7 +5,7 @@ export const useWorkoutLogStore = create((set) => ({
     workoutLog: [],
 
     fetchWorkoutLog: async (sessionId) => {
-        const data = await sanityClient.fetch(`
+        return await sanityClient.fetch(`
             *[_type=="workoutLog" && sessionId==$sessionId]{
                 _id,
                 sessionId,
@@ -25,8 +25,6 @@ export const useWorkoutLogStore = create((set) => ({
             }`,
             { sessionId: sessionId }
         )
-
-        set({ workoutLog: data })
     },
 
     addWorkoutLog: async ({
