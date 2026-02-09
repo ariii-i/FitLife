@@ -1,45 +1,23 @@
-import { Dialog, DialogContent, DialogTitle } from "@radix-ui/react-dialog"
-import { SquarePen } from "lucide-react"
-import { useState } from "react"
 import { useExerciseStore } from "../../store/excersiseStore"
-import { Button } from "../ui/button"
+import { useState } from "react";
+import { Dialog, DialogContent } from "../ui/dialog";
+import { Button } from "../ui/button";
 
-export function EditExerciseBox({ exerciseId, currentName }) {
-    const { editExercises } = useExerciseStore()
+export function EditExerciseBox() {
+    const {exercises}=useExerciseStore();
 
-    const [open, setOpen] = useState(false);
-    const [name, setName] = useState(currentName)
-    console.log(name);
+    const [open, setOpen]= useState();
 
-    const onSave = async (data) => {
-        await editExercises(exerciseId, { name })
-        setOpen(false)
-    }
-
-    return (
+    return(
         <div>
-            <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setOpen(true)}>
-                <SquarePen className="w-4 h-4" />
-            </Button>
-
+            <Button onClick={Set}></Button>
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogContent>
-                    <DialogTitle className="font-medium text-sm">Edit Exercise</DialogTitle>
-
                     <div>
-                        <label className="flex flex-col">
-                            Exercise Name
-                            <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="border shadow rounded-md px-3 py-2" />
-                        </label>
-
+                        Hi
                     </div>
-
-                    <Button >Save</Button>
-                    <Button variant="secondary" onClick={() => setOpen(false)}>Cancel</Button>
                 </DialogContent>
+                <Button type="button" onClick={() => setOpen(false)}>Save</Button>
             </Dialog>
         </div>
     )

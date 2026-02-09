@@ -11,7 +11,7 @@ import { Input } from "../../ui/input";
 import { ExerciseFieldArray } from "./fieldSet";
 
 export const WorkoutForms = () => {
-    const { fetchWorkoutExercises, workoutExercises } = useWorkoutExerciseStore()
+    const { fetchWorkoutExercises } = useWorkoutExerciseStore()
     const { register, handleSubmit, setValue, control } = useForm({
         defaultValues: {
             exercises: [{

@@ -29,15 +29,13 @@ export const WorkoutField = () => {
 
         if (!exercises.length) return "";
 
-        let totalSets = 0;
-        let totalReps = 0;
+        let totalexercise = exercises.length;
 
-        exercises.forEach((ex) => {
-            totalSets += ex.plannedSets;
-            totalReps += ex.plannedReps;
-        });
 
-        return `(${totalSets} sets × ${totalReps} reps)`;
+
+
+
+        return `${totalexercise} exercises`;
     };
 
     const navigate = useNavigate()
@@ -48,10 +46,12 @@ export const WorkoutField = () => {
                 <li key={w._id} className="flex justify-between items-center border-b border-stone-300 py-6 px-3 font-semibold text-xl">
                     <Link to={`/workout-detail/${w._id}`} rel="stylesheet" href="">
                         <div>{w.name}</div>
-                    <span className="text-sm block font-normal">{getSetsandReps(w._id)}</span>
+                        <span className="text-sm block font-normal">
+                            {getSetsandReps(w._id)}
+                        </span>
                     </Link>
+                    {/* <pre>{JSON.stringify(workouts, null, 2)}</pre> */}
 
-                    {/* {getSetsandReps(w._id)} */}
 
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>

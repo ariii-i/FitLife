@@ -26,7 +26,7 @@ export const useExerciseStore = create((set) => ({
     }))
   },
 
-  editExercises: async (id, updatedField) => {
+  editExercise: async (id, updatedField) => {
     const update = await sanityClient.patch(id)
       .set(updatedField)
       .commit()
