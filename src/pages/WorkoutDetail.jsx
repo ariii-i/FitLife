@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useWorkoutExerciseStore } from "../store/workout-exercise";
-import { Layout } from "../components/layout/Layout"
+import { Button } from "../components/ui/button";
 
 export const WorkoutDetail = () => {
 
   // 1. extract workoutID from params 
   const { workoutId } = useParams();
+  const navigate=useNavigate();
 
   // 2. call fetchDetail in use effect, fetch details should return resonse.
+  // 3. store response in use state
   const [workoutDetail, setWorkoutDetail] = useState(null)
   const { fetchDetail } = useWorkoutExerciseStore();
 
@@ -23,7 +25,6 @@ export const WorkoutDetail = () => {
 
   }, [init])
 
-  // 3. store response in use state
 
   // 4. if response is empty show empty case
   if (!workoutDetail) {
@@ -32,52 +33,26 @@ export const WorkoutDetail = () => {
     </p>
   }
   console.log("workout id detail ", workoutDetail)
-  
+
   // 5. else dispay response
   return (
-    <div>
+    <div className="space-y-2">
       <ul className="space-y-2">
-        
+
         {workoutDetail?.map((w) => (
           <li key={w._id} className="border border-dashed rounded-xl p-2 text-sm">
-              <Link to={`/workout-detail/${workoutId}/session/${w._id}`}>
+            <Link to={`/workout-detail/${workoutId}/session/${w._id}`}>
 
               <h2 className="font-semibold text-md">{w.exercise.name}</h2>
 
               {w.plannedSets} sets x {w.plannedReps} reps
 
-          </Link>
-            </li>
+            </Link>
+          </li>
         ))}
       </ul>
+
+      <Button className="flex justify-self-end" variant="secondary" onClick={()=> navigate(`/workout-detail/${workoutId}/session/new`)}>Quick Session</Button>
     </div>
   )
-
-  // const workout = workouts.find((w) => {
-  //   return String(w._id) === String(workoutId);
-  // });
-
-  // const exercise = workoutExercises.filter((we) => String(we.workout._id) === String(workoutId))
-  // console.log("EXERCISE", exercise)
-
-  // console.log(workout)
-
-  // console.log('list', workouts)
-
-  // return (
-  //   <Layout>
-  //     <h2>{workout.name || "Workouts"}</h2>
-  //     <div>
-  //       {exercise.map((e) =>
-  //         <div>
-  //           <pre>
-  //             {JSON.stringify(exercise, null, 2)}
-  //           </pre>
-  //           {/* {e.exercise.name} */}
-  //           <span>{e.plannedSets} x {e.plannedReps}</span>
-  //         </div>
-  //       )}
-  //     </div>
-  //   </Layout>
-  // )
 };

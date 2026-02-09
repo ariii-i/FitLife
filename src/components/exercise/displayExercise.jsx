@@ -1,5 +1,9 @@
+import { useState } from "react";
 import { useExerciseStore } from "../../store/excersiseStore";
 import { Card, CardContent, CardDescription } from "../ui/card";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 
 export function DisplayExercises() {
 
@@ -23,12 +27,35 @@ export function DisplayExercises() {
                 {exercises.length} plans </CardDescription>
             {exercises.map((ex) => (
                 <li key={ex._id} className="border-b border-stone-300">
-                        <CardContent className="flex flex-col  justify-center px-3 py-6 ">
-                            <div className="text-xl font-semibold ">{ex.name}
-                            </div>
-                        </CardContent>
+                    <CardContent className="flex flex-col  justify-center px-3 py-6 ">
+                        <div className="text-xl font-semibold ">{ex.name}
+                        </div>
+                        {/* <EditExerciseBox /> */}
+
+
+                    </CardContent>
                 </li>
             ))}
         </ul>
     )
 }
+
+// const EditExerciseBox = () => {
+
+//     const [open, setOpen] = useState(false);
+
+//     return (
+//         <div>
+//             <Dialog open={open} onOpenChange={setOpen}>
+//                 <DialogTrigger><Button>Hi</Button></DialogTrigger>
+
+//                 <DialogContent>
+//                     <DialogTitle>Edit Exercise</DialogTitle>
+//                     <Input type="text" />
+
+//                     <Button type="button" onClick={() => setOpen(false)}>Save</Button>
+//                 </DialogContent>
+//             </Dialog>
+//         </div>
+//     )
+// }
