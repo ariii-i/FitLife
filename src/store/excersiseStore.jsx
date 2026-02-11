@@ -17,7 +17,6 @@ export const useExerciseStore = create((set) => ({
       }
     `)
     set({ exercises: data })
-    console.log("data ho la", data)
   },
 
   deleteExercise: async (id) => {
@@ -27,7 +26,7 @@ export const useExerciseStore = create((set) => ({
     }))
   },
 
-  editExercises: async (id, updatedField) => {
+  editExercise: async (id, updatedField) => {
     const update = await sanityClient.patch(id)
       .set(updatedField)
       .commit()

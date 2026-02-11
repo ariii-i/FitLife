@@ -1,9 +1,9 @@
 import { Layout } from "../components/layout/Layout";
 
-export function Progress(){
+export function Profile(){
     return(
-        <Layout>
+        <div>
             <h2 className="text-2xl font-bold mb-4">Profile</h2>
-        </Layout>
+        </div>
     )
 }
