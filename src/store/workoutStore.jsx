@@ -19,7 +19,7 @@ export const useWorkoutStore = create((set) => ({
 
     addWorkouts: async (name) => {
         const workout = await sanityClient.create({
-            _type:"workout",
+            _type: "workout",
             name
         })
 
@@ -42,7 +42,7 @@ export const useWorkoutStore = create((set) => ({
             .commit()
 
         set((state) => ({
-            workouts: state.workouts.map((w) => 
+            workouts: state.workouts.map((w) =>
                 w._id === id ? updated : w)
         }))
     }

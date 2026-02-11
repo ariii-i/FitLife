@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { Layout } from "../components/layout/Layout";
 import { useExerciseStore } from "../store/excersiseStore";
-import { ExercisePlan } from "../components/exercise/exercise";
-import { DisplayExercises } from "../components/exercise/display-exercise";
+import { ExerciseForm } from "../components/exercise/exerciseForm";
+import { DisplayExercises } from "../components/exercise/displayExercise";
 
 
 export function Exercises() {
@@ -14,12 +14,12 @@ export function Exercises() {
   }, []);
 
   return (
-    <Layout>
+    <div>
       <div className="flex justify-between">
         <h1 className="text-2xl font-bold mb-4">Exercises</h1>
-        <ExercisePlan/>
+        <ExerciseForm />
       </div>
-      <DisplayExercises/>
-    </Layout>
+      <DisplayExercises />
+    </div>
   )
 }

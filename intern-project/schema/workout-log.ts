@@ -6,16 +6,16 @@ export const workoutLog = defineType({
   type: "document",
   fields: [
     defineField({
-      name: "sessionId",
-      type: "string",
+      name: "workoutExercises",
+      type: "reference",
+      to: [{ type: "workout_exercise" }],
       validation: rule => rule.required()
     }),
 
     defineField({
-      name: "workoutExercises",
-      type: "reference",
-      to: [{ type: "workout_exercise" }],
-      validation: rule=> rule.required()
+      name: "sessionId",
+      type: "string",
+      validation: rule => rule.required()
     }),
 
     defineField({
@@ -35,12 +35,12 @@ export const workoutLog = defineType({
 
     defineField({
       name: "start_time",
-      type: "datetime",
+      type: "string",
     }),
 
     defineField({
       name: "end_time",
-      type: "datetime",
+      type: "string",
     }),
 
     defineField({

@@ -6,20 +6,27 @@ import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { Dashboard } from './pages/Dashboard';
 import { Workouts } from './pages/Workouts';
 import { Exercises } from './pages/Exercises';
-import { Progress } from './pages/Progress';
+import { Profile } from './pages/Profile';
 import { Login } from './pages/Login';
+import { WorkoutDetail } from './pages/WorkoutDetail';
+import { Session } from './pages/Session';
+import { Layout } from './components/layout/Layout';
 
 
 function App() {
   return (
-    <div className='max-w-screen-md h-screen mx-auto '>
+    <div className='max-w-screen-md h-screen mx-auto'>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/workouts" element={<Workouts />} />
-          <Route path="/exercises" element={<Exercises />} />
-          <Route path="/progress" element={<Progress />} />
-          <Route path="/login" element={<Login />} />
+        <Routes >
+          <Route element={<Layout />}>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/workouts" element={<Workouts />} />
+            <Route path="/exercises" element={<Exercises />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/workout-detail/:workoutId" element={<WorkoutDetail />} />
+            <Route path="/workout-detail/:workoutId/session/:sessionId" element={<Session />} />
+            <Route path="/login" element={<Login />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </div>
