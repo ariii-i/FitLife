@@ -6,12 +6,11 @@ import { useEffect } from "react"
 
 export const SessionForm = ({ sessionId, workoutExerciseId }) => {
 
-  const { fetchWorkoutLog } = useWorkoutLogStore()
+  const { fetchWorkoutLog, addWorkoutLog } = useWorkoutLogStore()
 
   useEffect(() => {
     fetchWorkoutLog(sessionId)
   }, [sessionId])
-  const addWorkoutLog = useWorkoutLogStore((s) => s.addWorkoutLog)
 
   const { register, handleSubmit, control, reset } = useForm({
     defaultValues: {
@@ -28,7 +27,7 @@ export const SessionForm = ({ sessionId, workoutExerciseId }) => {
     },
   })
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields } = useFieldArray({
     control,
     name: "workoutLog",
   })
@@ -36,8 +35,8 @@ export const SessionForm = ({ sessionId, workoutExerciseId }) => {
   const getDuration = (start, end) => {
     if (!start || !end) return 0
 
-    const s = new Date(`1970-01-01T${start}`)
-    const e = new Date(`1970-01-01T${end}`)
+    const s = new Date(`1970-01-01T${start}:00`)
+    const e = new Date(`1970-01-01T${end}:00`)
 
     return Math.round((e - s) / 60000)
   }
@@ -64,6 +63,7 @@ export const SessionForm = ({ sessionId, workoutExerciseId }) => {
         duration,
       })
     }
+    console.log("data", data)
 
     reset()
   }

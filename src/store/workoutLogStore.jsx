@@ -5,7 +5,7 @@ export const useWorkoutLogStore = create((set) => ({
     workoutLog: [],
 
     fetchWorkoutLog: async (sessionId) => {
-        const data= await sanityClient.fetch(`
+        const data = await sanityClient.fetch(`
             *[_type=="workoutLog" && sessionId==$sessionId]{
                 _id,
                 sessionId,
@@ -25,7 +25,7 @@ export const useWorkoutLogStore = create((set) => ({
             }`,
             { sessionId: sessionId }
         )
-        set({workoutLog: data})
+        set({ workoutLog: data })
         return data;
     },
 
@@ -40,24 +40,33 @@ export const useWorkoutLogStore = create((set) => ({
         date,
         duration,
     }) => {
+
+        if (!workoutExerciseId) {
+            console.error("Missing workoutExerciseId")
+            return
+        }
+
         const log = await sanityClient.create({
-             _type: "workoutLog",
+            _type: "workoutLog",
+
             workoutExercises: {
                 _type: "reference",
                 _ref: workoutExerciseId,
             },
+
             sessionId,
-            sets,
-            reps,
-            weight,
+            sets: Number(sets),
+            reps: Number(reps),
+            weight: Number(weight),
             start_time,
             end_time,
             date,
-            duration
+            duration,
         })
 
         set((state) => ({
-            workoutLog: [...state.workoutLog, log]
+            workoutLog: [...state.workoutLog, log],
         }))
     }
+
 }))
