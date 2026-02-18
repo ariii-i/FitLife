@@ -1,14 +1,15 @@
-import { defineType } from "sanity";
+import {defineType, defineField} from 'sanity'
 
 export const exercise = defineType({
-    name: "exercise",
-    title: "Exercise",
-    type: "document",
-    fields: [
-        {
-            name: "name",
-            type: "string",
-            title: "Exercise Name",
-        },
-    ]
+  name: "exercise",
+  title: "Exercise",
+  type: "document",
+  
+  fields: [
+    defineField({
+      name: "name",
+      type: "string",
+      validation: (rule: any) => rule.required(),
+    }),
+  ],
 })
