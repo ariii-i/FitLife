@@ -1,8 +1,20 @@
-import { Card, CardContent, } from "../../components/ui/card"
-import { useExerciseStore } from "../../entities/exercise/store"
+import { EllipsisVertical } from "lucide-react";
+import { useState } from "react";
+import { Button } from "../../components/ui/button";
+import { Card } from "../../components/ui/card";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../components/ui/dropdown-menu";
+import { useExerciseStore } from "../../entities/exercise/store";
+import { EditExercises } from "../../features/exercise/edit-exercises";
 
 export const DisplayExercises = () => {
-    const { exercises } = useExerciseStore()
+    const { exercises, deleteExercise } = useExerciseStore();
+    const [open, setOpen] = useState(false)
+    const [edit, setEdit] = useState(null)
+
+    const handleEditButton = (data) => {
+        setOpen(true);
+        setEdit(data);
+    }
 
     if (!exercises || exercises.length === 0) {
         return (
@@ -21,10 +33,23 @@ export const DisplayExercises = () => {
         <div>
             <span className="text-xs text-gray-500">{exercises.length} {exercises.length > 0 ? "exercises" : "exercise"}</span>
             {exercises.map((ex) => (
-                <div key={ex._id} className="border-b border-dashed p-5 font-semibold">
+                <div key={ex._id} className="border-b border-dashed p-5 font-semibold flex items-center justify-between">
                     {ex.name}
+
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost"><EllipsisVertical /></Button>
+                        </DropdownMenuTrigger>
+
+                        <DropdownMenuContent>
+                            <DropdownMenuItem onClick={() => handleEditButton(ex)}>Edit</DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => deleteExercise(ex._id)}>Delete</DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
             ))}
+
+            <EditExercises open={open} setOpen={setOpen} exercise={edit} />
         </div>
     )
 }
