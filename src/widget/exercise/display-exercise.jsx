@@ -5,6 +5,7 @@ import { Card } from "../../components/ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../components/ui/dropdown-menu";
 import { useExerciseStore } from "../../entities/exercise/store";
 import { EditExercises } from "../../features/exercise/edit-exercises";
+import { toast } from "sonner";
 
 export const DisplayExercises = () => {
     const { exercises, deleteExercise } = useExerciseStore();
@@ -16,9 +17,25 @@ export const DisplayExercises = () => {
         setEdit(data);
     }
 
+    const onDelete = (id) => {
+        toast.warning("Are you sure you want to delete this exercise?", {
+            action: {
+                label: "Delete",
+                onClick: async () => {
+                    try {
+                        await deleteExercise(id);
+                        toast.success("Exercise deleted successfully");
+                    } catch (error) {
+                        toast.error("Failed to delete workout");
+                    }
+                }
+            }
+        })
+    }
+
     if (!exercises || exercises.length === 0) {
         return (
-            <div>
+            <div className="py-2">
                 <Card className="flex flex-col items-center justify-center font-semibold p-4">
                     No exercise added.
                     <div>
@@ -43,7 +60,7 @@ export const DisplayExercises = () => {
 
                         <DropdownMenuContent>
                             <DropdownMenuItem onClick={() => handleEditButton(ex)}>Edit</DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => deleteExercise(ex._id)}>Delete</DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => onDelete(ex._id)}>Delete</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>

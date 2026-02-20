@@ -10,7 +10,7 @@ export const Workout = () => {
     const { fetchExercises } = useExerciseStore()
     useEffect(() => {
         fetchWorkouts();
-        fetchExercises()
+        fetchExercises();
     }, [])
 
     return (

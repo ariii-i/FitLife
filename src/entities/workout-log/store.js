@@ -43,14 +43,17 @@ export const useWorkoutLogStore = create((set) => ({
             { userId, startDate }
         );
         const streak = calculateStreak(logs);
-        set({ logs, streak:3 });
+        set({ logs, streak:streak });
     },
 
     updateWorkoutLog: async (userId, workout) => {
         const today = new Date().toISOString().split("T")[0];
 
         const existing = await sanityClient.fetch(
-            `*[_type=="workoutLog" && user._ref == $userId && workout._ref == $workoutId && date == $today][0]`,
+            `*[_type=="workoutLog" 
+                && user._ref == $userId 
+                && workout._ref == $workoutId 
+                && date == $today][0]`,
             { userId, workoutId: workout._id, today }
         );
 
@@ -64,13 +67,14 @@ export const useWorkoutLogStore = create((set) => ({
             endTime: null
         })) || [];
 
+        let newOrUpdated;
         if (existing?._id) {
-            await sanityClient.patch(existing._id).set({
-                completed: true,
-                sessions
-            }).commit();
+            newOrUpdated= await sanityClient
+                .patch(existing._id)
+                .set({completed: true, sessions})
+                .commit();
         } else {
-            await sanityClient.create({
+            newOrUpdated= await sanityClient.create({
                 _type: "workoutLog",
                 user: { _type: "reference", _ref: userId },
                 workout: { _type: "reference", _ref: workout._id },
@@ -80,6 +84,12 @@ export const useWorkoutLogStore = create((set) => ({
             });
         }
 
+        set((state)=> {
+            const updatedLogs= state.workoutId.filter(
+                (l)=> l._id !== newOrUpdated._id)
+            updatedLogs.push(newOrUpdated)
+        });
+        
         fetchWorkoutLogs();
     },
     
