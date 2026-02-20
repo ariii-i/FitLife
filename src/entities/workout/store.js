@@ -5,12 +5,14 @@ const get_unique_key = () => `${Date.now()}-${Math.random().toString(36).slice(2
 
 export const useWorkoutStore = create((set) => ({
   workouts: [],
+  workout: null,
 
   createWorkout: async (workoutPayload, cb) => {
     const newWorkout = await sanityClient.create({
       _type: "workout",
       name: workoutPayload.name,
       exercises: workoutPayload.exercises.map((ex) => ({
+        _type: "object",
         _key: get_unique_key(),
         plannedSets: ex.plannedSets,
         plannedReps: ex.plannedReps,
@@ -38,11 +40,35 @@ export const useWorkoutStore = create((set) => ({
           plannedSets,
           plannedReps,
           exercise -> {name} 
-        },
+        }
       }
     `);
 
     set({ workouts: data });
+  },
+
+  fetchSelectedWorkout: async (workoutId) => {
+    if (!workoutId) {
+      console.error("No workoutId provided");
+      return;
+    }
+    const data = await sanityClient.fetch(`
+  *[_type=="workout" && _id == $workoutId][0]{
+    _id,
+    name,
+    exercises[]{
+      _key,
+      plannedSets,
+      plannedReps,
+      exercise->{
+        _id,
+        name
+      }
+    }
+  }
+`, { workoutId });
+
+    set({ workout: data || null });
   },
 
   updateWorkout: async (id, updatedField) => {
@@ -55,7 +81,9 @@ export const useWorkoutStore = create((set) => ({
       workouts: state.workouts.map((w) =>
         w._id === id ? updated : w
       ),
+      workout: updated
     }));
+
   },
 
   deleteWorkout: async (id) => {

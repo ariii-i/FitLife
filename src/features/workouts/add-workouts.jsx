@@ -1,20 +1,17 @@
 import { Plus } from "lucide-react";
-import { useExerciseStore } from "../../entities/exercise/store";
 import { useEffect, useState } from "react";
-import { useForm, useFieldArray, useWatch } from "react-hook-form";
-import { Button } from "../../components/ui/button";
-import { Input } from "../../components/ui/input";
-import { Drawer, DrawerContent, DrawerTitle } from "../../components/ui/drawer";
-import { sanityClient } from "../../components/lib/sanity";
-import { useWorkoutStore } from "../../entities/workout/store";
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
+import { Button } from "../../components/ui/button";
+import { Drawer, DrawerContent, DrawerTitle } from "../../components/ui/drawer";
+import { Input } from "../../components/ui/input";
+import { useExerciseStore } from "../../entities/exercise/store";
+import { useWorkoutStore } from "../../entities/workout/store";
 
 export const WorkoutForm = () => {
     const { register, handleSubmit, setValue, control, watch, reset } = useForm();
 
     const [open, setOpen] = useState(false);
-    const { fetchWorkouts, workouts, createWorkout } = useWorkoutStore();
-    const { exercises } = useExerciseStore();
 
     const onSubmit = async (data) => {
         const selectedExercises = data.exercises.filter((ex) => ex.selected);

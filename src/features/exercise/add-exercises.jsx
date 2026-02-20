@@ -41,13 +41,12 @@ export const AddExercises = () => {
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogContent>
                     <DialogTitle>
-                        Exercise Form
+                        Exercises
                     </DialogTitle>
 
                     <form className="space-y-2" onSubmit={handleSubmit(handleAdd)}>
                         <Input {...register("exercise")} placeholder="e.g. Bench Press" />
                         <Button type="submit" variant="secondary">Add</Button>
-                        <Button variant="secondary">Edit</Button>
                     </form>
 
                     <Button onClick={() => setOpen(false)}>Close</Button>
