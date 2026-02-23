@@ -16,6 +16,11 @@ export const WorkoutForm = () => {
     const onSubmit = async (data) => {
         const selectedExercises = data.exercises.filter((ex) => ex.selected);
 
+        if (!data.name) {
+            toast.error("Please enter workout name");
+            return;
+        }
+
         if (!selectedExercises.length) {
             toast.error("Select an exercise");
             return;
@@ -46,10 +51,10 @@ export const WorkoutForm = () => {
             </Button>
 
             <Drawer direction="right" open={open} onOpenChange={setOpen}>
-                <DrawerContent className="max-w-scree-md p-2 overflow-y-auto">
+                <DrawerContent className="max-w-scree-md p-2 ">
                     <DrawerTitle>Workout form</DrawerTitle>
 
-                    <form className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
+                    <form className="space-y-2 overflow-y-auto" onSubmit={handleSubmit(onSubmit)}>
                         <div>
                             <label>Workout Name</label>
                             <Input {...register("name")} type="text" />
@@ -57,15 +62,17 @@ export const WorkoutForm = () => {
 
                         <ExerciseList control={control} register={register} setValue={setValue} />
 
-                        <Button>Add Workout</Button>
+                        <div className="flex gap-2">
+                            <Button>Add Workout</Button>
+                            <Button onClick={() => {
+                                setOpen(false)
+                                reset()
+                            }} variant="secondary" type="button">
+                                Close
+                            </Button>
+                        </div>
                     </form>
 
-                    <Button onClick={() => {
-                        setOpen(false)
-                        reset()
-                    }} variant="secondary">
-                        Close
-                    </Button>
 
                 </DrawerContent>
             </Drawer>
@@ -113,15 +120,15 @@ const ExerciseList = ({ control, register, setValue }) => {
                     </thead>
                     <tbody>
                         {fields.map((field, index) => (
-                            <tr key={field._id}>
-                                <td className="flex items-center">
+                            <tr key={field._id} className="space-y-2">
+                                <td className="flex items-center gap-2 px-1">
                                     <Input type="checkbox" className="w-4 h-4" {...register(`exercises.${index}.selected`)} />
                                     {field.name}
                                 </td>
-                                <td>
+                                <td className="px-1">
                                     <Input type="number" min={0} {...register(`exercises.${index}.plannedSets`)} />
                                 </td>
-                                <td>
+                                <td className="px-1">
                                     <Input type="number" min={0} {...register(`exercises.${index}.plannedReps`)} />
                                 </td>
                             </tr>
@@ -133,7 +140,7 @@ const ExerciseList = ({ control, register, setValue }) => {
             {selectedExercises.length === 0 ? (
                 <p>No exercises selected</p>
             ) : (
-                <div className="p-2 border rounded-xl">
+                <div className="p-2 border rounded-xl  font-semibold">
                     {selectedExercises.map((ex, idx) => (
                         <div key={idx}>
                             {ex.name}: {ex.plannedSets} sets of {ex.plannedReps} reps
