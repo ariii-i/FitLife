@@ -1,9 +1,12 @@
 import { create } from "zustand";
 import { sanityClient } from "../../components/lib/sanity";
 
+const sessionKey = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
 export const useWorkoutLogStore = create((set) => ({
     workoutLogs: [],
     logs: [],
+    activeSession: null,
     streak: 0,
 
     fetchWorkoutLogs: async () => {
@@ -43,7 +46,73 @@ export const useWorkoutLogStore = create((set) => ({
             { userId, startDate }
         );
         const streak = calculateStreak(logs);
-        set({ logs, streak:streak });
+        set({ logs, streak: streak });
+    },
+
+    startSession: async (userId, workoutId, exerciseId) => {
+        const today = new Date().toISOString().split("T")[0];
+        const now = new Date().toISOString();
+
+        let log = await sanityClient.fetch(
+            `*[_type=="workoutLog"
+                && user._ref==$userId
+                && workout._ref==$workoutId
+                && date==$today][0]`,
+            { userId, workoutId, today }
+        );
+
+        if (!log) {
+            log = await sanityClient.create({
+                _type: "workoutLog",
+                user: { _type: "reference", _ref: userId },
+                workout: { _type: "reference", _ref: workoutId },
+                date: today,
+                completed: false,
+                sessions: []
+            });
+        }
+
+        await sanityClient
+            .patch(log._id)
+            .append("sessions", [{
+                _key: sessionKey,
+                _type: "session",
+                exercise: {
+                    _type: "reference",
+                    _ref: exerciseId
+                },
+                startTime: now,
+                endTime: null,
+                sets: 0,
+                reps: 0,
+                weight: 0
+            }])
+            .commit();
+
+        set({
+            activeSession: {
+                logId: log._id,
+                sessionKey
+            }
+        });
+
+        return { logId: log._id, sessionKey };
+    },
+
+    stopSession: async (logId, sessionKey) => {
+
+        const now = new Date().toISOString();
+
+        await sanityClient
+            .patch(logId)
+            .set({
+                [`sessions[_key=="${sessionKey}"].endTime`]: now
+            })
+            .commit();
+
+        set({ activeSession: null });
+
+        return { logId, sessionKey };
     },
 
     updateWorkoutLog: async (userId, workout) => {
@@ -69,12 +138,12 @@ export const useWorkoutLogStore = create((set) => ({
 
         let newOrUpdated;
         if (existing?._id) {
-            newOrUpdated= await sanityClient
+            newOrUpdated = await sanityClient
                 .patch(existing._id)
-                .set({completed: true, sessions})
+                .set({ completed: true, sessions })
                 .commit();
         } else {
-            newOrUpdated= await sanityClient.create({
+            newOrUpdated = await sanityClient.create({
                 _type: "workoutLog",
                 user: { _type: "reference", _ref: userId },
                 workout: { _type: "reference", _ref: workout._id },
@@ -84,15 +153,15 @@ export const useWorkoutLogStore = create((set) => ({
             });
         }
 
-        set((state)=> {
-            const updatedLogs= state.workoutId.filter(
-                (l)=> l._id !== newOrUpdated._id)
+        set((state) => {
+            const updatedLogs = state.workoutId.filter(
+                (l) => l._id !== newOrUpdated._id)
             updatedLogs.push(newOrUpdated)
         });
-        
+
         fetchWorkoutLogs();
     },
-    
+
 }));
 
 const calculateStreak = (logs) => {

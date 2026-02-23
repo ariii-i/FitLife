@@ -14,14 +14,14 @@ export const StreaksTrack = () => {
 
     console.log("streak in render:", streak);
     const store = useWorkoutLogStore.getState();
-    console.log(store.streak); // should print 3
+    console.log(store.streak);
 
     const last7days = getLast7days();
     const completedDates = workoutLogs.map((log) => log.date)
 
     return (
         <div>
-            <p className="font-semibold text-sm">{streak} {streak > 1 ? "days streaks" : "day streak"} </p>
+            <p className="font-semibold text-sm py-1">{streak} {streak > 1 ? "days streaks" : "day streak"} </p>
 
             <div className="flex gap-2 ">
                 {last7days.map((day) => {
