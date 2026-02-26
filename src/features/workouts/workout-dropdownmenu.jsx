@@ -1,10 +1,10 @@
 import { EllipsisVertical } from "lucide-react"
-import { Button } from "../../components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../components/ui/dropdown-menu"
 import { useState } from "react"
 import { EditWorkout } from "./edit-workout"
 import { useWorkoutStore } from "../../entities/workout/store"
 import { toast } from "sonner"
+import { Button } from "../../shared/ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../shared/ui/dropdown-menu"
 
 export const WorkoutFields = ({ workoutId }) => {
     const { fetchSelectedWorkout, deleteWorkout } = useWorkoutStore()
