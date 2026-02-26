@@ -1,36 +1,37 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Plus } from "lucide-react";
-import { Button } from "../../components/ui/button";
-import { Dialog, DialogContent, DialogTitle } from "../../components/ui/dialog";
-import { Input } from "../../components/ui/input"
 import { useExerciseStore } from "../../entities/exercise/store";
 import { toast } from "sonner";
-import { sanityClient } from "../../components/lib/sanity";
+import { Button } from "../../shared/ui/button";
+import { Input } from "../../shared/ui/input";
+import { Drawer, DrawerContent, DrawerTitle } from "../../shared/ui/drawer";
 
 export const AddExercises = () => {
-    const { addExercise, fetchExercises } = useExerciseStore();
+    const { createExercise, fetchExercises } = useExerciseStore();
 
     const [open, setOpen] = useState(false);
+    const [isSubmitting, setIsSubmitting]=useState(false)
     const { register, handleSubmit, reset } = useForm()
 
     const handleAdd = async (data) => {
+        if (isSubmitting) return;
+
         if (!data.exercise?.trim()) {
             toast.error("Please enter exercies name.")
             return
         };
+        
         try {
-            const created = await sanityClient.create({
-                _type: "exercise",
-                name: data.exercise,
-            })
+            setIsSubmitting(true)
+            await createExercise(data);
             setOpen(false)
             toast.success("Exercise added!")
-            addExercise(created);
             fetchExercises()
             reset()
         } catch (error) {
-            toast.error("Failed to add exercise.")
+            toast.error("Failed to add exercise.");
+            setIsSubmitting(false);
         }
     }
 
@@ -38,20 +39,21 @@ export const AddExercises = () => {
         <div>
             <Button onClick={() => setOpen(true)}><Plus /></Button>
 
-            <Dialog open={open} onOpenChange={setOpen}>
-                <DialogContent>
-                    <DialogTitle>
+            <Drawer direction="right" open={open} onOpenChange={setOpen}>
+                <DrawerContent className="p-2">
+                    <DrawerTitle>
                         Exercises
-                    </DialogTitle>
+                    </DrawerTitle>
 
-                    <form className="space-y-2" onSubmit={handleSubmit(handleAdd)}>
+                    <form className="space-y-2 w-full" onSubmit={handleSubmit(handleAdd)}>
                         <Input {...register("exercise")} placeholder="e.g. Bench Press" />
-                        <Button type="submit" variant="secondary">Add</Button>
+                        <div className="gap-2 flex">
+                            <Button type="submit" variant="secondary" disabled={isSubmitting}>Add</Button>
+                            <Button variant="secondary" type="button" onClick={() => setOpen(false)}>Close</Button>
+                        </div>
                     </form>
-
-                    <Button onClick={() => setOpen(false)}>Close</Button>
-                </DialogContent>
-            </Dialog>
+                </DrawerContent>
+            </Drawer>
         </div>
     )
 }

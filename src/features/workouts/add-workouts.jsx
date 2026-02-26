@@ -2,11 +2,11 @@ import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
-import { Button } from "../../components/ui/button";
-import { Drawer, DrawerContent, DrawerTitle } from "../../components/ui/drawer";
-import { Input } from "../../components/ui/input";
+import { Drawer, DrawerContent, DrawerTitle } from "../../shared/ui/drawer";
 import { useExerciseStore } from "../../entities/exercise/store";
 import { useWorkoutStore } from "../../entities/workout/store";
+import { Input } from "../../shared/ui/input";
+import { Button } from "../../shared/ui/button";
 
 export const WorkoutForm = () => {
     const { register, handleSubmit, setValue, control, watch, reset } = useForm();
@@ -51,7 +51,7 @@ export const WorkoutForm = () => {
             </Button>
 
             <Drawer direction="right" open={open} onOpenChange={setOpen}>
-                <DrawerContent className="max-w-scree-md p-2 ">
+                <DrawerContent className="max-w-screen-md p-2 ">
                     <DrawerTitle>Workout form</DrawerTitle>
 
                     <form className="space-y-2 overflow-y-auto" onSubmit={handleSubmit(onSubmit)}>

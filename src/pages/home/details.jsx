@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { useWorkoutStore } from "../../entities/workout/store";
 import { useEffect } from "react";
-import { Button } from "../../components/ui/button";
+import { Button } from "../../shared/ui/button";
 import { useWorkoutLogStore } from "../../entities/workout-log/store";
-import { sanityClient } from "../../components/lib/sanity";
+import { sanityClient } from "../../shared/lib/sanity";
 import { useUserStore } from "../../entities/user/store";
 
 

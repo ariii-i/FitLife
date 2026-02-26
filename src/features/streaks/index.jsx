@@ -12,9 +12,9 @@ export const StreaksTrack = () => {
         }
     }, [users?._id, fetchLast7Days]);
 
-    console.log("streak in render:", streak);
+    // console.log("streak in render:", streak);
     const store = useWorkoutLogStore.getState();
-    console.log(store.streak);
+    // console.log(store.streak);
 
     const last7days = getLast7days();
     const completedDates = workoutLogs.map((log) => log.date)
@@ -31,7 +31,7 @@ export const StreaksTrack = () => {
                         <div
                             key={day}
                             className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold 
-                                ${completed ? "bg-emerald-600 text-white" : "bg-stone-400"}`} >
+                                ${completed ? "bg-emerald-600 text-stone-100" : "bg-stone-400"}`} >
                             {new Date(day).getDate()}
 
                         </div>

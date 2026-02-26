@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useExerciseStore } from "../../entities/exercise/store"
-import { Dialog, DialogContent, DialogTitle } from "../../components/ui/dialog";
-import { Input } from "../../components/ui/input";
-import { Button } from "../../components/ui/button";
 import { toast } from "sonner";
+import { Input } from "../../shared/ui/input";
+import { Button } from "../../shared/ui/button";
+import { Drawer, DrawerContent, DrawerTitle } from "../../shared/ui/drawer";
 
 export const EditExercises = ({ open, setOpen, exercise }) => {
-    const { editExercise } = useExerciseStore();
+    const { editExercise, fetchExercises } = useExerciseStore();
 
     const { register, handleSubmit, reset } = useForm();
 
@@ -17,9 +17,8 @@ export const EditExercises = ({ open, setOpen, exercise }) => {
 
     const handleEdit = async (data) => {
         try {
-            await editExercise(exercise._id, {
-                name: data.exercise.trim()
-            })
+            await editExercise(exercise._id, { name: data.exercise.trim() })
+            fetchExercises()
             toast.success("Exercise updated.")
             setOpen(false);
             reset();
@@ -32,9 +31,9 @@ export const EditExercises = ({ open, setOpen, exercise }) => {
     if (!exercise) return null;
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent>
-                <DialogTitle>Edit Exercise</DialogTitle>
+        <Drawer direction="right" open={open} onOpenChange={setOpen}>
+            <DrawerContent className="p-2">
+                <DrawerTitle>Edit Exercise</DrawerTitle>
                 <form onSubmit={handleSubmit(handleEdit)} className="space-y-2">
                     <Input type="text" {...register("exercise")} />
 
@@ -43,7 +42,7 @@ export const EditExercises = ({ open, setOpen, exercise }) => {
                         <Button type="button" variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
                     </div>
                 </form>
-            </DialogContent>
-        </Dialog>
+            </DrawerContent>
+        </Drawer>
     )
 } 
