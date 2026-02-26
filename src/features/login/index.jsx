@@ -1,11 +1,11 @@
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { Button } from "../../components/ui/button"
-import { Input } from "../../components/ui/input"
+import { Button } from "../../shared/ui/button"
+import { Input } from "../../shared/ui/input"
 import { Eye, EyeOff } from "lucide-react"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth"
 import { toast } from "sonner"
-import { auth } from "../../components/lib/firebase"
+import { auth } from "../../shared/lib/firebase"
 import { useNavigate } from "react-router-dom"
 
 export const LoginFom = () => {
