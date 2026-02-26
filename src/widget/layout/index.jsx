@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom"
-import { BottomNav } from "../navbar"
-import { Header } from "."
+import { BottomNav } from "./footer"
 import { Toaster } from "sonner"
+import { Header } from "./header"
 
 export const Layout = () => {
     return (

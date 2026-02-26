@@ -1,27 +1,12 @@
 import { create } from "zustand";
-import { sanityClient } from "../../components/lib/sanity";
-
-const get_unique_key = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+import { createWorkoutApi, deleteWorkoutApi, getSelectedWorkoutApi, getWorkoutApi, updateWorkoutApi } from "./api";
 
 export const useWorkoutStore = create((set) => ({
   workouts: [],
   workout: null,
 
   createWorkout: async (workoutPayload, cb) => {
-    const newWorkout = await sanityClient.create({
-      _type: "workout",
-      name: workoutPayload.name,
-      exercises: workoutPayload.exercises.map((ex) => ({
-        _type: "object",
-        _key: get_unique_key(),
-        plannedSets: ex.plannedSets,
-        plannedReps: ex.plannedReps,
-        exercise: {
-          _type: "reference",
-          _ref: ex._id,
-        },
-      })),
-    });
+    const newWorkout = await createWorkoutApi(workoutPayload)
 
     set((state) => ({
       workouts: [newWorkout, ...state.workouts],
@@ -32,17 +17,7 @@ export const useWorkoutStore = create((set) => ({
   },
 
   fetchWorkouts: async () => {
-    const data = await sanityClient.fetch(`
-      *[_type=="workout"] | order(_createdAt desc){
-        _id,
-        name, 
-        exercises[] { 
-          plannedSets,
-          plannedReps,
-          exercise -> {name} 
-        }
-      }
-    `);
+    const data = await getWorkoutApi();
 
     set({ workouts: data });
   },
@@ -52,30 +27,14 @@ export const useWorkoutStore = create((set) => ({
       console.error("No workoutId provided");
       return;
     }
-    const data = await sanityClient.fetch(`
-  *[_type=="workout" && _id == $workoutId][0]{
-    _id,
-    name,
-    exercises[]{
-      _key,
-      plannedSets,
-      plannedReps,
-      exercise->{
-        _id,
-        name
-      }
-    }
-  }
-`, { workoutId });
+
+    const data = await getSelectedWorkoutApi(workoutId)
 
     set({ workout: data || null });
   },
 
   updateWorkout: async (id, updatedField) => {
-    const updated = await sanityClient
-      .patch(id)
-      .set(updatedField)
-      .commit();
+    const updated = await updateWorkoutApi(id, updatedField)
 
     set((state) => ({
       workouts: state.workouts.map((w) =>
@@ -83,11 +42,10 @@ export const useWorkoutStore = create((set) => ({
       ),
       workout: updated
     }));
-
   },
 
   deleteWorkout: async (id) => {
-    await sanityClient.delete(id);
+    await deleteWorkoutApi()
 
     set((state) => ({
       workouts: state.workouts.filter(

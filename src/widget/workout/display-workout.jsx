@@ -6,7 +6,7 @@ export const DisplayWorkout = () => {
 
     return (
         <div>
-            <p className="text-gray-500 text-xs">
+            <p className="text-stone-500 text-xs">
                 {workouts.length} {workouts.length <= 1 ? "workout" : "workouts"}
             </p>
             {workouts.map((w) => (

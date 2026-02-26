@@ -1,13 +1,15 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { LoginPage } from './pages/login';
-import { Layout } from './widget/header/layout';
 import { HomePage } from './pages/home';
 import { Exercise } from './pages/exercise';
 import { Workout } from './pages/workout';
 import { Profile } from './pages/profile';
-import { WorkoutDetails } from './pages/home/details';
-import { SessionPage } from './pages/home/session';
+import { WorkoutDetails } from '../src/widget/exercise/list';
+// import { SessionPage } from './pages/home/session';
+import { StopExercise } from './features/stop-exercise/ui';
+import { SessionPage } from './features/start-exercise/ui';
+import { Layout } from './widget/layout';
 
 function App() {
   return (
@@ -17,8 +19,10 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route element={<Layout />}>
             <Route path="/" element={<HomePage />} />
-            <Route path="/:workoutId" element={<WorkoutDetails />} />
-            <Route path="/:workoutId/:session/sessionId" element={<SessionPage />} />
+            <Route path="/workout/:workoutId" element={<WorkoutDetails />} />
+            {/* <Route path="/workout/:workoutId/session" element={<SessionPage />} /> */}
+            <Route path="/workout/:workoutId/session/:exerciseId" element={<SessionPage />} />
+            <Route path="/workout/:workoutId/session/:exerciseId" element={<StopExercise />} />
             <Route path="/exercise" element={<Exercise />} />
             <Route path="/workout" element={<Workout />} />
             <Route path="/profile" element={<Profile />} />

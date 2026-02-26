@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useUserStore } from "../../entities/user/store"
-import { Dashboard } from "../../widget/dashboard/dashboard"
+import { Dashboard } from "../../widget/dashboard"
 import { useWorkoutStore } from "../../entities/workout/store";
 import { useWorkoutLogStore } from "../../entities/workout-log/store";
 

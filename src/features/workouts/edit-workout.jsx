@@ -1,10 +1,10 @@
 import { useForm, useFieldArray } from "react-hook-form";
-import { Dialog, DialogContent, DialogTitle } from "../../components/ui/dialog";
-import { Input } from "../../components/ui/input";
 import { useWorkoutStore } from "../../entities/workout/store";
 import { useEffect } from "react";
-import { Button } from "../../components/ui/button";
 import { toast } from "sonner";
+import { Input } from "../../shared/ui/input";
+import { Button } from "../../shared/ui/button";
+import { Drawer, DrawerContent, DrawerTitle } from "../../shared/ui/drawer";
 
 export const EditWorkout = ({ open, setOpen, }) => {
     const { workout, updateWorkout } = useWorkoutStore();
@@ -56,31 +56,31 @@ export const EditWorkout = ({ open, setOpen, }) => {
     }
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent>
-                <DialogTitle>Edit Workout</DialogTitle>
+        <Drawer direction="right" open={open} onOpenChange={setOpen}>
+            <DrawerContent className="px-1 py-2">
+                <DrawerTitle>Edit Workout</DrawerTitle>
 
                 <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
                     <Input type="text" {...register("name")} />
 
                     {fields.length === 0 ? (
-                            <p className="text-sm text-gray-500">Loading exercises...</p>
-                        ) : (
-                            fields.map((field, index) => (
-                                <div key={field.id} className="font-semibold text-sm">
+                        <p className="text-sm text-stone-500">No exercises added</p>
+                    ) : (
+                        fields.map((field, index) => (
+                            <div key={field.id} className="font-semibold text-sm">
 
-                                    {field.name}
+                                {field.name}
 
-                                    <div className="space-y-1">
-                                        <label className=" flex items-center gap-3 font-medium text-xs">
-                                            Sets: <Input type="number" {...register(`exercises.${index}.plannedSets`)} />
-                                        </label>
-                                        <label className=" flex items-center gap-3 font-medium text-xs">Reps:
-                                            <Input type="number" {...register(`exercises.${index}.plannedReps`)} />
-                                        </label>
-                                    </div>
+                                <div className="space-y-1">
+                                    <label className=" flex items-center gap-3 font-medium text-xs">
+                                        Sets: <Input type="number" {...register(`exercises.${index}.plannedSets`)} />
+                                    </label>
+                                    <label className=" flex items-center gap-3 font-medium text-xs">Reps:
+                                        <Input type="number" {...register(`exercises.${index}.plannedReps`)} />
+                                    </label>
                                 </div>
-                            )))}
+                            </div>
+                        )))}
 
                     < div className="gap-2 flex">
                         <Button type="submit">Update</Button>
@@ -88,7 +88,7 @@ export const EditWorkout = ({ open, setOpen, }) => {
                         <Button type="button" onClick={() => setOpen(false)}>Cancel</Button>
                     </div>
                 </form>
-            </DialogContent>
-        </Dialog >
+            </DrawerContent>
+        </Drawer >
     )
 }
