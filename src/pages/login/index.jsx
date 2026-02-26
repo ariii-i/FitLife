@@ -1,9 +1,9 @@
-import { LoginFom } from "../../features/login"
+import { GoogleLogin } from "../../features/auth/login-form"
 
 export const LoginPage = () => {
     return (
         <div>
-            <LoginFom/>
+            <GoogleLogin/>
         </div>
     )
 }
