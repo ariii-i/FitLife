@@ -1,11 +1,11 @@
-import { LoginFom } from "../../features/login"
+import { GoogleLogin } from "../../features/auth/login-form"
 
 export const Profile=()=>{
     return(
         <div>
             Profile
             <div>
-                <LoginFom/>
+                <GoogleLogin/>
             </div>
         </div>
     )
