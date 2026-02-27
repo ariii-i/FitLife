@@ -5,20 +5,22 @@ import { Button } from "../../shared/ui/button";
 import { useWorkoutLogStore } from "../../entities/workout-log/store";
 import { sanityClient } from "../../shared/lib/sanity";
 import { useUserStore } from "../../entities/user/store";
+import { auth } from "../../shared/lib/firebase";
 
 
 export const WorkoutDetails = () => {
     const { workoutId } = useParams();
-    const { users, fetchUsers } = useUserStore()
+    const { user, fetchUser } = useUserStore()
     const { workout, fetchSelectedWorkout } = useWorkoutStore();
     const { startSession, stopSession, activeSession } = useWorkoutLogStore();
     const navigate = useNavigate()
 
     useEffect(() => {
         fetchSelectedWorkout(workoutId);
-        fetchUsers()
+        fetchUser(auth?.currentUser?.uid)
+        console.log("fetct",user)
     }, [])
-    const USER_ID = users[0]?._id;
+    // const USER_ID = users[0]?._id;
 
 
     const handleStart = async (exerciseId) => {
@@ -36,7 +38,6 @@ export const WorkoutDetails = () => {
     return (
         <div className="space-y-2 font-semibold text-xl p-2">
             {workout?.name}
-            <pre>{JSON.stringify(USER_ID, null, 2)}H</pre>
 
             {(!workout?.exercises || workout.exercises.length === 0) && (
                 <div className="border rounded-xl p-3 bg-white shadow-sm font-semibold">

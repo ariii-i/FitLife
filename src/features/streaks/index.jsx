@@ -1,16 +1,19 @@
 import { useEffect } from "react"
 import { useUserStore } from "../../entities/user/store"
 import { useWorkoutLogStore } from "../../entities/workout-log/store"
+import { auth } from "../../shared/lib/firebase"
+import { Link } from "react-router-dom"
 
 export const StreaksTrack = () => {
-    const { users } = useUserStore()
+    const { user } = useUserStore()
     const { workoutLogs, streak, fetchLast7Days } = useWorkoutLogStore()
 
     useEffect(() => {
-        if (users?._id) {
-            fetchLast7Days(users._id)
+        if (user?._id) {
+            fetchLast7Days(user._id)
+            console.log("authsss", auth)
         }
-    }, [users?._id, fetchLast7Days]);
+    }, [user?._id, fetchLast7Days]);
 
     // console.log("streak in render:", streak);
     const store = useWorkoutLogStore.getState();
@@ -26,15 +29,14 @@ export const StreaksTrack = () => {
             <div className="flex gap-2 ">
                 {last7days.map((day) => {
                     const completed = completedDates.includes(day);
+                    const logForDay = workoutLogs.find((log) => log.date.split("T")[0] === day)
 
                     return (
-                        <div
-                            key={day}
-                            className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold 
-                                ${completed ? "bg-emerald-600 text-stone-100" : "bg-stone-400"}`} >
-                            {new Date(day).getDate()}
-
-                        </div>
+                        <Link key={day} to={logForDay && `/workoutHistory/${logForDay._id}`}>
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold ${completed ? "bg-emerald-600 text-stone-100" : "bg-stone-400"}`}>
+                                {new Date(day).getDate()}
+                            </div>
+                        </Link>
                     )
                 })}
             </div>
@@ -45,7 +47,7 @@ export const StreaksTrack = () => {
 
 function getLast7days() {
     const days = [];
-    for (let i = 0; i <= 6; i++) {
+    for (let i = 6; i >= 0; i--) {
         const d = new Date();
         d.setDate(d.getDate() - i);
 

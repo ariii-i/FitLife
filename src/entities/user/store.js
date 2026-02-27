@@ -1,14 +1,22 @@
 import { create } from "zustand";
-import { deleteUserApi, getUserApi } from "./api";
+import { createSanityUser, deleteUserApi, getUserByFirebaseUid } from "./api";
 
 export const useUserStore = create((set) => ({
-    user: null,
     users: [],
+    user:null,
 
-    fetchUsers: () => {
-        const data = getUserApi();
+    userLogin: async (data) => {
+        const newUser = await createSanityUser(data);
+    
+        set((state) => ({
+          users: [newUser, ...state.users],
+        }));
+    
+      },
 
-        set({ users: data })
+    fetchUser: async (uid) => {
+        const data = await getUserByFirebaseUid(uid);
+        set({ user: data })
     },
 
     setUsers: (users) => ({ users }),

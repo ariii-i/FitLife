@@ -6,7 +6,7 @@ import { Input } from "../../shared/ui/input";
 
 export const DisplayWorkoutList = () => {
   const { workouts } = useWorkoutStore();
-  const { users } = useUserStore();
+  const { user } = useUserStore();
   const { updateWorkoutLog } = useWorkoutLogStore();
 
   return (
@@ -34,8 +34,8 @@ export const DisplayWorkoutList = () => {
                   type="checkbox"
                   className="w-4 h-4"
                   onChange={async () => {
-                    if (!users?._id) return;
-                    await updateWorkoutLog(users._id, workout);
+                    if (!user?._id) return;
+                    await updateWorkoutLog(user._id, workout);
                   }}
                 />
 

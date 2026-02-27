@@ -11,7 +11,7 @@ export const AddExercises = () => {
     const { createExercise, fetchExercises } = useExerciseStore();
 
     const [open, setOpen] = useState(false);
-    const [isSubmitting, setIsSubmitting]=useState(false)
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const { register, handleSubmit, reset } = useForm()
 
     const handleAdd = async (data) => {
@@ -21,7 +21,7 @@ export const AddExercises = () => {
             toast.error("Please enter exercies name.")
             return
         };
-        
+
         try {
             setIsSubmitting(true)
             await createExercise(data);
@@ -40,17 +40,21 @@ export const AddExercises = () => {
             <Button onClick={() => setOpen(true)}><Plus /></Button>
 
             <Drawer direction="right" open={open} onOpenChange={setOpen}>
-                <DrawerContent className="p-2">
+                <DrawerContent className="p-2 h-full flex flex-col">
                     <DrawerTitle>
                         Exercises
                     </DrawerTitle>
 
-                    <form className="space-y-2 w-full" onSubmit={handleSubmit(handleAdd)}>
+                    <form className="space-y-2 flex flex-col flex-1" onSubmit={handleSubmit(handleAdd)}>
                         <Input {...register("exercise")} placeholder="e.g. Bench Press" />
-                        <div className="gap-2 flex">
-                            <Button type="submit" variant="secondary" disabled={isSubmitting}>Add</Button>
-                            <Button variant="secondary" type="button" onClick={() => setOpen(false)}>Close</Button>
+
+                        <div className="flex-1" />
+
+                        <div className="flex gap-2 justify-end w-full">
+                            <Button type="submit" className="w-full" disabled={isSubmitting}>Add</Button>
+                            <Button className="w-full" type="button" onClick={() => setOpen(false)}>Close</Button>
                         </div>
+                        
                     </form>
                 </DrawerContent>
             </Drawer>
