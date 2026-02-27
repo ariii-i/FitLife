@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { sanityClient } from "../../shared/lib/sanity";
 import { addSessionApi, createWorkoutLogApi, getLast7daysApi, getWorkoutLogApi } from "./api";
 
 export const useWorkoutLogStore = create((set) => ({
@@ -8,19 +7,19 @@ export const useWorkoutLogStore = create((set) => ({
     activeSession: null,
     streak: 0,
 
-    createWorkout: async (workoutId, exerciseId, startTimeStamp) => {
-        const newWorkout = await createWorkoutLogApi(workoutId, startTimeStamp)
+    createWorkout: async (workoutId, exerciseId, startTimeStamp, userId) => {
+        const newWorkout = await createWorkoutLogApi(workoutId, startTimeStamp, userId)
 
         set((state) => ({
             workoutLogs: [newWorkout, ...state.workoutLogs]
         }))
     },
 
-    addSessionData: async (data, workoutLogs) => {
-        const session=await addSessionApi(data, workoutLogs )
-
+    addSessionData: async (data, workoutId, exerciseId, startTimeStamp) => {
+        const session = await addSessionApi(data, workoutId, exerciseId, startTimeStamp)
+        console.log("sessionsssssss", session)
         set((state) => ({
-            workoutLogs: [session, ...state.workoutLogs]
+            workoutLogs: state.workoutLogs.map((log) => log._id === workoutId ? { ...log, sessions: [...log.sessions, session] } : log)
         }))
     },
 
@@ -41,62 +40,15 @@ export const useWorkoutLogStore = create((set) => ({
         set({ logs, streak: streak });
     },
 
-    updateWorkoutLog: async (userId, workout) => {
-        const today = new Date().toISOString().split("T")[0];
-
-        const existing = await sanityClient.fetch(
-            `*[_type=="workoutLog" 
-                && user._ref == $userId 
-                && workout._ref == $workoutId 
-                && date == $today][0]`,
-            { userId, workoutId: workout._id, today }
-        );
-
-        const sessions = workout.exercises?.map((we) => ({
-            _type: "session",
-            exercise: { _type: "reference", _ref: we.exercise._id },
-            sets: we.plannedSets || 0,
-            reps: we.plannedReps || 0,
-            weight: we.weight || 0,
-            completed: false,
-            startTime: null,
-            endTime: null
-        })) || [];
-
-        let newOrUpdated;
-        if (existing?._id) {
-            newOrUpdated = await sanityClient
-                .patch(existing._id)
-                .set({ completed: true, sessions })
-                .commit();
-        } else {
-            newOrUpdated = await sanityClient.create({
-                _type: "workoutLog",
-                user: { _type: "reference", _ref: userId },
-                workout: { _type: "reference", _ref: workout._id },
-                date: today,
-                sessions
-            });
-        }
-
-        set((state) => {
-            const updatedLogs = state.workoutId.filter(
-                (l) => l._id !== newOrUpdated._id)
-            updatedLogs.push(newOrUpdated)
-        });
-
-        fetchWorkoutLogs();
-    },
-
 }));
 
 const calculateStreak = (logs) => {
     const normalizedDates = logs
-        .map((l) => l.date.split("T")[0]) // get YYYY-MM-DD
-        .sort((a, b) => b.localeCompare(a)); // descending
+        .map((l) => l.date.split("T")[0])
+        .sort((a, b) => b.localeCompare(a)); 
 
     let streak = 0;
-    let current = new Date().toISOString().split("T")[0]; // today in YYYY-MM-DD
+    let current = new Date().toISOString().split("T")[0];
 
     for (let date of normalizedDates) {
         if (date === current) {

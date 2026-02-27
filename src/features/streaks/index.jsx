@@ -15,12 +15,8 @@ export const StreaksTrack = () => {
         }
     }, [user?._id, fetchLast7Days]);
 
-    // console.log("streak in render:", streak);
-    const store = useWorkoutLogStore.getState();
-    // console.log(store.streak);
-
     const last7days = getLast7days();
-    const completedDates = workoutLogs.map((log) => log.date)
+    const completedDates = workoutLogs.map((log) => log?.date)
 
     return (
         <div>
@@ -29,7 +25,7 @@ export const StreaksTrack = () => {
             <div className="flex gap-2 ">
                 {last7days.map((day) => {
                     const completed = completedDates.includes(day);
-                    const logForDay = workoutLogs.find((log) => log.date.split("T")[0] === day)
+                    const logForDay = workoutLogs.find((log) => log?.date.split("T")[0] === day)
 
                     return (
                         <Link key={day} to={logForDay && `/workoutHistory/${logForDay._id}`}>
