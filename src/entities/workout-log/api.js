@@ -2,11 +2,12 @@ import { sanityClient } from "../../shared/lib/sanity"
 
 const get_unique_key = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
-export const createWorkoutLogApi = async (workoutId, startTimeStamp) => {
-    const today = new Date().toISOString();
+export const createWorkoutLogApi = async (workoutId, exerciseId, userId) => {
+    const today = new Date().toISOString().split("T")[0];
+    console.log(today)
 
-    let log = sanityClient.fetch(
-        `*[_type=="workoutLog" && date >= $today][0]`,
+    let log = await sanityClient.fetch(
+        `*[_type=="workoutLog" && date == $today][0]`,
         { today }
     );
 
@@ -22,23 +23,28 @@ export const createWorkoutLogApi = async (workoutId, startTimeStamp) => {
                 _ref: workoutId
             },
             date: today,
-            startTime: startTimeStamp,
-            sessions: [],
+            sessions: [{
+                _type: "session",
+                _key: get_unique_key(),
+                exercise: {
+                    _type: "reference",
+                    _ref: exerciseId
+                },
+            }],
         });
     }
-
     return log;
 };
 
-export const addSessionApi = async (data, logId, exerciseId, startTime) => {
+export const addSessionApi = async (data, workoutId, exerciseId, startTimeStamp) => {
     const newSession = {
         _type: "session",
-        _key: crypto.randomUUID(),
+        _key: get_unique_key(),
         exercise: {
             _type: "reference",
             _ref: exerciseId
         },
-        startTime,
+        startTime: startTimeStamp,
         endTime: new Date(),
         sets: Number(data.sets),
         reps: Number(data.reps),
@@ -46,10 +52,17 @@ export const addSessionApi = async (data, logId, exerciseId, startTime) => {
         completed: true,
     };
 
+    console.log(newSession)
+
+    if (!workoutId) {
+        console.error("Workout ID missing");
+        return;
+    }
+
     return await sanityClient
-        .patch(logId)
-        .append("sessions", [newSession])
-        .commit();
+    .patch(workoutId)
+    .append("sessions", [newSession])
+    .commit();
 };
 
 export const getWorkoutLogApi = () => {

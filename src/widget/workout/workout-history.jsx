@@ -29,7 +29,7 @@ export const WorkoutHistory = () => {
 
             <div className="space-y-3">
                 {log.sessions.map((s) => (
-                    <Card key={s._key} className="p-4 bg-stone-800 text-stone-100">
+                    <Card key={s._id} className="p-4 bg-stone-800 text-stone-100">
                         <div className="flex justify-between items-center">
                             <div>
                                 <p className="font-semibold">{s.exercise?.name}</p>
