@@ -32,14 +32,19 @@ export const EditExercises = ({ open, setOpen, exercise }) => {
 
     return (
         <Drawer direction="right" open={open} onOpenChange={setOpen}>
-            <DrawerContent className="p-2">
+            <DrawerContent className="p-4 flex h-full flex-col">
                 <DrawerTitle>Edit Exercise</DrawerTitle>
-                <form onSubmit={handleSubmit(handleEdit)} className="space-y-2">
+
+                <form onSubmit={handleSubmit(handleEdit)} className="flex-1 flex flex-col space-y-2">
                     <Input type="text" {...register("exercise")} />
 
-                    <div className="gap-2">
-                        <Button type="submit" variant="ghost">Save</Button>
-                        <Button type="button" variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
+                    <div className="flex-1" />
+
+                    <div className="flex gap-2 justify-end">
+                        <Button type="submit" className="w-full" >Save</Button>
+                        <Button type="button" className="w-full" onClick={() => setOpen(false)}>
+                            Cancel
+                        </Button>
                     </div>
                 </form>
             </DrawerContent>

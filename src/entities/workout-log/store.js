@@ -1,19 +1,26 @@
 import { create } from "zustand";
 import { sanityClient } from "../../shared/lib/sanity";
-import { createWorkoutLogApi, getLast7daysApi, getWorkoutLogApi } from "./api";
+import { addSessionApi, createWorkoutLogApi, getLast7daysApi, getWorkoutLogApi } from "./api";
 
 export const useWorkoutLogStore = create((set) => ({
     workoutLogs: [],
     logs: [],
     activeSession: null,
-    lastSession: null,
     streak: 0,
 
-    createWorkout: async (data, workoutId, exerciseId, startTimeStamp ) => {
-        const newWorkout = await createWorkoutLogApi(data, workoutId, exerciseId, startTimeStamp )
+    createWorkout: async (workoutId, exerciseId, startTimeStamp) => {
+        const newWorkout = await createWorkoutLogApi(workoutId, startTimeStamp)
 
         set((state) => ({
             workoutLogs: [newWorkout, ...state.workoutLogs]
+        }))
+    },
+
+    addSessionData: async (data, workoutLogs) => {
+        const session=await addSessionApi(data, workoutLogs )
+
+        set((state) => ({
+            workoutLogs: [session, ...state.workoutLogs]
         }))
     },
 
@@ -26,7 +33,7 @@ export const useWorkoutLogStore = create((set) => ({
         const today = new Date();
         const sevenDays = new Date();
         sevenDays.setDate(today.getDate() - 6);
-        const startDate = sevenDays.toDateString().split("T")[0];
+        const startDate = sevenDays.toISOString().split("T")[0];
 
         const logs = await getLast7daysApi(userId, startDate);
 
@@ -51,6 +58,7 @@ export const useWorkoutLogStore = create((set) => ({
             sets: we.plannedSets || 0,
             reps: we.plannedReps || 0,
             weight: we.weight || 0,
+            completed: false,
             startTime: null,
             endTime: null
         })) || [];
@@ -67,7 +75,6 @@ export const useWorkoutLogStore = create((set) => ({
                 user: { _type: "reference", _ref: userId },
                 workout: { _type: "reference", _ref: workout._id },
                 date: today,
-                completed: true,
                 sessions
             });
         }
@@ -84,20 +91,19 @@ export const useWorkoutLogStore = create((set) => ({
 }));
 
 const calculateStreak = (logs) => {
-    const sorted = logs
-        .map((l) => new Date(l.date))
-        .sort((a, b) => b - a);
+    const normalizedDates = logs
+        .map((l) => l.date.split("T")[0]) // get YYYY-MM-DD
+        .sort((a, b) => b.localeCompare(a)); // descending
 
     let streak = 0;
-    let current = new Date();
+    let current = new Date().toISOString().split("T")[0]; // today in YYYY-MM-DD
 
-    for (let date of sorted) {
-        if (
-            date.toISOString().split("T")[0] ===
-            current.toISOString().split("T")[0]
-        ) {
+    for (let date of normalizedDates) {
+        if (date === current) {
             streak++;
-            current.setDate(current.getDate() - 1);
+            const temp = new Date(current);
+            temp.setDate(temp.getDate() - 1);
+            current = temp.toISOString().split("T")[0];
         } else {
             break;
         }

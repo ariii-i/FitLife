@@ -6,16 +6,17 @@ import { useWorkoutStore } from "../../entities/workout/store";
 import { WorkoutForm } from "../../features/workouts/add-workouts";
 import { Button } from "../../shared/ui/button";
 import { Card } from "../../shared/ui/card";
+import { auth } from "../../shared/lib/firebase";
 
 export const WorkoutDetails = () => {
     const { workoutId } = useParams();
-    const { fetchUsers } = useUserStore()
+    const { fetchUser } = useUserStore()
     const { workout, fetchSelectedWorkout } = useWorkoutStore();
     const navigate = useNavigate()
 
     useEffect(() => {
         fetchSelectedWorkout(workoutId);
-        fetchUsers()
+        fetchUser(auth.currentUser.uid)
     }, [])
 
 
