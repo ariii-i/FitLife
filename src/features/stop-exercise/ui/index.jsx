@@ -11,26 +11,24 @@ import { Drawer, DrawerContent, DrawerTitle } from "../../../shared/ui/drawer"
 export const StopExercise = ({ open, setOpen, startTimeStamp }) => {
     const { workoutId, exerciseId } = useParams()
     const navigate = useNavigate();
-    
-     const { workout } = useWorkoutStore();
-    const { addSessionData } = useWorkoutLogStore()
+
+    const { workout } = useWorkoutStore();
+    const { addSessionData, workoutLogs } = useWorkoutLogStore()
     const { register, handleSubmit, reset } = useForm();
+    const log = workoutLogs.find((log) => log.workout._ref === workoutId);
+    const logId = log._id;
 
     const handleAdd = async (data) => {
         console.log("exerciseIdddddd", exerciseId)
         try {
-
-            await addSessionData(data, workoutId, exerciseId, startTimeStamp);
-            console.log(data)
-
+            await addSessionData(data, logId, exerciseId, startTimeStamp);
 
             toast.success("Workout added");
-            //     navigate(`/workout/${workoutId}`);
+            navigate(`/workout/${workoutId}`);
         } catch (error) {
             toast.error("Unable to add workout");
         }
     }
-
 
     const selected = workout.exercises.find((ex) => ex.exercise._id === String(exerciseId))
     return (
