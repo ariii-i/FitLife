@@ -57,7 +57,7 @@ export const EditWorkout = ({ open, setOpen, }) => {
 
     return (
         <Drawer direction="right" open={open} onOpenChange={setOpen}>
-            <DrawerContent className="px-1 py-2">
+            <DrawerContent className="p-2 overflow-y-auto">
                 <DrawerTitle>Edit Workout</DrawerTitle>
 
                 <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
@@ -83,9 +83,9 @@ export const EditWorkout = ({ open, setOpen, }) => {
                         )))}
 
                     < div className="gap-2 flex">
-                        <Button type="submit">Update</Button>
+                        <Button type="submit" className="w-full">Update</Button>
 
-                        <Button type="button" onClick={() => setOpen(false)}>Cancel</Button>
+                        <Button type="button" className="w-full" onClick={() => setOpen(false)}>Cancel</Button>
                     </div>
                 </form>
             </DrawerContent>

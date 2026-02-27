@@ -1,43 +1,46 @@
-import { Link, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Button } from "../../../shared/ui/button";
-import { useWorkoutLogStore } from "../../../entities/workout-log/store";
-import { StopWatch } from "./stopwatch";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useUserStore } from "../../../entities/user/store";
+import { useWorkoutLogStore } from "../../../entities/workout-log/store";
+import { Button } from "../../../shared/ui/button";
 import { StopExercise } from "../../stop-exercise/ui";
-import { useWorkoutStore } from "../../../entities/workout/store";
+import { StopWatch } from "./stopwatch";
+import { toast } from "sonner";
+import { auth } from "../../../shared/lib/firebase";
 
 export const SessionPage = () => {
     const { workoutId, exerciseId } = useParams();
     const navigate = useNavigate();
-    const { activeSession, startSession, stopSession } = useWorkoutLogStore()
-    const { users, fetchUsers } = useUserStore();
-    const {workout}=useWorkoutStore()
+    const { activeSession, createWorkout } = useWorkoutLogStore()
+    const { fetchUser } = useUserStore();
     const [isActive, setIsActive] = useState(false);
-    const [open, setOpen]=useState(false);
+    const [open, setOpen] = useState(false);
     const [startTimeStamp, setStartTimeStamp] = useState("");
 
-    const [timer, setTimer] = useState()
     useEffect(() => {
-        fetchUsers()
+        fetchUser(auth.currentUser.uid)
         setIsActive(!!activeSession);
-        console.log("workoutId", workoutId)
-        console.log("exerciseId", exerciseId)
     }, [activeSession]);
 
     const handleStart = async () => {
-        setIsActive(true);
-        setStartTimeStamp(new Date().toISOString());
+        try {
+            setIsActive(true);
+            setStartTimeStamp(new Date().toISOString());
+            createWorkout(workoutId, exerciseId, startTimeStamp)
+
+        } catch (error) {
+            console.log("error", error.message)
+        }
     };
 
     const handleStop = async () => {
         setIsActive(false);
         setOpen(true);
         const duration = new Date() - startTimeStamp
-            // OPEN MODAL FROM FORM TO GET INFO FROM USER
-            // INSERT INTO 
-            
-            // navigate(`/workout/${workoutId}/session/${exerciseId}`);
+        // OPEN MODAL FROM FORM TO GET INFO FROM USER
+        // INSERT INTO 
+
+        // navigate(`/workout/${workoutId}/session/${exerciseId}`);
 
     };
 
@@ -58,7 +61,7 @@ export const SessionPage = () => {
                 </div>
             )}
 
-            {open && (<StopExercise open={open} setOpen={setOpen} startTimeStamp={startTimeStamp}/>)}
+            {open && (<StopExercise open={open} setOpen={setOpen} />)}
 
             <div className="py-2 flex justify-end">
                 <Link to="/">

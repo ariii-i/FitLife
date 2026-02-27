@@ -10,6 +10,7 @@ import { WorkoutDetails } from '../src/widget/exercise/list';
 import { StopExercise } from './features/stop-exercise/ui';
 import { SessionPage } from './features/start-exercise/ui';
 import { Layout } from './widget/layout';
+import { WorkoutHistory } from './widget/workout/workout-history';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route element={<Layout />}>
             <Route path="/" element={<HomePage />} />
+            <Route path="/workoutHistory/:workoutLogId" element={<WorkoutHistory />} />
             <Route path="/workout/:workoutId" element={<WorkoutDetails />} />
             {/* <Route path="/workout/:workoutId/session" element={<SessionPage />} /> */}
             <Route path="/workout/:workoutId/session/:exerciseId" element={<SessionPage />} />

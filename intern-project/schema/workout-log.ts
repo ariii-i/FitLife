@@ -27,12 +27,6 @@ export const workoutLog = defineType({
         }),
 
         defineField({
-            name: 'completed',
-            type: 'boolean',
-            initialValue: false,
-        }),
-
-        defineField({
             name: 'sessions',
             type: 'array',
             of: [
@@ -70,7 +64,13 @@ export const workoutLog = defineType({
                         defineField({
                             name: 'weight',
                             type: 'number',
-                        })
+                        }),
+                        
+                        defineField({
+                            name: 'completed',
+                            type: 'boolean',
+                            initialValue: false,
+                        }),
                     ],
                 },
             ],
