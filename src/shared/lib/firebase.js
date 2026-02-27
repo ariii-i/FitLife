@@ -6,12 +6,12 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyAHUJYAicGwFwrCkVKABCgogBdRjubufWQ",
-    authDomain: "fit-track-life.firebaseapp.com",
-    projectId: "fit-track-life",
-    storageBucket: "fit-track-life.firebasestorage.app",
-    messagingSenderId: "368368473956",
-    appId: "1:368368473956:web:368934fc4dc4104ad44c71"
+  apiKey: "AIzaSyAHUJYAicGwFwrCkVKABCgogBdRjubufWQ",
+  authDomain: "fit-track-life.firebaseapp.com",
+  projectId: "fit-track-life",
+  storageBucket: "fit-track-life.firebasestorage.app",
+  messagingSenderId: "368368473956",
+  appId: "1:368368473956:web:368934fc4dc4104ad44c71"
 };
 
 // Initialize Firebase

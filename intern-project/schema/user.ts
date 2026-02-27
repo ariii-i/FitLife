@@ -18,16 +18,15 @@ export const user = defineType({
       validation: (rule) => rule.required().email(),
     }),
 
-    // defineField({
-    //   name:"FirebaseUID",
-    //   type:"string",
-    //   validation:(rule)=> rule.required();
-    // }),
+    defineField({
+      name: "firebaseUid",
+      type: "string",
+      validation: (rule) => rule.required(),
+    }),
 
-    // defineField({
-    //   name: 'createdAt',
-    //   type: 'datetime',
-    //   initialValue: () => new Date().toISOString(),
-    // }),
+    defineField({
+      name: "photo",
+      type: "url"
+    })
   ],
 })

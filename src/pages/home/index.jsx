@@ -3,21 +3,22 @@ import { useUserStore } from "../../entities/user/store"
 import { Dashboard } from "../../widget/dashboard"
 import { useWorkoutStore } from "../../entities/workout/store";
 import { useWorkoutLogStore } from "../../entities/workout-log/store";
+import { auth } from "../../shared/lib/firebase";
 
 export const HomePage = () => {
-    const { users, fetchUsers } = useUserStore();
+    const { user, fetchUser } = useUserStore();
     const { fetchWorkouts } = useWorkoutStore();
     const { fetchWorkoutLogs } = useWorkoutLogStore()
 
     useEffect(() => {
-        fetchUsers()
+        fetchUser(auth?.currentUser?.uid)
         fetchWorkouts()
         fetchWorkoutLogs()
 
     }, [])
     return (
         <div>
-            <span className="font-semibold text-xl">Hi, {users[0]?.name}</span>
+            <span className="font-semibold text-xl">Hi {auth?.currentUser?.name}</span>
             <Dashboard />
         </div>
     )

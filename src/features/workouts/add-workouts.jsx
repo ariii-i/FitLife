@@ -63,11 +63,11 @@ export const WorkoutForm = () => {
                         <ExerciseList control={control} register={register} setValue={setValue} />
 
                         <div className="flex gap-2">
-                            <Button>Add Workout</Button>
-                            <Button onClick={() => {
+                            <Button className="w-full">Add Workout</Button>
+                            <Button className="w-full" onClick={() => {
                                 setOpen(false)
                                 reset()
-                            }} variant="secondary" type="button">
+                            }} type="button">
                                 Close
                             </Button>
                         </div>
