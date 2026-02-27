@@ -12,7 +12,7 @@ export const SessionPage = () => {
     const { workoutId, exerciseId } = useParams();
     const navigate = useNavigate();
     const { activeSession, createWorkout } = useWorkoutLogStore()
-    const { fetchUser } = useUserStore();
+    const { user, fetchUser } = useUserStore();
     const [isActive, setIsActive] = useState(false);
     const [open, setOpen] = useState(false);
     const [startTimeStamp, setStartTimeStamp] = useState("");
@@ -22,11 +22,13 @@ export const SessionPage = () => {
         setIsActive(!!activeSession);
     }, [activeSession]);
 
+    const userId = user?.uid;
+
     const handleStart = async () => {
         try {
             setIsActive(true);
             setStartTimeStamp(new Date().toISOString());
-            createWorkout(workoutId, exerciseId, startTimeStamp)
+            await createWorkout(workoutId, exerciseId, userId)
 
         } catch (error) {
             console.log("error", error.message)
@@ -61,7 +63,7 @@ export const SessionPage = () => {
                 </div>
             )}
 
-            {open && (<StopExercise open={open} setOpen={setOpen} />)}
+            {open && (<StopExercise open={open} setOpen={setOpen} startTimeStamp={startTimeStamp}/>)}
 
             <div className="py-2 flex justify-end">
                 <Link to="/">
