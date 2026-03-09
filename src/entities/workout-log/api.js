@@ -86,12 +86,14 @@ export const getWorkoutLogApi = () => {
 }
 
 export const getLast7daysApi = (userId, startDate) => {
-    return sanityClient.fetch(`*[_type == "workoutLog"
-        && user._ref == $userId
-        && date >= $startDate
-        && completed == true]{
+    return sanityClient.fetch(
+        `*[_type == "workoutLog"
+          && user._ref == $userId
+          && date >= $startDate
+          && count(sessions[completed == true]) > 0
+        ]{
             date
         }`,
         { userId, startDate }
     );
-}
+};

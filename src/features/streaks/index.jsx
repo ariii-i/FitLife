@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { useUserStore } from "../../entities/user/store"
 import { useWorkoutLogStore } from "../../entities/workout-log/store"
 import { auth } from "../../shared/lib/firebase"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 export const StreaksTrack = () => {
     const { user } = useUserStore()
@@ -14,6 +14,7 @@ export const StreaksTrack = () => {
             console.log("authsss", auth)
         }
     }, [user?._id, fetchLast7Days]);
+
 
     const last7days = getLast7days();
     const completedDates = workoutLogs.map((log) => log?.date)
