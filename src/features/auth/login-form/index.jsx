@@ -1,11 +1,10 @@
 import { signInWithPopup, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 import { auth, googleProvider } from "../../../shared/lib/firebase";
 import { Button } from "../../../shared/ui/button";
 import { FcGoogle } from "react-icons/fc";
-
 import { getUserByFirebaseUid, createSanityUser, } from "../../../entities/user/api";
+import { toast } from "sonner";
 
 export const GoogleLogin = () => {
     const navigate = useNavigate();
@@ -21,21 +20,18 @@ export const GoogleLogin = () => {
 
             const existingUser = await getUserByFirebaseUid(firebaseUser.uid);
 
-            if (!existingUser) {
+            if (!existingUser?._id) {
                 await createSanityUser({
                     firebaseUid: firebaseUser.uid,
                     name: firebaseUser.displayName || "No Name",
                     email: firebaseUser.email,
                     photo: firebaseUser.photoURL || null,
                 });
-
-                console.log("existingUser", firebaseUser);
-                console.log("existingUser", firebaseUser.photoURL);
-
-                toast.success("Logged in with Google");
-                navigate("/");
-
+                toast.success("Account created");
+            } else {
+                toast.success("Logged in");
             }
+            navigate("/");
         } catch (error) {
             console.log("Google login error:", error);
             toast.error("Unable to sign in with Google");
@@ -45,6 +41,7 @@ export const GoogleLogin = () => {
     const signOuts = async () => {
         try {
             await signOut(auth);
+            console.log("signed outtt", auth)
             toast.success("Signed out");
         } catch (error) {
             toast.error("Unable to sign out");
@@ -52,10 +49,11 @@ export const GoogleLogin = () => {
     };
 
     return (
-        <div className="flex justify-center items-center">
+        <div className="flex flex-col p-5 justify-center items-center gap-2">
             <Button onClick={signInWithGoogle}>
                 <FcGoogle /> Sign in with Google
             </Button>
+            <Button onClick={signOuts}>SignOut</Button>
         </div>
     );
 };

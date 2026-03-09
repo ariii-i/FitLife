@@ -11,6 +11,7 @@ import { StopExercise } from './features/stop-exercise/ui';
 import { SessionPage } from './features/start-exercise/ui';
 import { Layout } from './widget/layout';
 import { WorkoutHistory } from './widget/workout/workout-history';
+import { ProtectedRoute } from './features/auth/protected-route';
 
 function App() {
   return (
@@ -18,7 +19,10 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route element={<Layout />}>
+          <Route element={
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>}>
             <Route path="/" element={<HomePage />} />
             <Route path="/workoutHistory/:workoutLogId" element={<WorkoutHistory />} />
             <Route path="/workout/:workoutId" element={<WorkoutDetails />} />
