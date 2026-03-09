@@ -34,7 +34,7 @@ export const WorkoutHistory = () => {
                             <div>
                                 <p className="font-semibold">{s.exercise?.name}</p>
                                 <p className="text-sm text-stone-400">
-                                    {s.completed ? "Completed" : "In Progress"}
+                                    {s.completed && "Completed"}
                                 </p>
                             </div>
 

@@ -1,22 +1,24 @@
 import { signInWithPopup, signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { auth, googleProvider } from "../../../shared/lib/firebase";
 import { Button } from "../../../shared/ui/button";
 import { FcGoogle } from "react-icons/fc";
 import { getUserByFirebaseUid, createSanityUser, } from "../../../entities/user/api";
 import { toast } from "sonner";
+import { useUserStore } from "../../../entities/user/store";
 
 export const GoogleLogin = () => {
+    const {user}=useUserStore()
     const navigate = useNavigate();
+
+    if(user){
+        return <Navigate to='/' replace/>
+    }
 
     const signInWithGoogle = async () => {
         try {
             const result = await signInWithPopup(auth, googleProvider);
             const firebaseUser = result.user;
-
-            console.log("FULL FIREBASE USER:", firebaseUser);
-            console.log("photoURL:", firebaseUser.photoURL);
-            console.log("providerData:", firebaseUser.providerData);
 
             const existingUser = await getUserByFirebaseUid(firebaseUser.uid);
 
@@ -38,22 +40,12 @@ export const GoogleLogin = () => {
         }
     };
 
-    const signOuts = async () => {
-        try {
-            await signOut(auth);
-            console.log("signed outtt", auth)
-            toast.success("Signed out");
-        } catch (error) {
-            toast.error("Unable to sign out");
-        }
-    };
-
     return (
         <div className="flex flex-col p-5 justify-center items-center gap-2">
             <Button onClick={signInWithGoogle}>
                 <FcGoogle /> Sign in with Google
             </Button>
-            <Button onClick={signOuts}>SignOut</Button>
         </div>
     );
 };
+

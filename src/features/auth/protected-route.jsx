@@ -1,10 +1,9 @@
-import { Navigate, useNavigate } from "react-router-dom";
-import { auth } from "../../shared/lib/firebase";
-import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
+import { auth } from "../../shared/lib/firebase";
 
 export const ProtectedRoute = ({ children }) => {
-    const navigate=useNavigate()
     const [user, setUser] = useState(null);
     const [authChecked, setAuthChecked] = useState(false)
 
@@ -12,12 +11,13 @@ export const ProtectedRoute = ({ children }) => {
         const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
             setUser(firebaseUser);
             setAuthChecked(true);
-        })
-
-        return () => unsubscribe();
-    }, [])
+        });
+        console.log("ProtectedRoute render")
+        return unsubscribe;
+    }, []);
 
     if (!authChecked) {
+        console.log("firebase auth triggered");
         return <div>Loading...</div>
     }
 
@@ -25,6 +25,5 @@ export const ProtectedRoute = ({ children }) => {
         return <Navigate to="/login" replace />
     }
 
-    // navigate("/")
-    return children;
-};
+    return children
+}
