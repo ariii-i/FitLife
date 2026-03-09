@@ -48,7 +48,7 @@ export const AddExercises = () => {
                     <form className="space-y-2 flex flex-col flex-1" onSubmit={handleSubmit(handleAdd)}>
                         <Input {...register("exercise")} placeholder="e.g. Bench Press" />
 
-                        <div className="flex-1" />
+                        <div className="flex-1"/>
 
                         <div className="flex gap-2 justify-end w-full">
                             <Button type="submit" className="w-full" disabled={isSubmitting}>Add</Button>

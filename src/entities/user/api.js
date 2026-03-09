@@ -1,3 +1,4 @@
+import { signOut } from "firebase/auth";
 import { sanityClient } from "../../shared/lib/sanity"
 
 export const createSanityUser = async (data) => {

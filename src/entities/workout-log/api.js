@@ -23,14 +23,7 @@ export const createWorkoutLogApi = async (workoutId, exerciseId, userId) => {
                 _ref: workoutId
             },
             date: today,
-            sessions: [{
-                _type: "session",
-                _key: get_unique_key(),
-                exercise: {
-                    _type: "reference",
-                    _ref: exerciseId
-                },
-            }],
+            sessions: [],
         });
     }
     return log;

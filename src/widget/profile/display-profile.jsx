@@ -1,4 +1,5 @@
 import { useUserStore } from "../../entities/user/store"
+import { SignOut } from "../../features/auth/sign-out"
 import { Card, CardContent, CardHeader } from "../../shared/ui/card"
 
 export const DisplayProfile = () => {
@@ -10,7 +11,7 @@ export const DisplayProfile = () => {
 
             <div className="flex flex-col justify-center items-center">
                 <img src={user?.photo} className="w-20 h-20 rounded-full object-cover" />
-{user?.photo == null }
+                {user?.photo == null}
                 <span className="font-semibold text-lg">{user?.name}</span>
                 <span className="text-sm text-stone-700">{user?.email}</span>
 
@@ -25,16 +26,17 @@ export const DisplayProfile = () => {
 
                         <div>
                             Height
-                            
+
                         </div>
-                        
+
                         <div>
                             Total time
-                            
+
                         </div>
                     </CardContent>
                 </Card>
             </div>
+            <SignOut />
         </div>
     )
 }

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useUserStore } from "../../entities/user/store";
 import { useWorkoutLogStore } from "../../entities/workout-log/store";
 import { useWorkoutStore } from "../../entities/workout/store";
@@ -11,12 +11,13 @@ import { auth } from "../../shared/lib/firebase";
 export const WorkoutDetails = () => {
     const { workoutId } = useParams();
     const { fetchUser } = useUserStore()
+    const { workoutLogs, fetchWorkoutLogs } = useWorkoutLogStore()
     const { workout, fetchSelectedWorkout } = useWorkoutStore();
-    const navigate = useNavigate()
 
     useEffect(() => {
         fetchSelectedWorkout(workoutId);
         fetchUser(auth.currentUser.uid)
+        fetchWorkoutLogs()
     }, [])
 
 
@@ -32,7 +33,7 @@ export const WorkoutDetails = () => {
             )}
 
             {workout?.exercises?.map((w) => (
-                <Link key={w.id} to={`/workout/${workoutId}/session/${w.exercise._id}`}>
+                <Link key={w._id} to={`/workout/${workoutId}/session/${w.exercise._id}`}>
                     <Card className="bg-stone-700 p-5 rounded-xl text-stone-100 font-semibold flex justify-between items-center text-lg">
                         {w.exercise.name}
                         <div className="font-medium text-sm text-stone-300">
