@@ -17,7 +17,9 @@ export const StreaksTrack = () => {
 
 
     const last7days = getLast7days();
+    console.log("last",last7days)
     const completedDates = workoutLogs.map((log) => log?.date)
+    console.log("completeddate",completedDates)
 
     return (
         <div>
@@ -29,7 +31,7 @@ export const StreaksTrack = () => {
                     const logForDay = workoutLogs.find((log) => log?.date.split("T")[0] === day)
 
                     return (
-                        <Link key={day} to={logForDay && `/workoutHistory/${logForDay._id}`}>
+                        <Link key={day} to={logForDay ? `/workoutHistory/${logForDay._id}` : '#'}>
                             <div className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold ${completed ? "bg-emerald-600 text-stone-100" : "bg-stone-400"}`}>
                                 {new Date(day).getDate()}
                             </div>

@@ -22,7 +22,8 @@ function App() {
           <Route element={
             <ProtectedRoute>
               <Layout />
-            </ProtectedRoute>}>
+            </ProtectedRoute>
+          }>
             <Route path="/" element={<HomePage />} />
             <Route path="/workoutHistory/:workoutLogId" element={<WorkoutHistory />} />
             <Route path="/workout/:workoutId" element={<WorkoutDetails />} />
