@@ -7,14 +7,15 @@ import { auth } from "../../shared/lib/firebase";
 
 export const HomePage = () => {
     const { user, fetchUser } = useUserStore();
-    const { fetchWorkouts } = useWorkoutStore();
+    const { fetchWorkouts, workouts } = useWorkoutStore();
     const { fetchWorkoutLogs } = useWorkoutLogStore()
 
     useEffect(() => {
         fetchUser(auth?.currentUser?.uid)
+        console.log("userss", auth?.currentUser?.uid)
         fetchWorkouts()
+        console.log("workouts", workouts)
         fetchWorkoutLogs()
-
     }, [])
     return (
         <div>
