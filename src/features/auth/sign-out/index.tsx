@@ -1,13 +1,14 @@
 import { toast } from "sonner";
 import { Button } from "../../../shared/ui/button";
-import { useUserStore } from "../../../entities/user/store";
+import { useUserStore } from "@/entities/user/modal/store";
+import { auth } from "@/shared/lib/firebase";
 
 export const SignOut = () => {
   const { signOutUser } = useUserStore();
 
   const handleSignOut = async () => {
     try {
-      await signOutUser(); // ✅ await the async function
+      await signOutUser(auth);
       console.log("Signed out successfully");
       toast.success("Signed out");
     } catch (error) {
@@ -16,5 +17,5 @@ export const SignOut = () => {
     }
   };
 
-  return <Button onClick={handleSignOut}>Sign Out</Button>; // ✅ call function
-};
+  return <Button onClick={handleSignOut}>Sign Out</Button>
+}

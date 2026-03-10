@@ -1,23 +1,24 @@
 import { EllipsisVertical } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../shared/ui/dropdown-menu";
-import { useExerciseStore } from "../../entities/exercise/store";
-import { EditExercises } from "../../features/exercise/edit-exercises";
-import { Card } from "../../shared/ui/card";
-import { Button } from "../../shared/ui/button";
+import { useExerciseStore } from "@/entities/exercise/modal/store";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/ui/dropdown-menu";
+import { Card } from "@/shared/ui/card";
+import { Button } from "@/shared/ui/button";
+import { Exercise } from "@/entities/exercise/modal/types";
+import { EditExercises } from "@/features/exercise/edit-exercises";
 
-export const DisplayExercises = () => {
+export const DisplayExercises: React.FC = () => {
     const { exercises, deleteExercise } = useExerciseStore();
-    const [open, setOpen] = useState(false)
-    const [edit, setEdit] = useState(null)
+    const [open, setOpen] = useState<boolean>(false)
+    const [edit, setEdit] = useState<Exercise | null>(null)
 
-    const handleEditButton = (data) => {
+    const handleEditButton = (data: Exercise) => {
         setOpen(true);
         setEdit(data);
     }
 
-    const onDelete = (id) => {
+    const onDelete = (id: string) => {
         toast.warning("Are you sure you want to delete this exercise?", {
             action: {
                 label: "Delete",

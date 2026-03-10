@@ -1,20 +1,24 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Plus } from "lucide-react";
-import { useExerciseStore } from "../../entities/exercise/store";
 import { toast } from "sonner";
-import { Button } from "../../shared/ui/button";
-import { Input } from "../../shared/ui/input";
-import { Drawer, DrawerContent, DrawerTitle } from "../../shared/ui/drawer";
+import { useExerciseStore } from "@/entities/exercise/modal/store";
+import { Input } from "@/shared/ui/input";
+import { Button } from "@/shared/ui/button";
+import { Drawer, DrawerContent, DrawerTitle } from "@/shared/ui/drawer";
 
-export const AddExercises = () => {
+type FormValue = {
+    exercise: string;
+}
+
+export const AddExercises: React.FC = () => {
     const { createExercise, fetchExercises } = useExerciseStore();
 
     const [open, setOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false)
-    const { register, handleSubmit, reset } = useForm()
+    const { register, handleSubmit, reset } = useForm<FormValue>()
 
-    const handleAdd = async (data) => {
+    const handleAdd: SubmitHandler<FormValue> = async (data) => {
         if (isSubmitting) return;
 
         if (!data.exercise?.trim()) {
@@ -24,9 +28,9 @@ export const AddExercises = () => {
 
         try {
             setIsSubmitting(true)
-            await createExercise(data);
-            setOpen(false)
+            await createExercise(data.exercise);
             toast.success("Exercise added!")
+            setOpen(false)
             fetchExercises()
             reset()
         } catch (error) {
@@ -48,17 +52,16 @@ export const AddExercises = () => {
                     <form className="space-y-2 flex flex-col flex-1" onSubmit={handleSubmit(handleAdd)}>
                         <Input {...register("exercise")} placeholder="e.g. Bench Press" />
 
-                        <div className="flex-1"/>
+                        <div className="flex-1" />
 
                         <div className="flex gap-2 justify-end w-full">
                             <Button type="submit" className="w-full" disabled={isSubmitting}>Add</Button>
                             <Button className="w-full" type="button" onClick={() => setOpen(false)}>Close</Button>
                         </div>
-                        
+
                     </form>
                 </DrawerContent>
             </Drawer>
         </div>
     )
 }
-

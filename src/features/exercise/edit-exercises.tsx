@@ -1,34 +1,54 @@
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useExerciseStore } from "../../entities/exercise/store"
+import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Input } from "../../shared/ui/input";
-import { Button } from "../../shared/ui/button";
-import { Drawer, DrawerContent, DrawerTitle } from "../../shared/ui/drawer";
+import { useExerciseStore } from "@/entities/exercise/modal/store";
+import { Drawer, DrawerContent, DrawerTitle } from "@/shared/ui/drawer";
+import { Input } from "@/shared/ui/input";
+import { Button } from "@/shared/ui/button";
+import { Exercise } from "@/entities/exercise/modal/types";
 
-export const EditExercises = ({ open, setOpen, exercise }) => {
+type EditExercisesProps = {
+    open: boolean;
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    exercise: Exercise | null
+}
+
+type FormValue = {
+    exercise: string
+}
+
+export const EditExercises: React.FC<EditExercisesProps> = ({ open, setOpen, exercise }) => {
     const { editExercise, fetchExercises } = useExerciseStore();
 
-    const { register, handleSubmit, reset } = useForm();
+    const { register, handleSubmit, reset } = useForm<FormValue>();
 
     useEffect(() => {
         reset({ exercise: exercise?.name || "" });
     }, [exercise, reset])
 
-    const handleEdit = async (data) => {
+    const handleEdit: SubmitHandler<FormValue> = async (data) => {
+        if (!exercise) return;
+
+        const name = data.exercise.trim();
+
+        if (!name) {
+            toast.error("Exercise name cannot be empty");
+            return;
+        }
+
         try {
-            await editExercise(exercise._id, { name: data.exercise.trim() })
-            fetchExercises()
-            toast.success("Exercise updated.")
+            await editExercise(exercise._id, name);
+            await fetchExercises();
+
+            toast.success("Exercise updated.");
             setOpen(false);
             reset();
-
         } catch (error) {
             toast.error("Unable to edit");
         }
-    }
+    };
 
-    if (!exercise) return null;
+    if (!exercise) return;
 
     return (
         <Drawer direction="right" open={open} onOpenChange={setOpen}>

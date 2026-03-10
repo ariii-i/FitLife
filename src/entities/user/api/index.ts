@@ -1,7 +1,8 @@
-import { signOut } from "firebase/auth";
-import { sanityClient } from "../../shared/lib/sanity"
+import { sanityClient } from "@/shared/lib/sanity";
+import { Auth, signOut } from "firebase/auth";
+import { User } from "../modal/types";
 
-export const createSanityUser = async (data) => {
+export const createSanityUser = async (data: User) => {
   try {
     const result = await sanityClient.create({
       _type: "user",
@@ -19,7 +20,7 @@ export const createSanityUser = async (data) => {
   }
 };
 
-export const getUserByFirebaseUid = async (uid) => {
+export const getUserByFirebaseUid = async (uid: string) => {
   console.log("UID RECEIVED:", uid);
   return await sanityClient.fetch(
     `*[_type=="user" && firebaseUid==$uid][0]{
@@ -33,15 +34,10 @@ export const getUserByFirebaseUid = async (uid) => {
   );
 };
 
-// export const getUserApi = async () => {
-//     return await sanityClient.fetch(`*[_type=="user"]{
-//         _id,
-//         name,
-//         email
-//         }`
-//     )
-// }
-
-export const deleteUserApi = async (id) => {
+export const deleteUserApi = async (id: string) => {
   return await sanityClient.delete(id);
+}
+
+export const signOuts= async(auth: Auth)=>{
+  return await signOut(auth);
 }
