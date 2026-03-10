@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { useUserStore } from "../../entities/user/store"
+import { useUserStore } from "../../entities/user/modal/store"
 import { useWorkoutLogStore } from "../../entities/workout-log/store"
 import { auth } from "../../shared/lib/firebase"
 import { Link, useNavigate } from "react-router-dom"

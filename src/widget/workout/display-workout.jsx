@@ -1,4 +1,4 @@
-import { useWorkoutStore } from "../../entities/workout/store"
+import { useWorkoutStore } from "../../entities/workout/modal/store"
 import { WorkoutFields } from "../../features/workouts/workout-dropdownmenu";
 
 export const DisplayWorkout = () => {

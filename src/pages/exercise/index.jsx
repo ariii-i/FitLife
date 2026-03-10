@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { AddExercises } from "../../features/exercise/add-exercises"
 import { DisplayExercises } from "../../widget/exercise/display-exercise"
-import { useExerciseStore } from "../../entities/exercise/store"
+import { useExerciseStore } from "../../entities/exercise/modal/useExerciseStore"
 
 export const Exercise = () => {
     const { fetchExercises } = useExerciseStore()

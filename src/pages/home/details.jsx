@@ -3,10 +3,8 @@ import { useWorkoutStore } from "../../entities/workout/store";
 import { useEffect } from "react";
 import { Button } from "../../shared/ui/button";
 import { useWorkoutLogStore } from "../../entities/workout-log/store";
-import { sanityClient } from "../../shared/lib/sanity";
 import { useUserStore } from "../../entities/user/store";
 import { auth } from "../../shared/lib/firebase";
-
 
 export const WorkoutDetails = () => {
     const { workoutId } = useParams();
