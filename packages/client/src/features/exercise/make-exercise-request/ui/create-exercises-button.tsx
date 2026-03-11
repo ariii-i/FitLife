@@ -11,7 +11,7 @@ type FormValue = {
     exercise: string;
 }
 
-export const AddExercises: React.FC = () => {
+export const AddExercises = () => {
     const { createExercise, fetchExercises } = useExerciseStore();
 
     const [open, setOpen] = useState(false);

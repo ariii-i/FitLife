@@ -9,7 +9,7 @@ import { Exercise } from "@/entities/exercise/modal/types";
 
 type EditExercisesProps = {
     open: boolean;
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setOpen: ((open: boolean) => void)
     exercise: Exercise | null
 }
 
