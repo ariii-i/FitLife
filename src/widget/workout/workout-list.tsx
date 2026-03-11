@@ -1,11 +1,11 @@
+import { useWorkoutStore } from "@/entities/workout/modal/store";
+import { WorkoutForm } from "@/features/workouts/add-workouts";
+import { Card } from "@/shared/ui/card";
 import { Link } from "react-router-dom"
-import { useWorkoutStore } from "../../entities/workout/store"
-import { WorkoutForm } from "../../features/workouts/add-workouts"
-import { Card } from "../../shared/ui/card"
 
-export const WorkoutList = () => {
+export const WorkoutList: React.FC = () => {
 
-    const { workouts, workout } = useWorkoutStore();
+    const { workouts } = useWorkoutStore();
     {
         (!workouts || workouts.length === 0) && (
             <Card className="bg-stone-700 p-7 rounded-xl text-stone-100 font-semibold flex-col flex justify-center items-center text-lg">

@@ -1,14 +1,14 @@
 import { useEffect } from "react"
 import { AddExercises } from "../../features/exercise/add-exercises"
 import { DisplayExercises } from "../../widget/exercise/display-exercise"
-import { useExerciseStore } from "../../entities/exercise/modal/useExerciseStore"
+import { useExerciseStore } from "@/entities/exercise/modal/store"
 
-export const Exercise = () => {
+export const Exercise : React.FC= () => {
     const { fetchExercises } = useExerciseStore()
 
     useEffect(() => {
         fetchExercises()
-    }, [])
+    }, [fetchExercises])
 
     return (
         <div>
