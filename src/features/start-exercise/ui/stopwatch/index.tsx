@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react"
-import { Button } from "../../../../shared/ui/button";
-import { Card } from "../../../../shared/ui/card";
+import { Card } from "@/components/ui/card";
+import React, { useEffect, useState } from "react"
 import { useParams } from "react-router-dom";
 
-export const StopWatch = ({ isActive }) => {
-    const { workoutId, exerciseId } = useParams()
-    
+type StopWAtchProp = {
+    isActive: boolean
+}
+export const StopWatch: React.FC<StopWAtchProp> = ({ isActive }) => {
+    const { workoutId, exerciseId } = useParams<{workoutId: string, exerciseId:string}>()
+
     const [time, setTime] = useState(0);
 
     useEffect(() => {
-        let interval = null;
+        let interval : any= null;
 
         if (isActive) {
             interval = setInterval(() => {

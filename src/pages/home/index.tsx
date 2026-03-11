@@ -4,7 +4,7 @@ import { useUserStore } from "@/entities/user/modal/store";
 import { useWorkoutStore } from "@/entities/workout/modal/store";
 import { useWorkoutLogStore } from "@/entities/workout-log/modal/store";
 import { WorkoutList } from "@/widget/workout/workout-list";
-import { StreaksTrack } from "@/features/streaks";
+import { StreaksTrack } from "@/features/streaks/ui";
 
 export const HomePage: React.FC = () => {
     const { user, fetchUser } = useUserStore()

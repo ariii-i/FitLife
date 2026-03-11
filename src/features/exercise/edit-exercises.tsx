@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useExerciseStore } from "@/entities/exercise/modal/store";
-import { Drawer, DrawerContent, DrawerTitle } from "@/shared/ui/drawer";
-import { Input } from "@/shared/ui/input";
-import { Button } from "@/shared/ui/button";
+import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Exercise } from "@/entities/exercise/modal/types";
 
 type EditExercisesProps = {

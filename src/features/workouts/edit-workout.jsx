@@ -1,10 +1,6 @@
 import { useForm, useFieldArray } from "react-hook-form";
-import { useWorkoutStore } from "../../entities/workout/store";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { Input } from "../../shared/ui/input";
-import { Button } from "../../shared/ui/button";
-import { Drawer, DrawerContent, DrawerTitle } from "../../shared/ui/drawer";
 
 export const EditWorkout = ({ open, setOpen, }) => {
     const { workout, updateWorkout } = useWorkoutStore();
