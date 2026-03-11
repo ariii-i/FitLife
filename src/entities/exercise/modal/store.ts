@@ -12,7 +12,6 @@ export interface ExerciseStore {
 }
 
 export const useExerciseStore = create<ExerciseStore>((set) => ({
-
   exercises: [],
 
   setExercises: (exercises) => set({ exercises }),
