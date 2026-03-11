@@ -1,24 +1,41 @@
 import { defineField, defineType } from "sanity";
 
 export const workout = defineType({
-    name: "workout",
-    title: "Workout",
-    type: "document",
+    name: 'workout',
+    title: 'Workout',
+    type: 'document',
 
     fields: [
-        // defineField({
-        //     name: "userId",
-        //     type: "string",
-        //     title: "User ID",
-        //     validation: rule => rule.required()
-        // }),
+        defineField({
+            name: 'name',
+            type: 'string',
+            validation: (rule) => rule.required(),
+        }),
 
         defineField({
-            name: "name",
-            title: "Workout Name",
-            type: "string",
+            name: 'exercises',
+            type: 'array',
+            of: [
+                {
+                    type: 'object',
+                    fields: [
+                        {
+                            name: 'exercise',
+                            type: 'reference',
+                            to: [{ type: 'exercise' }],
+                            validation: (rule) => rule.required(),
+                        },
+                        {
+                            name: 'plannedSets',
+                            type: 'number'
+                        },
+                        {
+                            name: 'plannedReps',
+                            type: 'number'
+                        },
+                    ],
+                },
+            ],
         }),
-    ]
-
-
+    ],
 })
