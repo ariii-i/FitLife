@@ -103,6 +103,7 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ control, register, setValue
     const { fields } = useFieldArray({
         control,
         name: "exercises",
+        keyName: "_id"
     })
 
     useEffect(() => {
