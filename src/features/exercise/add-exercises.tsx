@@ -3,9 +3,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { useExerciseStore } from "@/entities/exercise/modal/store";
-import { Input } from "@/shared/ui/input";
-import { Button } from "@/shared/ui/button";
-import { Drawer, DrawerContent, DrawerTitle } from "@/shared/ui/drawer";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
 
 type FormValue = {
     exercise: string;

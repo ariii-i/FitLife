@@ -1,15 +1,17 @@
 import { useUserStore } from "@/entities/user/modal/store"
-import { SignOut } from "../../features/auth/sign-out"
-import { Card, CardContent, CardHeader } from "../../shared/ui/card"
+import { SignOut } from "../../features/auth/ui/sign-out/sign-out"
+import { Card, CardContent, CardHeader } from "../../components/ui/card"
 import { UserRound } from "lucide-react";
 import { EditProfile } from "@/features/profile/edit-profile";
 
 export const DisplayProfile: React.FC = () => {
     const { user } = useUserStore();
 
+    console.log("Photo URL:", user?.photo)
+
     return (
         <div className="flex flex-col justify-center items-center">
-            {user?.photo ? (
+            {user?.photo && user.photo !== "" ? (
                 <img src={user.photo} alt={user.name ?? "User Avatar"} className="w-20 h-20 rounded-full object-cover" />
             ) : (
                 <div className="w-20 h-20 rounded-full bg-stone-600 flex items-center justify-center">

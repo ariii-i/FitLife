@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import { Button } from "../../../shared/ui/button";
+import { Button } from "../../../components/ui/button";
 import { useUserStore } from "@/entities/user/modal/store";
 import { auth } from "@/shared/lib/firebase";
 

@@ -2,9 +2,9 @@ import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Control, SubmitHandler, useFieldArray, useForm, UseFormSetValue, useWatch } from "react-hook-form";
 import { toast } from "sonner";
-import { Drawer, DrawerContent, DrawerTitle } from "../../shared/ui/drawer";
-import { Input } from "../../shared/ui/input";
-import { Button } from "../../shared/ui/button";
+import { Drawer, DrawerContent, DrawerTitle } from "../../components/ui/drawer";
+import { Input } from "../../components/ui/input";
+import { Button } from "../../components/ui/button";
 import { useWorkoutStore } from "@/entities/workout/modal/store";
 import { useExerciseStore } from "@/entities/exercise/modal/store";
 

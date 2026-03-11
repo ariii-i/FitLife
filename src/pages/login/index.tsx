@@ -1,9 +1,9 @@
-import { GoogleLogin } from "../../features/auth/login-form"
+import { LoginWithGoogle } from "@/features/auth/ui/login-button"
 
 export const LoginPage: React.FC = () => {
     return (
         <div>
-            <GoogleLogin />
+            <LoginWithGoogle />
         </div>
     )
 }

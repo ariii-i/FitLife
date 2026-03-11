@@ -2,9 +2,9 @@ import { Pencil } from "lucide-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useUserStore } from "@/entities/user/modal/store"
-import { Drawer, DrawerContent, DrawerTitle } from "@/shared/ui/drawer"
-import { Button } from "@/shared/ui/button"
-import { Input } from "@/shared/ui/input"
+import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 
 export const EditProfile: React.FC = () => {
     const [open, setOpen] = useState<boolean>(false)

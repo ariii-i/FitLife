@@ -2,9 +2,9 @@ import { EllipsisVertical } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useExerciseStore } from "@/entities/exercise/modal/store";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/ui/dropdown-menu";
-import { Card } from "@/shared/ui/card";
-import { Button } from "@/shared/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Exercise } from "@/entities/exercise/modal/types";
 import { EditExercises } from "@/features/exercise/edit-exercises";
 

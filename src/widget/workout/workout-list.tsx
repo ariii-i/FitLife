@@ -1,6 +1,6 @@
 import { useWorkoutStore } from "@/entities/workout/modal/store";
 import { WorkoutForm } from "@/features/workouts/add-workouts";
-import { Card } from "@/shared/ui/card";
+import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom"
 
 export const WorkoutList: React.FC = () => {

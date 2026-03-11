@@ -1,10 +1,10 @@
 import { useUserStore } from "@/entities/user/modal/store";
 import { FcGoogle } from "react-icons/fc";
 import { Navigate, useNavigate } from "react-router-dom";
-import { Button } from "../../../shared/ui/button";
+import { Button } from "../../../components/ui/button";
 import { signInWithGoogle } from "./service";
 
-export const GoogleLogin = () => {
+export const LoginWithGoogle = () => {
     const { user } = useUserStore()
     const navigate = useNavigate();
 
