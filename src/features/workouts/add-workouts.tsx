@@ -1,29 +1,40 @@
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useFieldArray, useForm, useWatch } from "react-hook-form";
+import { Control, SubmitHandler, useFieldArray, useForm, UseFormSetValue, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { Drawer, DrawerContent, DrawerTitle } from "../../shared/ui/drawer";
-import { useExerciseStore } from "../../entities/exercise/store";
-import { useWorkoutStore } from "../../entities/workout/store";
 import { Input } from "../../shared/ui/input";
 import { Button } from "../../shared/ui/button";
+import { useWorkoutStore } from "@/entities/workout/modal/store";
+import { useExerciseStore } from "@/entities/exercise/modal/store";
 
-export const WorkoutForm = () => {
-    const { register, handleSubmit, setValue, control, watch, reset } = useForm();
+type PlannedValue = {
+    _id: string
+    name: string
+    plannedSets: number
+    plannedReps: number
+    selected: boolean
+}
 
-    const [open, setOpen] = useState(false);
+type WorkoutFormValue = {
+    name: string
+    exercises: PlannedValue[]
+}
 
-    const onSubmit = async (data) => {
+export const WorkoutForm: React.FC = () => {
+    const { register, handleSubmit, setValue, control, watch, reset } = useForm<WorkoutFormValue>();
+
+    const [open, setOpen] = useState<boolean>(false);
+
+    const onSubmit: SubmitHandler<WorkoutFormValue> = async (data) => {
         const selectedExercises = data.exercises.filter((ex) => ex.selected);
 
         if (!data.name) {
-            toast.error("Please enter workout name");
-            return;
+            return toast.error("Please enter workout name");
         }
 
         if (!selectedExercises.length) {
-            toast.error("Select an exercise");
-            return;
+            return toast.error("Select an exercise");
         }
 
         const workoutPayload = {
@@ -80,7 +91,13 @@ export const WorkoutForm = () => {
     )
 }
 
-const ExerciseList = ({ control, register, setValue }) => {
+type ExerciseListProps = {
+    control: Control<WorkoutFormValue>;
+    register: ReturnType<typeof useForm>["register"];
+    setValue: UseFormSetValue<WorkoutFormValue>;
+};
+
+const ExerciseList: React.FC<ExerciseListProps> = ({ control, register, setValue }) => {
     const { exercises } = useExerciseStore()
 
     const { fields } = useFieldArray({

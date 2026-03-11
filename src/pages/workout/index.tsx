@@ -1,13 +1,12 @@
 import { useEffect } from "react"
-import { useWorkoutStore } from "../../entities/workout/store"
-import { WorkoutForm } from "../../features/workouts/add-workouts"
-import { useExerciseStore } from "../../entities/exercise/store"
-import { DisplayWorkout } from "../../widget/workout/display-workout"
+import { useWorkoutStore } from "@/entities/workout/modal/store"
+import { useExerciseStore } from "@/entities/exercise/modal/store"
 
-export const Workout = () => {
+export const Workout: React.FC = () => {
 
     const { workouts, fetchWorkouts } = useWorkoutStore()
     const { fetchExercises } = useExerciseStore()
+    
     useEffect(() => {
         fetchWorkouts();
         fetchExercises();
@@ -17,9 +16,9 @@ export const Workout = () => {
         <div>
             <div className="flex justify-between items-center font-semibold text-xl">
                 Workouts
-                <WorkoutForm />
+                {/* <WorkoutForm /> */}
             </div>
-            <DisplayWorkout />
+            {/* <DisplayWorkout /> */}
         </div>
     )
 }

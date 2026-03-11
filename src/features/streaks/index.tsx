@@ -1,8 +1,8 @@
 import { useEffect } from "react"
-import { useUserStore } from "../../entities/user/modal/store"
-import { useWorkoutLogStore } from "../../entities/workout-log/store"
 import { auth } from "../../shared/lib/firebase"
 import { Link, useNavigate } from "react-router-dom"
+import { useWorkoutLogStore } from "@/entities/workout-log/modal/store"
+import { useUserStore } from "@/entities/user/modal/store"
 
 export const StreaksTrack = () => {
     const { user } = useUserStore()
@@ -11,7 +11,6 @@ export const StreaksTrack = () => {
     useEffect(() => {
         if (user?._id) {
             fetchLast7Days(user._id)
-            console.log("authsss", auth)
         }
     }, [user?._id, fetchLast7Days]);
 

@@ -1,16 +1,16 @@
 import { Pencil } from "lucide-react"
-import { useUserStore } from "../../entities/user/store"
-import { Button } from "../../shared/ui/button"
 import { useState } from "react"
-import { Drawer, DrawerContent, DrawerTitle } from "../../shared/ui/drawer"
 import { useForm } from "react-hook-form"
-import { Input } from "../../shared/ui/input"
+import { useUserStore } from "@/entities/user/modal/store"
+import { Drawer, DrawerContent, DrawerTitle } from "@/shared/ui/drawer"
+import { Button } from "@/shared/ui/button"
+import { Input } from "@/shared/ui/input"
 
-export const EditProfile = () => {
-    const [open, setOpen] = useState(false)
+export const EditProfile: React.FC = () => {
+    const [open, setOpen] = useState<boolean>(false)
     const { register, handleSubmit } = useForm();
     const { user } = useUserStore();
-    const onSubmit = (data) => {
+    const onSubmit = (data : any) => {
         console.log(data)
         return (
             55
@@ -25,8 +25,8 @@ export const EditProfile = () => {
                     <DrawerTitle>Profile</DrawerTitle>
 
                     <form className="space-y-2 flex flex-col flex-1" onSubmit={handleSubmit(onSubmit)}>
-                       <Input {...register("Weight")} placeholder="Enter your weight" />
-                       <Input {...register("Height")} placeholder="Enter your height" />
+                        <Input {...register("Weight")} placeholder="Enter your weight" />
+                        <Input {...register("Height")} placeholder="Enter your height" />
 
                         <div className="flex-1" />
 

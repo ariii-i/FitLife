@@ -22,8 +22,7 @@ export const useWorkoutStore = create<WorkoutStore>((set) => ({
 
   //   set((state) => ({
   //     workouts: [newWorkout, ...state.workouts],
-  //   }));
-
+  //   }))
   //   return newWorkout;
   // },
 
