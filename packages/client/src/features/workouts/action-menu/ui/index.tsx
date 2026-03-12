@@ -1,11 +1,24 @@
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { useExerciseStore } from "@/entities/exercise/modal/store"
+import { useWorkoutStore } from "@/entities/workout/modal/store"
 import { EllipsisVertical } from "lucide-react"
+import { useState } from "react"
 import { toast } from "sonner"
+import { WorkoutForm } from "../../make-workout-request/ui/form"
 
-export const WorkoutActionMenu = () => {
-    const { deleteWorkout } = useExerciseStore()
+export const WorkoutActionMenu = ({ workoutId }: { 
+    workoutId: string 
+}) => {
+    const { fetchSelectedWorkout, deleteWorkout } = useWorkoutStore()
+    const [open, setOpen] = useState<boolean>(false);
+    const [editing, setEditing] = useState(false);
+
+    const handleEdit = async () => {
+        await fetchSelectedWorkout(workoutId);
+        setEditing(true);
+        setOpen(true);
+    }
+
     const handleDelete = () => {
         toast.warning("Are you sure you want to delete this workout?", {
             action: {
@@ -29,6 +42,7 @@ export const WorkoutActionMenu = () => {
                 <DropdownMenuTrigger asChild>
                     <Button type="button" variant="ghost"><EllipsisVertical /></Button>
                 </DropdownMenuTrigger>
+
                 <DropdownMenuContent>
                     <DropdownMenuItem onClick={handleEdit}>Edit</DropdownMenuItem>
                     <DropdownMenuItem onClick={handleDelete}>Delete</DropdownMenuItem>

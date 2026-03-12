@@ -17,6 +17,8 @@ export const workout = defineType({
             type: 'array',
             of: [
                 {
+                    name:"WorkoutExercise",
+                    title: "Workout Exercise",
                     type: 'object',
                     fields: [
                         {

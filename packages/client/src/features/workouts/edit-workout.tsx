@@ -1,8 +1,16 @@
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { useWorkoutStore } from "@/entities/workout/modal/store";
+import { WorkoutFormValue } from "./make-workout-request/ui/form";
+import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
-export const EditWorkout = ({ open, setOpen, }) => {
+export const EditWorkout = ({ open, setOpen, }: {
+    open: boolean,
+    setOpen: (open: boolean) => void
+}) => {
     const { workout, updateWorkout } = useWorkoutStore();
     const { register, control, handleSubmit, reset } = useForm()
     const { fields } = useFieldArray({
@@ -26,7 +34,7 @@ export const EditWorkout = ({ open, setOpen, }) => {
         }
     }, [workout, reset]);
 
-    const onSubmit = async (data) => {
+    const onSubmit:SubmitHandler<WorkoutFormValue> = async (data: WorkoutFormValue) => {
         try {
             const updatedField = {
                 name: data.name,
@@ -45,9 +53,6 @@ export const EditWorkout = ({ open, setOpen, }) => {
             toast.success("Workout updated successfully")
         } catch (error) {
             toast.error("Unable to update workout");
-            console.log("workout", workout)
-            console.log("fields", fields)
-            console.log(error.message)
         }
     }
 

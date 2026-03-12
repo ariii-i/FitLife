@@ -1,12 +1,11 @@
 import { Button } from "@/components/ui/button"
 import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer"
-import { Input } from "@/components/ui/input"
 import { useExerciseStore } from "@/entities/exercise/modal/store"
+import { Exercise } from "@/entities/exercise/modal/types"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { FieldSet } from "./field-set"
-import { Exercise } from "@/entities/exercise/modal/types"
+import { ExerciseFieldSet } from "./field-set"
 
 type FormValue = {
     exercise: string;
@@ -52,7 +51,7 @@ export const ExerciseForm = ({ open, setOpen, selectedExercise }: ExerciseFormPr
                 </DrawerTitle>
 
                 <form className="space-y-2 flex flex-col flex-1" onSubmit={handleSubmit(handleAdd)}>
-                    <FieldSet register={register} setValue={setValue} selectedExercise={selectedExercise} />
+                    <ExerciseFieldSet register={register} setValue={setValue} selectedExercise={selectedExercise} />
 
                     <div className="flex-1" />
 

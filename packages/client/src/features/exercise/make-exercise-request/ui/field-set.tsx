@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { ExerciseField } from "./fields";
 import { Exercise } from "@/entities/exercise/modal/types";
 
-export const FieldSet = ({ register, setValue, selectedExercise }: {
+export const ExerciseFieldSet = ({ register, setValue, selectedExercise }: {
     register: any,
     setValue: any
     selectedExercise?: Exercise
