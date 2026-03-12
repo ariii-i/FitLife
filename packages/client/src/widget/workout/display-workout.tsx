@@ -1,5 +1,4 @@
 import { useWorkoutStore } from "../../entities/workout/modal/store"
-import { WorkoutFields } from "../../features/workouts/workout-dropdownmenu";
 
 export const DisplayWorkout = () => {
     const { workouts } = useWorkoutStore();
@@ -12,7 +11,7 @@ export const DisplayWorkout = () => {
             {workouts.map((w) => (
                 <div key={w._id} className="border-b border-dashed p-5 font-semibold flex items-center justify-between">
                     {w.name}
-                    <WorkoutFields workoutId={w._id}/>
+                    {/* <WorkoutFields workoutId={w._id}/> */}
                 </div>
             ))}
         </div>

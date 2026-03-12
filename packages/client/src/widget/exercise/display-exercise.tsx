@@ -1,38 +1,9 @@
-import { EllipsisVertical } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
-import { useExerciseStore } from "@/entities/exercise/modal/store";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Exercise } from "@/entities/exercise/modal/types";
-import { EditExercises } from "@/features/exercise/edit-exercises";
+import { useExerciseStore } from "@/entities/exercise/modal/store";
+import { ExerciseActionMenu } from "@/features/exercise/action-menu/ui";
 
 export const DisplayExercises: React.FC = () => {
-    const { exercises, deleteExercise } = useExerciseStore();
-    const [open, setOpen] = useState<boolean>(false)
-    const [edit, setEdit] = useState<Exercise | null>(null)
-
-    const handleEditButton = (data: Exercise) => {
-        setOpen(true);
-        setEdit(data);
-    }
-
-    const onDelete = (id: string) => {
-        toast.warning("Are you sure you want to delete this exercise?", {
-            action: {
-                label: "Delete",
-                onClick: async () => {
-                    try {
-                        await deleteExercise(id);
-                        toast.success("Exercise deleted successfully");
-                    } catch (error) {
-                        toast.error("Failed to delete workout");
-                    }
-                }
-            }
-        })
-    }
+    const { exercises } = useExerciseStore();
 
     if (!exercises || exercises.length === 0) {
         return (
@@ -54,20 +25,9 @@ export const DisplayExercises: React.FC = () => {
                 <div key={exercise._id} className="border-b border-dashed p-5 font-semibold flex items-center justify-between">
                     {exercise.name}
 
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost"><EllipsisVertical /></Button>
-                        </DropdownMenuTrigger>
-
-                        <DropdownMenuContent>
-                            <DropdownMenuItem onClick={() => handleEditButton(exercise)}>Edit</DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => onDelete(exercise._id)}>Delete</DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    <ExerciseActionMenu selectedRow={{ name: exercise.name, _id: exercise._id }}/>
                 </div>
             ))}
-
-            <EditExercises open={open} setOpen={setOpen} exercise={edit} />
         </div>
     )
 }

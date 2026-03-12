@@ -1,5 +1,5 @@
 import { useWorkoutStore } from "@/entities/workout/modal/store";
-import { WorkoutForm } from "@/features/workouts/add-workouts";
+import { WorkoutForm } from "@/features/workouts/create-workout-button";
 import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom"
 
@@ -10,7 +10,7 @@ export const WorkoutList: React.FC = () => {
         (!workouts || workouts.length === 0) && (
             <Card className="bg-stone-700 p-7 rounded-xl text-stone-100 font-semibold flex-col flex justify-center items-center text-lg">
                 No workout yet. Create a new one?
-                <WorkoutForm />
+                {/* <WorkoutForm /> */}
             </Card>
         )
     }

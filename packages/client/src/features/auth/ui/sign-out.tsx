@@ -1,7 +1,7 @@
 import { toast } from "sonner";
-import { Button } from "../../../components/ui/button";
 import { useUserStore } from "@/entities/user/modal/store";
 import { auth } from "@/shared/lib/firebase";
+import { Button } from "@/components/ui/button";
 
 export const SignOut = () => {
   const { signOutUser } = useUserStore();

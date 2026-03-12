@@ -1,4 +1,4 @@
-export interface Exercise {
+export type Exercise = {
   _id: string
   name: string
 }

@@ -61,7 +61,7 @@ export const WorkoutForm: React.FC = () => {
                 <Plus />
             </Button>
 
-            <Drawer direction="right" open={open} onOpenChange={setOpen}>
+            {/* <Drawer direction="right" open={open} onOpenChange={setOpen}>
                 <DrawerContent className="max-w-screen-md p-2 ">
                     <DrawerTitle>Workout form</DrawerTitle>
 
@@ -86,7 +86,7 @@ export const WorkoutForm: React.FC = () => {
 
 
                 </DrawerContent>
-            </Drawer>
+            </Drawer> */}
         </div>
     )
 }
