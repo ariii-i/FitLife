@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { StopExercise } from "../../stop-exercise/ui";
+// import { StopExercise } from "../../stop-exercise/ui";
 import { StopWatch } from "./stopwatch";
 import { toast } from "sonner";
 import { auth } from "../../../shared/lib/firebase";
 import { useWorkoutLogStore } from "@/entities/workout-log/modal/store";
 import { useUserStore } from "@/entities/user/modal/store";
-import { Button } from "@/shared/ui/button";
+import { Button } from "@/components/ui/button";
 
-export const SessionPage: React.FC = () => {
+export const SessionPage = () => {
     const { workoutId, exerciseId } = useParams();
     const navigate = useNavigate();
     const { activeSession, createWorkout } = useWorkoutLogStore()
@@ -38,10 +38,15 @@ export const SessionPage: React.FC = () => {
     };
 
     const handleStop = async () => {
+        if (!startTimeStamp) {
+            toast.error("Session has not started yet.");
+            return;
+        }
+
         setIsActive(false);
         setOpen(true);
 
-        const startTime = new Date(startTimeStamp: String).getTime();
+        const startTime = new Date(startTimeStamp).getTime();
         const endTime = Date.now();
         const duration = endTime - startTime;
 

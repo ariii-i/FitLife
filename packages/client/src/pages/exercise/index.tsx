@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { AddExercises } from "../../features/exercise/add-exercises"
+import { AddExercises } from "../../features/exercise/make-exercise-request/ui/create-exercises-button"
 import { DisplayExercises } from "../../widget/exercise/display-exercise"
 import { useExerciseStore } from "@/entities/exercise/modal/store"
 

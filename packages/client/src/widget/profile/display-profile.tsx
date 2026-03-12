@@ -1,10 +1,8 @@
-import { useUserStore } from "@/entities/user/modal/store"
-import { SignOut } from "../../features/auth/ui/sign-out/sign-out"
-import { Card, CardContent, CardHeader } from "../../components/ui/card"
+import { useUserStore } from "@/entities/user/modal/store";
 import { UserRound } from "lucide-react";
-import { EditProfile } from "@/features/profile/edit-profile";
+import { Card, CardContent, CardHeader } from "../../components/ui/card";
 
-export const DisplayProfile: React.FC = () => {
+export const DisplayProfile = () => {
     const { user } = useUserStore();
 
     console.log("Photo URL:", user?.photo)

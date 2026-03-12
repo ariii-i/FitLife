@@ -4,7 +4,7 @@ import { Exercise } from "./types";
 
 export interface ExerciseStore {
   exercises: Exercise[],
-  setExercises: (exercise: Exercise[]) => void,
+  setExercises: (exercises: Exercise[]) => void,
   createExercise: (data: string) => Promise<void>,
   fetchExercises: () => Promise<void>,
   deleteExercise: (id: string) => Promise<void>,
@@ -16,8 +16,8 @@ export const useExerciseStore = create<ExerciseStore>((set) => ({
 
   setExercises: (exercises) => set({ exercises }),
 
-  createExercise: async (name: string) => {
-    const created: Exercise = await createExerciseApi({ exercise: name });
+  createExercise: async (exercise: string) => {
+    const created: Exercise = await createExerciseApi({ exercise });
 
     set((state) => ({
       exercises: [created, ...state.exercises],
@@ -34,12 +34,12 @@ export const useExerciseStore = create<ExerciseStore>((set) => ({
     }
   },
 
-  deleteExercise: async (id) => {
-    await deleteExerciseApi(id)
+  deleteExercise: async (id: string) => {
+    await deleteExerciseApi(id);
 
     set((state) => ({
-      exercises: state.exercises.filter((ex) => ex._id !== id)
-    }))
+      exercises: state.exercises.filter((ex) => ex._id !== id),
+    }));
   },
 
   editExercise: async (id: string, name: string) => {

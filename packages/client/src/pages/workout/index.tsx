@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import { useWorkoutStore } from "@/entities/workout/modal/store"
 import { useExerciseStore } from "@/entities/exercise/modal/store"
+import { DisplayWorkout } from "@/widget/workout/display-workout"
 
 export const Workout: React.FC = () => {
 

@@ -6,7 +6,7 @@ import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
-export const EditProfile: React.FC = () => {
+export const EditProfile = () => {
     const [open, setOpen] = useState<boolean>(false)
     const { register, handleSubmit } = useForm();
     const { user } = useUserStore();
