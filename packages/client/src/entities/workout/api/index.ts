@@ -3,40 +3,20 @@ import { Workout } from "../modal/types"
 
 const get_unique_key = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`
 
-type WorkoutExerciseInput = {
-  _id: string
-  plannedSets: number
-  plannedReps: number
-}
-
 type CreateWorkoutInput = {
   name: string
-  exercises: WorkoutExerciseInput[]
-  exercise: { _id: string; name: string }
-}
-
-type SanityWorkoutExercise = {
-  _type: "object"
-  _key: string
-  plannedSets: number
-  plannedReps: number
-  exercise: {
-    _type: "reference"
-    _ref: string
-  }
-}
-
-type SanityWorkoutDocument = {
-  _type: "workout"
-  name: string
-  exercises: SanityWorkoutExercise[]
+  exercises: {
+    _id: string
+    plannedSets: number
+    plannedReps: number
+  }[]
 }
 
 export const createWorkoutApi = async (data: CreateWorkoutInput) => {
-  return sanityClient.create<SanityWorkoutDocument>({
+  return sanityClient.create({
     _type: "workout",
     name: data.name,
-    exercises: data.exercises.map((ex): SanityWorkoutExercise => ({
+    exercises: data.exercises.map((ex)=> ({
       _type: "object",
       _key: get_unique_key(),
       plannedSets: ex.plannedSets,
@@ -58,7 +38,8 @@ export const getWorkoutApi = async (): Promise<Workout[]> => {
         plannedSets,
         plannedReps,
         exercise->{
-          name
+          name,
+          _id
         }
       }
     }

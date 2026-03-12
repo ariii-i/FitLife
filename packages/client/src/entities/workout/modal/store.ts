@@ -1,11 +1,11 @@
 import { create } from "zustand";
-import { deleteWorkoutApi, getSelectedWorkoutApi, getWorkoutApi, updateWorkoutApi } from "../api";
+import { createWorkoutApi, deleteWorkoutApi, getSelectedWorkoutApi, getWorkoutApi, updateWorkoutApi } from "../api";
 import { Workout } from "./types";
 
 type WorkoutStore = {
   workouts: Workout[];
   workout: Workout | null;
-  // createWorkout: (data: { name: string; exercises: { _id: string; plannedSets: number; plannedReps: number }[] }) => Promise<Workout>
+  createWorkout: (data: { name: string; exercises: { _id: string; plannedSets: number; plannedReps: number }[] }) => Promise<void>
   fetchWorkouts: () => Promise<void>
   fetchSelectedWorkout: (workoutId: string) => Promise<void>
   updateWorkout: (id: string, updatedField: Partial<Workout>) => Promise<void>
@@ -17,14 +17,23 @@ export const useWorkoutStore = create<WorkoutStore>((set) => ({
   workouts: [],
   workout: null,
 
-  // createWorkout: async (data) => {
-  //   const newWorkout = await createWorkoutApi(data)
+  createWorkout: async (data: {
+    name: string;
+    exercises: { _id: string; plannedSets: number; plannedReps: number }[]
+  }) => {
+    try {
+      const createdDoc = await createWorkoutApi(data);
+      const fetchWorkout= await getSelectedWorkoutApi(createdDoc._id);
 
-  //   set((state) => ({
-  //     workouts: [newWorkout, ...state.workouts],
-  //   }))
-  //   return newWorkout;
-  // },
+      set((state) => ({
+        workouts: [fetchWorkout, ...state.workouts],
+      }));
+
+    } catch (error) {
+      console.error("Failed to create workout", error);
+      throw error;
+    }
+  },
 
   fetchWorkouts: async () => {
     const data = await getWorkoutApi();

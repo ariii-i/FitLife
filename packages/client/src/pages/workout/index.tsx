@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import { useWorkoutStore } from "@/entities/workout/modal/store"
 import { useExerciseStore } from "@/entities/exercise/modal/store"
 import { DisplayWorkout } from "@/widget/workout/display-workout"
+import { WorkoutButton } from "@/features/workouts/make-workout-request/ui/create-workout-button"
 
 export const Workout: React.FC = () => {
 
@@ -17,9 +18,9 @@ export const Workout: React.FC = () => {
         <div>
             <div className="flex justify-between items-center font-semibold text-xl">
                 Workouts
-                {/* <WorkoutForm /> */}
+                <WorkoutButton />
             </div>
-            {/* <DisplayWorkout /> */}
+            <DisplayWorkout />
         </div>
     )
 }
