@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { useExerciseStore } from "@/entities/exercise/modal/store";
 import { ExerciseActionMenu } from "@/features/exercise/action-menu/ui";
 
-export const DisplayExercises: React.FC = () => {
+export const DisplayExercises = () => {
     const { exercises } = useExerciseStore();
 
     if (!exercises || exercises.length === 0) {

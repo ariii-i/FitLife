@@ -2,8 +2,8 @@ import { Control, UseFormRegister, UseFormSetValue, useForm } from "react-hook-f
 import { WorkoutFormValue } from "./form";
 import { useExerciseStore } from "@/entities/exercise/modal/store";
 import { useEffect } from "react";
-import { WorkoutNameField } from "./workout-field-set";
-import { ExerciseListField } from "./exercise-field-set";
+import { WorkoutNameField } from "./workout-field";
+import { ExerciseListField } from "./exercise-field";
 
 type Props = {
     control: Control<WorkoutFormValue>;

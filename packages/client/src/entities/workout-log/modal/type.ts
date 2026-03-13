@@ -10,9 +10,10 @@ export type WorkoutLogSession = {
 };
 
 export type WorkoutLog = {
-    _id: string;
+    _type?:string;
+    _id?: string;
     date: string;
-    user: { _id: string };
-    workout: { _id: string; name: string };
+    user: { _id: string } | { _type: "reference", _ref: string };
+    workout: { _id: string; name: string } | { _type: "reference", _ref: string};
     sessions: WorkoutLogSession[];
 };

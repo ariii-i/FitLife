@@ -7,14 +7,13 @@ type WorkoutLogStore = {
     logs: { date: string }[];
     activeSession: WorkoutLogSession | null;
     streak: number;
-
     createWorkoutLog: (workoutId: string, userId: string) => Promise<void>;
     addSession: (workoutLogId: string, sessionData: Omit<WorkoutLogSession, "_key">) => Promise<void>;
     fetchWorkoutLogs: () => Promise<void>;
     fetchLast7Days: (userId: string) => Promise<void>;
 };
 
-export const useWorkoutLogStore = create<WorkoutLogStore>((set, get) => ({
+export const useWorkoutLogStore = create<WorkoutLogStore>((set) => ({
     workoutLogs: [],
     logs: [],
     activeSession: null,

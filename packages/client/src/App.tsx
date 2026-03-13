@@ -9,6 +9,7 @@ import { Layout } from './widget/layout';
 import { ProtectedRoute } from './features/auth/protected-route';
 import { WorkoutHistory } from './widget/workout/workout-history';
 import { SessionPage } from './features/start-exercise/ui';
+import { WorkoutDetails } from './widget/exercise/exercise-list';
 
 function App() {
   return (
@@ -23,9 +24,8 @@ function App() {
           }>
             <Route path="/" element={<HomePage />} />
             <Route path="/workoutHistory/:workoutLogId" element={<WorkoutHistory />} />
-            {/* <Route path="/workout/:workoutId" element={<WorkoutDetails />} /> */}
+            <Route path="/workout/:workoutId" element={<WorkoutDetails />} />
             <Route path="/workout/:workoutId/session/:exerciseId" element={<SessionPage />} />
-            {/* <Route path="/workout/:workoutId/session/:exerciseId" element={<StopExercise />} /> */}
             <Route path="/exercise" element={<Exercise />} />
             <Route path="/workout" element={<Workout />} />
             <Route path="/profile" element={<Profile />} />
