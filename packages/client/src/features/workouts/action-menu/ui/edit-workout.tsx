@@ -2,7 +2,7 @@ import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { useWorkoutStore } from "@/entities/workout/modal/store";
-import { WorkoutFormValue } from "./make-workout-request/ui/form";
+import { WorkoutFormValue } from "../../make-workout-request/ui/form";
 import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -12,8 +12,8 @@ export const EditWorkout = ({ open, setOpen, }: {
     setOpen: (open: boolean) => void
 }) => {
     const { workout, updateWorkout } = useWorkoutStore();
-    const { register, control, handleSubmit, reset } = useForm()
-    const { fields } = useFieldArray({
+    const { register, control, handleSubmit, reset } = useForm<WorkoutFormValue>()
+    const { fields } = useFieldArray<WorkoutFormValue>({
         control,
         name: "exercises",
     })
@@ -22,7 +22,7 @@ export const EditWorkout = ({ open, setOpen, }: {
         if (workout) {
             reset({
                 name: workout.name || "",
-                exercises: workout.exercises?.map((ex) => ({
+                exercises: workout.exercises?.map((ex:any) => ({
                     _key: ex._key,
                     _id: ex.exercise?._id,
                     name: ex.exercise?.name,
@@ -46,6 +46,7 @@ export const EditWorkout = ({ open, setOpen, }: {
                     exercise: { _type: "reference", _ref: ex._id }
                 }))
             }
+            
             setOpen(false);
 
             console.log(data.exercises)

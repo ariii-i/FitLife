@@ -4,8 +4,10 @@ import { useWorkoutStore } from "@/entities/workout/modal/store";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { WorkoutFieldSet } from "./fields";
+import { WorkoutType } from "@/entities/workout/modal/types";
 
 export type PlannedValue = {
+    _key?: string
     _id: string
     name: string
     plannedSets: number
@@ -23,9 +25,9 @@ export const WorkoutForm = ({open, setOpen}:{
     setOpen: (open: boolean)=>void
 }) => {
     const { createWorkout, fetchWorkouts } = useWorkoutStore()
-    const { register, handleSubmit, setValue, control, watch, reset } = useForm<WorkoutFormValue>();
+    const { register, handleSubmit, setValue, control, watch, reset } = useForm<WorkoutType>();
 
-    const onSubmit: SubmitHandler<WorkoutFormValue> = async (data) => {
+    const onSubmit: SubmitHandler<WorkoutType> = async (data) => {
         const selectedExercises = data.exercises.filter((ex) => ex.selected);
 
         if (!data.name) {

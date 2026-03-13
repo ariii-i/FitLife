@@ -18,31 +18,40 @@ type ExerciseFormProp = {
 }
 
 export const ExerciseForm = ({ open, setOpen, selectedExercise }: ExerciseFormProp) => {
-    const { createExercise, fetchExercises } = useExerciseStore();
+    const { createExercise, editExercise, fetchExercises } = useExerciseStore();
     const [isSubmitting, setIsSubmitting] = useState(false)
 
     const { register, handleSubmit, reset, setValue } = useForm<FormValue>()
 
-    const handleAdd: SubmitHandler<FormValue> = async (data) => {
-        if (isSubmitting) return;
+    const handleSubmitExercise: SubmitHandler<FormValue> = async (data) => {
+    if (isSubmitting) return;
 
-        if (!data.exercise?.trim()) {
-            toast.error("Please enter exercies name.")
-            return
-        };
-
-        try {
-            setIsSubmitting(true)
-            await createExercise(data.exercise);
-            toast.success("Exercise added!")
-            setOpen(false)
-            fetchExercises()
-            reset()
-        } catch (error) {
-            toast.error("Failed to add exercise.");
-            setIsSubmitting(false);
-        }
+    if (!data.exercise?.trim()) {
+        toast.error("Please enter exercise name.");
+        return;
     }
+
+    try {
+        setIsSubmitting(true);
+
+        if (selectedExercise) {
+            await editExercise(selectedExercise._id, data.exercise);
+            toast.success("Exercise updated!");
+        } else {
+            await createExercise(data.exercise);
+            toast.success("Exercise added!");
+        }
+
+        await fetchExercises();
+        reset();
+        setOpen(false);
+
+    } catch (error) {
+        toast.error("Failed to save exercise.");
+    } finally {
+        setIsSubmitting(false);
+    }
+};
     return (
         <Drawer direction="right" open={open} onOpenChange={setOpen}>
             <DrawerContent className="p-2 h-full flex flex-col">
@@ -50,7 +59,7 @@ export const ExerciseForm = ({ open, setOpen, selectedExercise }: ExerciseFormPr
                     Exercises
                 </DrawerTitle>
 
-                <form className="space-y-2 flex flex-col flex-1" onSubmit={handleSubmit(handleAdd)}>
+                <form className="space-y-2 flex flex-col flex-1" onSubmit={handleSubmit(handleSubmitExercise)}>
                     <ExerciseFieldSet register={register} setValue={setValue} selectedExercise={selectedExercise} />
 
                     <div className="flex-1" />
