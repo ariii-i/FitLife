@@ -4,7 +4,7 @@ import { useExerciseStore } from "@/entities/exercise/modal/store"
 import { DisplayWorkout } from "@/widget/workout/display-workout"
 import { WorkoutButton } from "@/features/workouts/make-workout-request/ui/create-workout-button"
 
-export const Workout: React.FC = () => {
+export const Workout = () => {
 
     const { workouts, fetchWorkouts } = useWorkoutStore()
     const { fetchExercises } = useExerciseStore()
