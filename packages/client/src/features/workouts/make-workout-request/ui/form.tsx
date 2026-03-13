@@ -3,8 +3,7 @@ import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
 import { useWorkoutStore } from "@/entities/workout/modal/store";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { WorkoutFieldSet } from "./fields";
-import { WorkoutType } from "@/entities/workout/modal/types";
+import { WorkoutFieldSet } from "./field-set";
 
 export type PlannedValue = {
     _key?: string
@@ -25,9 +24,9 @@ export const WorkoutForm = ({open, setOpen}:{
     setOpen: (open: boolean)=>void
 }) => {
     const { createWorkout, fetchWorkouts } = useWorkoutStore()
-    const { register, handleSubmit, setValue, control, watch, reset } = useForm<WorkoutType>();
+    const { register, handleSubmit, setValue, control, watch, reset } = useForm<WorkoutFormValue>();
 
-    const onSubmit: SubmitHandler<WorkoutType> = async (data) => {
+    const onSubmit: SubmitHandler<WorkoutFormValue> = async (data) => {
         const selectedExercises = data.exercises.filter((ex) => ex.selected);
 
         if (!data.name) {

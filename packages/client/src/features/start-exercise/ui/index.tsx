@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-// import { StopExercise } from "../../stop-exercise/ui";
 import { StopWatch } from "./stopwatch";
 import { toast } from "sonner";
 import { auth } from "../../../shared/lib/firebase";
 import { useWorkoutLogStore } from "@/entities/workout-log/modal/store";
 import { useUserStore } from "@/entities/user/modal/store";
 import { Button } from "@/components/ui/button";
+import { StopExercise } from "@/features/stop-exercise/ui";
 
 export const SessionPage = () => {
     const { workoutId, exerciseId } = useParams();
     const navigate = useNavigate();
-    const { activeSession, createWorkout } = useWorkoutLogStore()
+    const { activeSession, createWorkoutLog } = useWorkoutLogStore()
     const { user, fetchUser } = useUserStore();
     const [isActive, setIsActive] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
     const [startTimeStamp, setStartTimeStamp] = useState<string | null>(null)
 
-    const userId = auth?.currentUser?.uid ?? "";;
+    const userId :string= auth?.currentUser?.uid ?? "";;
     useEffect(() => {
         if (userId) {
             fetchUser(userId)
@@ -30,7 +30,7 @@ export const SessionPage = () => {
         try {
             setIsActive(true);
             setStartTimeStamp(new Date().toISOString());
-            await createWorkout(workoutId, exerciseId, userId)
+            await createWorkoutLog(workoutId, exerciseId, userId)
 
         } catch (error) {
             console.error("error", error)

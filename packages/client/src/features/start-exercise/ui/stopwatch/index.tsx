@@ -2,10 +2,10 @@ import { Card } from "@/components/ui/card";
 import React, { useEffect, useState } from "react"
 import { useParams } from "react-router-dom";
 
-type StopWAtchProp = {
+
+export const StopWatch = ({ isActive }: {
     isActive: boolean
-}
-export const StopWatch: React.FC<StopWAtchProp> = ({ isActive }) => {
+}) => {
     const { workoutId, exerciseId } = useParams<{workoutId: string, exerciseId:string}>()
 
     const [time, setTime] = useState(0);

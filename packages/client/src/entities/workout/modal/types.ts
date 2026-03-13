@@ -12,7 +12,7 @@ export type WorkoutExercise = {
     }
 }
 
-export type WorkoutType = {
+export type Workout = {
     _id: string,
     name: string;
     exercises: WorkoutExercise[]

@@ -5,7 +5,7 @@ import { useUserStore } from "@/entities/user/modal/store"
 import { DisplayProfile } from "@/widget/profile/display-profile"
 import { SignOut } from "@/features/auth/ui/sign-out"
 
-export const Profile: React.FC = () => {
+export const Profile = () => {
     const { user, fetchUser } = useUserStore();
     const currentUser = auth.currentUser
 

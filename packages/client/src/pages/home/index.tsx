@@ -6,7 +6,7 @@ import { useWorkoutLogStore } from "@/entities/workout-log/modal/store";
 import { WorkoutList } from "@/widget/workout/workout-list";
 import { StreaksTrack } from "@/features/streaks/ui";
 
-export const HomePage: React.FC = () => {
+export const HomePage = () => {
     const { user, fetchUser } = useUserStore()
     const { fetchWorkouts, workouts } = useWorkoutStore();
     const { fetchWorkoutLogs } = useWorkoutLogStore()

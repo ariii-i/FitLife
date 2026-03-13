@@ -19,7 +19,7 @@ export const WorkoutList = () => {
             {workouts.map((workout) => (
                 <Link key={workout._id} to={`/workout/${workout._id}`} >
                     <Card className="bg-stone-700 p-5 rounded-xl text-stone-100">
-                        {workout.name}
+                        {workout.name} 
                     </Card>
                 </Link>
             ))}

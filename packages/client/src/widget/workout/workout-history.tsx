@@ -4,7 +4,7 @@ import { useWorkoutLogStore } from "@/entities/workout-log/modal/store";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-export const WorkoutHistory: React.FC = () => {
+export const WorkoutHistory = () => {
     const { workoutLogId } = useParams<{ workoutLogId: string }>();
     const { workoutLogs, fetchWorkoutLogs } = useWorkoutLogStore();
     const [log, setLog] = useState(null);
