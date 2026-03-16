@@ -14,10 +14,10 @@ type SessionFormValue={
     weight: number
 }
 
-export const StopExercise = ({ open, setOpen, startTimeStamp }: {
+export const StopExercise = ({ open, setOpen, startTime }: {
     open: boolean;
     setOpen: (open: boolean) => void
-    startTimeStamp: string | null
+    startTime: string | null
 }) => {
     const { workoutId, exerciseId } = useParams<{ workoutId: string; exerciseId: string }>()
     const navigate = useNavigate();
@@ -31,7 +31,7 @@ export const StopExercise = ({ open, setOpen, startTimeStamp }: {
     const handleAdd: SubmitHandler<SessionFormValue> = async (data) => {
         console.log("exerciseIdddddd", exerciseId)
         try {
-            await addSession(data, logId, exerciseId, startTimeStamp);
+            await addSession(data, logId, exerciseId, startTime);
 
             toast.success("Workout added");
             navigate(`/workout/${workoutId}`);

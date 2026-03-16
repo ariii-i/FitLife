@@ -47,7 +47,7 @@ export const WorkoutForm = ({open, setOpen}:{
                 })),
             };
             await createWorkout(payload);
-            toast.success("Workout created succeddfully")
+            toast.success("Workout created successfully")
 
             reset();
             setOpen(false);

@@ -24,7 +24,11 @@ export const createWorkoutLogApi = async (workoutId: string, userId: string, dat
     return log;
 };
 
-export const addSessionApi = async (workoutLogId: string, sessionData: Omit<WorkoutLogSession, "_key">): Promise<WorkoutLogSession> => {
+export const addSessionApi = async (
+    workoutLogId: string,
+    sessionData: Omit<WorkoutLogSession, "_key">
+): Promise<WorkoutLogSession> => {
+
     const newSession: WorkoutLogSession = {
         _key: get_unique_key(),
         ...sessionData,
@@ -41,28 +45,27 @@ export const addSessionApi = async (workoutLogId: string, sessionData: Omit<Work
 export const getWorkoutLogApi = async (): Promise<WorkoutLog[]> => {
     return sanityClient.fetch<WorkoutLog[]>(`
     *[_type=="workoutLog"] {
-      _id,
-      date,
-      user -> { _id },
-      workout -> { _id, name },
-      sessions[] {
-        _key,
-        startTime,
-        endTime,
-        sets,
-        reps,
-        weight,
-        completed,
-        exercise -> { _id, name }
-      }
-    }
-  `);
+        _id,
+        date,
+        user -> { _id },
+        workout -> { _id, name },
+        sessions[] {
+            _key,
+            startTime,
+            endTime,
+            sets,
+            reps,
+            weight,
+            completed,
+            exercise -> { _id, name }
+        }
+    }`);
 };
 
 export const getLast7daysApi = async (userId: string, startDate: string) => {
     return sanityClient.fetch<{ date: string }[]>(`
-    *[_type=="workoutLog" && user._ref == $userId && date >= $startDate && count(sessions[completed==true]) > 0]{
-      date
-    }
-  `, { userId, startDate });
+        *[_type=="workoutLog" && user._ref == $userId && date >= $startDate && count(sessions[completed==true]) > 0]{
+            date
+            }`,
+        { userId, startDate });
 };
