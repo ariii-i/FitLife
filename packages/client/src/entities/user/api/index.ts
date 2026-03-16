@@ -21,7 +21,6 @@ export const createSanityUser = async (data: User) => {
 };
 
 export const getUserByFirebaseUid = async (uid: string) => {
-  console.log("UID RECEIVED:", uid);
   return await sanityClient.fetch(
     `*[_type=="user" && firebaseUid==$uid][0]{
         _id,
@@ -38,6 +37,6 @@ export const deleteUserApi = async (id: string) => {
   return await sanityClient.delete(id);
 }
 
-export const signOuts= async(auth: Auth)=>{
+export const signOuts = async (auth: Auth) => {
   return await signOut(auth);
 }

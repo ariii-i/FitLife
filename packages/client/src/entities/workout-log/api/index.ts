@@ -3,7 +3,13 @@ import { WorkoutLog, WorkoutLogSession } from "../modal/type";
 
 const get_unique_key = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
-export const createWorkoutLogApi = async (workoutId: string, userId: string, date?: string): Promise<WorkoutLog> => {
+export const createWorkoutLogApi = async (
+    workoutId: string,
+    userId: string,
+    date?: string
+): Promise<WorkoutLog> => {
+    console.log("workoutId: string userId: string,", workoutId)
+    console.log("userId: string,", userId)
     const today = date || new Date().toISOString().split("T")[0];
 
     let log: WorkoutLog | null = await sanityClient.fetch(
@@ -21,6 +27,8 @@ export const createWorkoutLogApi = async (workoutId: string, userId: string, dat
         });
     }
 
+    console.log("workoutId: string userId: string,", workoutId)
+    console.log("userId: string,", userId)
     return log;
 };
 
@@ -28,11 +36,13 @@ export const addSessionApi = async (
     workoutLogId: string,
     sessionData: Omit<WorkoutLogSession, "_key">
 ): Promise<WorkoutLogSession> => {
-
     const newSession: WorkoutLogSession = {
         _key: get_unique_key(),
         ...sessionData,
+        exercise: { _type: "reference", _ref: sessionData.exercise._id || sessionData.exercise._ref }
     };
+
+    console.log("Ec",sessionData )
 
     await sanityClient
         .patch(workoutLogId)

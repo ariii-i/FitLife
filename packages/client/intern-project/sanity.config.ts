@@ -8,7 +8,7 @@ export default defineConfig({
   title: 'intern-project',
 
   projectId: 'c0avhw9q',
-  dataset: 'production',
+  dataset: 'intern',
 
   plugins: [structureTool(), visionTool()],
 
