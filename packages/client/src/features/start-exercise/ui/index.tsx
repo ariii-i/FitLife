@@ -1,87 +1,79 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { StopWatch } from "./stopwatch";
+import { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { auth } from "../../../shared/lib/firebase";
 import { useWorkoutLogStore } from "@/entities/workout-log/modal/store";
 import { useUserStore } from "@/entities/user/modal/store";
-import { Button } from "@/components/ui/button";
-import { StopExercise } from "@/features/stop-exercise/ui";
+import { auth } from "@/shared/lib/firebase";
+import { StopWatch } from "./stopwatch";
+import { WorkoutLogDrawer } from "@/features/workoutlog/make-workoutlog-request/ui";
 
 export const SessionPage = () => {
-    const { workoutId, exerciseId } = useParams();
-    const navigate = useNavigate();
-    const { activeSession, createWorkoutLog } = useWorkoutLogStore()
-    const { user, fetchUser } = useUserStore();
-    const [isActive, setIsActive] = useState<boolean>(false);
-    const [open, setOpen] = useState<boolean>(false);
-    const [startTimeStamp, setStartTimeStamp] = useState<string | null>(null)
+    const { workoutId, exerciseId } = useParams<{ workoutId: string; exerciseId: string }>();
+    
+    const { activeSession, createWorkoutLog } = useWorkoutLogStore();
+    const { fetchUser, user } = useUserStore();
+    const userId = auth?.currentUser?.uid ?? "";
 
-    const userId :string= auth?.currentUser?.uid ?? "";;
+    const [isActive, setIsActive] = useState(false);
+    const [openDrawer, setOpenDrawer] = useState(false);
+    const [startTimeStamp, setStartTimeStamp] = useState<string | null>(null);
+
     useEffect(() => {
-        if (userId) {
-            fetchUser(userId)
-        }
+        if (userId) fetchUser(userId);
         setIsActive(!!activeSession);
     }, [userId, activeSession]);
 
-
     const handleStart = async () => {
-        try {
-            setIsActive(true);
-            setStartTimeStamp(new Date().toISOString());
-            await createWorkoutLog(workoutId, exerciseId, userId)
+        if (!workoutId) return toast.error("Workout not selected");
 
+        try {
+            const start = new Date().toISOString();
+            setStartTimeStamp(start);
+            setIsActive(true);
+
+            // Create today's workout log if not exists
+            await createWorkoutLog(workoutId, userId);
         } catch (error) {
-            console.error("error", error)
+            console.error(error);
+            console.log("Userid", userId)
+            toast.error("Failed to start session");
         }
     };
 
-    const handleStop = async () => {
-        if (!startTimeStamp) {
-            toast.error("Session has not started yet.");
-            return;
-        }
+    const handleStop = () => {
+        if (!startTimeStamp) return toast.error("Session has not started yet");
 
         setIsActive(false);
-        setOpen(true);
-
-        const startTime = new Date(startTimeStamp).getTime();
-        const endTime = Date.now();
-        const duration = endTime - startTime;
-
-        // const totalSeconds = Math.floor(duration / 1000);
-        // const hours = Math.floor(totalSeconds / 3600);
-        // const minutes = Math.floor((totalSeconds % 3600) / 60);
-        // const seconds = totalSeconds % 60;
-        // console.log("Session duration:", { hours, minutes, seconds });
-
-    }
+        setOpenDrawer(true); // show the drawer with the form
+    };
 
     return (
-        <div className="space-y-2">
+        <div className="space-y-4">
+            <pre>
+                {JSON.stringify(user, null, 2)}
+            </pre>
             <StopWatch isActive={isActive} />
+
             {!isActive ? (
                 <div className="flex justify-center">
-                    <Button onClick={handleStart} type="button" className="rounded-xl px-6 py-3 text-lg font-medium">
+                    <Button onClick={handleStart} className="rounded-xl px-6 py-3 text-lg font-medium">
                         Start
                     </Button>
                 </div>
             ) : (
-                <div className="flex gap-2 justify-center">
-                    <Button onClick={handleStop} type="button" variant="destructive" className="rounded-xl px-6 py-3 text-lg font-medium text-stone-100">
+                <div className="flex justify-center">
+                    <Button onClick={handleStop} variant="destructive" className="rounded-xl px-6 py-3 text-lg font-medium text-stone-100">
                         Stop
                     </Button>
                 </div>
             )}
 
-            {open && (<StopExercise open={open} setOpen={setOpen} startTime={startTimeStamp} />)}
+            {openDrawer && <WorkoutLogDrawer open={openDrawer} setOpen={setOpenDrawer} startTimeStamp={startTimeStamp} />}
 
             <div className="py-2 flex justify-end">
                 <Link to="/">
-                    <Button type="button" variant="link">
-                        Back to Dashboard
-                    </Button>
+                    <Button variant="link">Back to Dashboard</Button>
                 </Link>
             </div>
         </div>

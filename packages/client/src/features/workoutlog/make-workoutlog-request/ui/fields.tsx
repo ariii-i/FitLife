@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 type Props = {
     label: string;
     placeholder?: string;
-    register: any;
+    register: any ;
     name: string;
 };
 

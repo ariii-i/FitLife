@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { useWorkoutLogStore } from "@/entities/workout-log/modal/store";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import { useWorkoutLogStore } from "@/entities/workout-log/modal/store";
 import { SessionFieldSet } from "./field-set";
 
 type SessionFormValue = {
@@ -12,7 +12,7 @@ type SessionFormValue = {
 };
 
 export const SessionForm = ({ startTimeStamp }: { startTimeStamp: string | null }) => {
-    const { workoutId, exerciseId } = useParams();
+    const { workoutId, exerciseId } = useParams<{ workoutId: string; exerciseId: string }>();
     const navigate = useNavigate();
 
     const { addSession, workoutLogs } = useWorkoutLogStore();
@@ -22,13 +22,24 @@ export const SessionForm = ({ startTimeStamp }: { startTimeStamp: string | null 
     const workoutLogId = log?._id ?? null;
 
     const handleAdd: SubmitHandler<SessionFormValue> = async (data) => {
-        try {
-            await addSession({ workoutLogId, exerciseId, startTimeStamp, data });
+        if (!workoutLogId || !exerciseId || !startTimeStamp) {
+            return toast.error("Missing workout, exercise, or session start time");
+        }
 
-            toast.success("Workout added");
+        try {
+            await addSession({
+                workoutLogId,
+                exerciseId,
+                startTime: startTimeStamp,
+                endTime: new Date().toISOString(),
+                ...data,
+            });
+
+            toast.success("Workout session saved!");
             navigate(`/workout/${workoutId}`);
         } catch (error) {
-            toast.error("Unable to add workout");
+            console.error(error);
+            toast.error("Unable to save session");
         }
     };
 
@@ -39,18 +50,14 @@ export const SessionForm = ({ startTimeStamp }: { startTimeStamp: string | null 
             <div className="flex flex-1" />
 
             <div className="flex gap-2 w-full">
-                <Button
-                    type="submit"
-                    className="bg-emerald-600 hover:bg-emerald-700 text-stone-100 w-full"
-                >
+                <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-stone-100 w-full">
                     Add
                 </Button>
 
-                <Button type="button" className="w-full">
+                <Button type="button" className="w-full" onClick={() => navigate(-1)}>
                     Cancel
                 </Button>
             </div>
         </form>
-
-    )
-}
+    );
+};

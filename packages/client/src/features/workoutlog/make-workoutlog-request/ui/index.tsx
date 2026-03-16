@@ -1,21 +1,23 @@
-import { Card } from "@/components/ui/card";
 import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
+import { Card } from "@/components/ui/card";
 import { useWorkoutStore } from "@/entities/workout/modal/store";
 import { useParams } from "react-router-dom";
 import { SessionForm } from "./form";
 
-export const WorkoutLogDrawer = ({ open, setOpen, startTimeStamp, }: {
+export const WorkoutLogDrawer = ({
+    open,
+    setOpen,
+    startTimeStamp,
+}: {
     open: boolean;
     setOpen: (open: boolean) => void;
     startTimeStamp: string | null;
 }) => {
-    const { exerciseId } = useParams();
+    const { exerciseId } = useParams<{ exerciseId: string }>();
     const { workout } = useWorkoutStore();
 
-    const selected = workout?.exercises?.find(
-        (ex) => ex.exercise._id === String(exerciseId)
-    );
-    
+    const selected = workout?.exercises?.find((ex) => ex.exercise._id === String(exerciseId));
+
     return (
         <Drawer direction="right" open={open} onOpenChange={setOpen}>
             <DrawerContent className="p-2 h-full flex flex-col">
@@ -42,5 +44,5 @@ export const WorkoutLogDrawer = ({ open, setOpen, startTimeStamp, }: {
                 <SessionForm startTimeStamp={startTimeStamp} />
             </DrawerContent>
         </Drawer>
-    )
-}
+    );
+};
