@@ -2,13 +2,24 @@ import { create } from "zustand";
 import { addSessionApi, createWorkoutLogApi, getLast7daysApi, getWorkoutLogApi } from "../api";
 import { WorkoutLog, WorkoutLogSession } from "./type";
 
+type AddSessionInput = {
+    workoutLogId: string | null;
+    exerciseId?: string;
+    startTime?: string;
+    endTime?: string;
+    sets: number;
+    reps: number;
+    weight: number;
+    completed?: boolean;
+};
+
 type WorkoutLogStore = {
     workoutLogs: WorkoutLog[];
     logs: { date: string }[];
     activeSession: WorkoutLogSession | null;
     streak: number;
     createWorkoutLog: (workoutId: string, userId: string) => Promise<void>;
-    addSession: (workoutLogId: string, sessionData: Omit<WorkoutLogSession, "_key">) => Promise<void>;
+    addSession: (input: AddSessionInput) => Promise<void>;
     fetchWorkoutLogs: () => Promise<void>;
     fetchLast7Days: (userId: string) => Promise<void>;
 };
@@ -24,8 +35,22 @@ export const useWorkoutLogStore = create<WorkoutLogStore>((set) => ({
         set((state) => ({ workoutLogs: [log, ...state.workoutLogs] }));
     },
 
-    addSession: async (workoutLogId, sessionData) => {
-        const session = await addSessionApi(workoutLogId, sessionData);
+    addSession: async ({ workoutLogId, exerciseId, startTime, ...data }: AddSessionInput) => {
+        if (!workoutLogId || !exerciseId) return;
+
+        const payload: Omit<WorkoutLogSession, "_key"> = {
+            ...data,
+            exercise: {
+                _type: "reference",
+                _ref: exerciseId,
+            },
+            startTime: startTime ?? new Date().toISOString(),
+            endTime: "",
+            completed: false,
+        };
+
+        const session = await addSessionApi(workoutLogId, payload);
+
         set((state) => ({
             workoutLogs: state.workoutLogs.map((log) =>
                 log._id === workoutLogId

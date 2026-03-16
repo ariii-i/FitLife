@@ -75,7 +75,7 @@ export const SessionPage = () => {
                 </div>
             )}
 
-            {open && (<StopExercise open={open} setOpen={setOpen} startTimeStamp={startTimeStamp} />)}
+            {open && (<StopExercise open={open} setOpen={setOpen} startTime={startTimeStamp} />)}
 
             <div className="py-2 flex justify-end">
                 <Link to="/">
