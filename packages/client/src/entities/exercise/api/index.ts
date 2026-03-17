@@ -1,30 +1,20 @@
-import { sanityClient } from "@/shared/lib/sanity";
 import { Exercise } from "../modal/types";
+import { orpc } from "server/src/orpc-client";
+import { Schema_Exercise } from "server/src/orpc-server/packages/exericse/domain/schema-exercise";
+import z from "zod";
 
-type ExerciseInput = {
-  exercise: string
-}
-
-export const createExerciseApi = async (data: ExerciseInput): Promise<Exercise> => {
-  return sanityClient.create({
-    _type: "exercise",
-    name: data.exercise,
-  });
+export const createExerciseApi = async (data: z.infer<typeof Schema_Exercise>) => {
+  return await orpc.exercise.create({ ...data, user_id: 1 })
 };
 
-export const getExerciseApi = async (): Promise<Exercise[]> => {
-  return sanityClient.fetch(`
-      *[_type=="exercise"] | order(_createdAt desc){
-        _id,
-        name
-      }
-  `)
+export const getExerciseApi = async () => {
+  return await orpc.exercise.list_exercise_by_user({ user_id: 1, pageIndex: 0, pageSize: 10 })
 }
 
 export const deleteExerciseApi = async (id: string): Promise<void> => {
-  await sanityClient.delete(id)
+  return null;
 }
 
-export const editExerciseApi = async (id: string, name: string): Promise<Exercise> => {
-  return sanityClient.patch(id).set({ name }).commit()
+export const editExerciseApi = async (data: z.infer<typeof Schema_Exercise>) => {
+  return await orpc.exercise.update_exercise(data)
 }
