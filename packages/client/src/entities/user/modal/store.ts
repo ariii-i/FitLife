@@ -39,7 +39,8 @@ export const useUserStore = create<UserStore>((set) => ({
     },
 
     signOutUser: async (auth: any) => {
-        signOuts(auth)
+        await signOuts(auth)
         set({ user: null })
-    }
+    }, 
+    
 }))

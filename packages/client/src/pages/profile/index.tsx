@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { EditProfile } from "../../features/profile/edit-profile"
+// import { EditProfile } from "../../features/profile/edit-profile"
 import { auth } from "@/shared/lib/firebase"
 import { useUserStore } from "@/entities/user/modal/store"
 import { DisplayProfile } from "@/widget/profile/display-profile"
@@ -16,18 +16,18 @@ export const Profile = () => {
     }, [fetchUser])
 
     return (
-        <div className="flex flex-col items-center justify-center space-y-2">
+        <div className="flex flex-col flex-1 gap-3 items-center justify-center space-y-2">
             {/* <span className="font-semibold text-lg">Profile</span> */}
 
-            <div>
+            <DisplayProfile />
 
-                <DisplayProfile />
+            <div className="flex flex-2" />
 
-                <div className="flex gap-2">
-                    <EditProfile />
-                    <SignOut />
-                </div>
+            <div className="flex justify-center items-center">
+                {/* <EditProfile /> */}
+                <SignOut />
             </div>
+
         </div>
     )
 }

@@ -1,3 +1,12 @@
-import { RouterClient } from "@orpc/client";
 import { router } from "server/src/orpc-server"
-export const orpc: RouterClient<typeof Router> = createORPCClient(link);
+import type { RouterClient } from "@orpc/server";
+import { createORPCClient } from "@orpc/client";
+import { RPCLink } from "@orpc/client/fetch";
+
+const link = new RPCLink({
+  url: "http://127.0.0.1:3000",
+  headers: { Authorization: "Bearer token" },
+});
+
+export const orpc: RouterClient<typeof router> = createORPCClient(link);
+

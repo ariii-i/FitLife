@@ -20,7 +20,7 @@ export const DisplayProfile = () => {
             <span className="font-semibold text-lg">{user?.name}</span>
             <span className="text-sm text-stone-700">{user?.email}</span>
 
-            <Card className="bg-stone-700 text-stone-100">
+            {/* <Card className="bg-stone-700 text-stone-100">
                 <CardHeader>My details</CardHeader>
 
                 <CardContent className="flex gap-10">
@@ -39,7 +39,7 @@ export const DisplayProfile = () => {
 
                     </div>
                 </CardContent>
-            </Card>
+            </Card> */}
         </div>
     )
 }

@@ -10,7 +10,7 @@ import { WorkoutLogDrawer } from "@/features/workoutlog/make-workoutlog-request/
 
 export const SessionPage = () => {
     const { workoutId, exerciseId } = useParams<{ workoutId: string; exerciseId: string }>();
-    
+
     const { activeSession, createWorkoutLog } = useWorkoutLogStore();
     const { fetchUser, user } = useUserStore();
     const userId = auth?.currentUser?.uid ?? "";
@@ -18,6 +18,7 @@ export const SessionPage = () => {
     const [isActive, setIsActive] = useState(false);
     const [openDrawer, setOpenDrawer] = useState(false);
     const [startTimeStamp, setStartTimeStamp] = useState<string | null>(null);
+    const [endTimeStamp, setEndTimeStamp] = useState<string | null>(null);
 
     useEffect(() => {
         if (userId) fetchUser(userId);
@@ -26,27 +27,32 @@ export const SessionPage = () => {
 
     const handleStart = async () => {
         if (!workoutId) return toast.error("Workout not selected");
+        if (!exerciseId) return toast.error("Exercise not selected");
+        if (!userId) return toast.error("User not logged in");
 
         try {
             const start = new Date().toISOString();
             setStartTimeStamp(start);
             setIsActive(true);
 
-            // Create today's workout log if not exists
+            console.log("START DEBUG:", { workoutId, exerciseId, userId });
+
             await createWorkoutLog(workoutId, userId);
         } catch (error) {
             console.error(error);
-            console.log("Userid", userId)
             toast.error("Failed to start session");
         }
-    };
+    }
 
-    const handleStop = () => {
-        if (!startTimeStamp) return toast.error("Session has not started yet");
+   const handleStop = () => {
+    if (!startTimeStamp) return toast.error("Session has not started yet");
 
-        setIsActive(false);
-        setOpenDrawer(true); // show the drawer with the form
-    };
+    const endTime = new Date().toISOString();
+    setEndTimeStamp(endTime);
+
+    setIsActive(false);
+    setOpenDrawer(true);
+};
 
     return (
         <div className="space-y-4">
@@ -69,10 +75,10 @@ export const SessionPage = () => {
                 </div>
             )}
 
-            {openDrawer && <WorkoutLogDrawer open={openDrawer} setOpen={setOpenDrawer} startTimeStamp={startTimeStamp} />}
+            {openDrawer && <WorkoutLogDrawer open={openDrawer} setOpen={setOpenDrawer} startTimeStamp={startTimeStamp} endTimeStamp={endTimeStamp} />}
 
             <div className="py-2 flex justify-end">
-                <Link to="/">
+                <Link to="/">Q
                     <Button variant="link">Back to Dashboard</Button>
                 </Link>
             </div>

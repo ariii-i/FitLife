@@ -1,24 +1,22 @@
-import { useEffect } from "react"
-import { auth } from "../../../shared/lib/firebase"
-import { Link, useNavigate } from "react-router-dom"
-import { useWorkoutLogStore } from "@/entities/workout-log/modal/store"
 import { useUserStore } from "@/entities/user/modal/store"
+import { useWorkoutLogStore } from "@/entities/workout-log/modal/store"
+import { auth } from "@/shared/lib/firebase"
+import { useEffect } from "react"
+import { Link } from "react-router-dom"
 
 export const StreaksTrack = () => {
     const { user } = useUserStore()
     const { workoutLogs, streak, fetchLast7Days } = useWorkoutLogStore()
 
+    const userId=auth.currentUser?.uid ?? ""
     useEffect(() => {
         if (user?._id) {
             fetchLast7Days(user._id)
         }
     }, [user?._id, fetchLast7Days]);
 
-
     const last7days = getLast7days();
-    console.log("last",last7days)
     const completedDates = workoutLogs.map((log) => log?.date)
-    console.log("completeddate",completedDates)
 
     return (
         <div>

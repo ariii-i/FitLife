@@ -23,8 +23,8 @@ export const WorkoutDetails = () => {
         fetchSelectedWorkout(workoutId);
         if (auth.currentUser?.uid) {
             fetchUser(auth.currentUser.uid);
+            fetchWorkoutLogs(auth.currentUser.uid);
         }
-        fetchWorkoutLogs();
     }, [workoutId, fetchSelectedWorkout, fetchUser, fetchWorkoutLogs])
 
 
@@ -44,7 +44,7 @@ export const WorkoutDetails = () => {
                 return (
                     <Link key={w._key} to={`/workout/${workoutId}/session/${exerciseId}`}>
                         <Card className="bg-stone-700 p-5 rounded-xl text-stone-100 font-semibold flex justify-between items-center text-lg">
-                            
+
                             <span>{"name" in w.exercise && w.exercise.name}</span>
 
                             <div className="font-medium text-sm text-stone-300">
@@ -52,7 +52,8 @@ export const WorkoutDetails = () => {
                             </div>
                         </Card>
                     </Link>
-                )})}
+                )
+            })}
 
             <div className="py-2 flex justify-end">
                 <Link to="/"><Button type="button" variant="link">Back to Dashboard</Button></Link>

@@ -15,9 +15,9 @@ export const HomePage = () => {
     useEffect(() => {
         if (currentUser) {
             fetchUser(currentUser.uid)
+            fetchWorkoutLogs(currentUser.uid)
         }
         fetchWorkouts()
-        fetchWorkoutLogs()
     }, [])
 
     return (

@@ -40,3 +40,16 @@ export const deleteUserApi = async (id: string) => {
 export const signOuts = async (auth: Auth) => {
   return await signOut(auth);
 }
+
+export const getSanityUserId = async (firebaseUid: string) => {
+  const user = await sanityClient.fetch(
+    `*[_type=="user" && firebaseUid == $firebaseUid][0]{ _id }`,
+    { firebaseUid }
+  );
+
+  if (!user) {
+    throw new Error("User not found in Sanity");
+  }
+
+  return user._id;
+};

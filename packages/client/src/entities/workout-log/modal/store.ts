@@ -20,11 +20,11 @@ type WorkoutLogStore = {
     streak: number;
     createWorkoutLog: (workoutId: string, userId: string) => Promise<void>;
     addSession: (input: AddSessionInput) => Promise<void>;
-    fetchWorkoutLogs: () => Promise<void>;
+    fetchWorkoutLogs: (userId: string) => Promise<void>;
     fetchLast7Days: (userId: string) => Promise<void>;
 };
 
-export const useWorkoutLogStore = create<WorkoutLogStore>((set) => ({
+export const useWorkoutLogStore = create<WorkoutLogStore>((set, get) => ({
     workoutLogs: [],
     logs: [],
     activeSession: null,
@@ -35,7 +35,7 @@ export const useWorkoutLogStore = create<WorkoutLogStore>((set) => ({
         set((state) => ({ workoutLogs: [log, ...state.workoutLogs] }));
     },
 
-    addSession: async ({ workoutLogId, exerciseId, startTime, ...data }: AddSessionInput) => {
+    addSession: async ({ workoutLogId, exerciseId, startTime, endTime, completed, ...data }: AddSessionInput) => {
         if (!workoutLogId || !exerciseId) return;
 
         const payload: Omit<WorkoutLogSession, "_key"> = {
@@ -45,23 +45,23 @@ export const useWorkoutLogStore = create<WorkoutLogStore>((set) => ({
                 _ref: exerciseId,
             },
             startTime: startTime ?? new Date().toISOString(),
-            endTime: "",
-            completed: false,
+            endTime: endTime ?? new Date().toISOString(),
+            completed: true,
         };
 
         const session = await addSessionApi(workoutLogId, payload);
 
         set((state) => ({
-            workoutLogs: state.workoutLogs.map((log) =>
-                log._id === workoutLogId
-                    ? { ...log, sessions: [...log.sessions, session] }
-                    : log
+            workoutLogs: state.workoutLogs.map((l) =>
+                l._id === workoutLogId
+                    ? { ...l, sessions: [...l.sessions, session] }
+                    : l
             ),
         }));
     },
 
-    fetchWorkoutLogs: async () => {
-        const logs = await getWorkoutLogApi();
+    fetchWorkoutLogs: async (userId: string) => {
+        const logs = await getWorkoutLogApi(userId);
         set({ workoutLogs: logs });
     },
 
@@ -78,20 +78,17 @@ export const useWorkoutLogStore = create<WorkoutLogStore>((set) => ({
 }));
 
 const calculateStreak = (logs: { date: string }[]) => {
-    const normalizedDates = logs.map((l) => l.date.split("T")[0]).sort((a, b) => b.localeCompare(a));
+    const today = new Date().toISOString().split("T")[0];
+    const logDates = new Set(logs.map(l => l.date.split("T")[0]));
 
     let streak = 0;
-    let current = new Date().toISOString().split("T")[0];
+    let currentDate = today;
 
-    for (const date of normalizedDates) {
-        if (date === current) {
-            streak++;
-            const temp = new Date(current);
-            temp.setDate(temp.getDate() - 1);
-            current = temp.toISOString().split("T")[0];
-        } else {
-            break;
-        }
+    while (logDates.has(currentDate)) {
+        streak++;
+        const temp = new Date(currentDate);
+        temp.setDate(temp.getDate() - 1);
+        currentDate = temp.toISOString().split("T")[0];
     }
 
     return streak;
