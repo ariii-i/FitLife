@@ -13,7 +13,7 @@ export type WorkoutLog = {
     _type?: string;
     _id?: string;
     date: string;
-    user: {_type?: "reference", _ref?: string };
-    workout: { _type?: "reference"; _ref?: string };
+    user: { _type?: "reference", _ref?: string };
+    workout: { _type?: "reference"; _ref?: string, name?: string, _id?: string };
     sessions: WorkoutLogSession[];
 };

@@ -3,20 +3,25 @@ import { useParams, Link } from "react-router-dom";
 import { useWorkoutLogStore } from "@/entities/workout-log/modal/store";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { auth } from "@/shared/lib/firebase";
+import { WorkoutLog } from "@/entities/workout-log/modal/type";
 
 export const WorkoutHistory = () => {
     const { workoutLogId } = useParams<{ workoutLogId: string }>();
     const { workoutLogs, fetchWorkoutLogs } = useWorkoutLogStore();
-    const [log, setLog] = useState(null);
+    const [log, setLog] = useState<WorkoutLog | null>(null);
+    const userId = auth?.currentUser?.uid ?? ""
 
     useEffect(() => {
-        if (workoutLogs.length === 0) {
-            fetchWorkoutLogs();
-        } else {
-            const found = workoutLogs.find((l) => l._id === workoutLogId);
-            setLog(found);
-        }
-    }, [workoutLogs, workoutLogId, fetchWorkoutLogs]);
+        if (!userId) return;
+        fetchWorkoutLogs(userId);
+    }, [userId, fetchWorkoutLogs]);
+
+    // Update local log when workoutLogs or workoutLogId changes
+    useEffect(() => {
+        const found = workoutLogs.find((l) => l._id === workoutLogId);
+        setLog(found ?? null);
+    }, [workoutLogs, workoutLogId]);
 
     if (!log) return;
 

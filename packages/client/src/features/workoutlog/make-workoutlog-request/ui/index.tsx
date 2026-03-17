@@ -8,10 +8,12 @@ export const WorkoutLogDrawer = ({
     open,
     setOpen,
     startTimeStamp,
+    endTimeStamp,
 }: {
     open: boolean;
     setOpen: (open: boolean) => void;
     startTimeStamp: string | null;
+    endTimeStamp: string | null;
 }) => {
     const { exerciseId } = useParams<{ exerciseId: string }>();
     const { workout } = useWorkoutStore();
@@ -25,7 +27,7 @@ export const WorkoutLogDrawer = ({
 
                 <div className="flex gap-3">
                     <Card className="bg-stone-700 text-stone-100 p-4 flex-[2] text-center">
-                        {selected?.exercise.name}
+                        {selected?.exercise?.name}
                     </Card>
 
                     <Card className="bg-stone-800 text-stone-100 p-4 flex-1 text-center">
@@ -41,7 +43,7 @@ export const WorkoutLogDrawer = ({
 
                 <DrawerTitle>Actual Exercise</DrawerTitle>
 
-                <SessionForm startTimeStamp={startTimeStamp} />
+                <SessionForm startTimeStamp={startTimeStamp} endTimeStamp={endTimeStamp}/>
             </DrawerContent>
         </Drawer>
     );

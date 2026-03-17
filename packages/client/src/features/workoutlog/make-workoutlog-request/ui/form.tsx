@@ -4,19 +4,25 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { useWorkoutLogStore } from "@/entities/workout-log/modal/store";
 import { SessionFieldSet } from "./field-set";
+import { auth } from "@/shared/lib/firebase";
 
 type SessionFormValue = {
     sets: number;
     reps: number;
     weight: number;
+    completed: boolean;
 };
 
-export const SessionForm = ({ startTimeStamp }: { startTimeStamp: string | null }) => {
+export const SessionForm = ({ startTimeStamp, endTimeStamp }: {
+    startTimeStamp: string | null,
+    endTimeStamp: string | null
+}) => {
     const { workoutId, exerciseId } = useParams<{ workoutId: string; exerciseId: string }>();
     const navigate = useNavigate();
 
     const { addSession, workoutLogs } = useWorkoutLogStore();
     const { register, handleSubmit } = useForm<SessionFormValue>();
+    const userId = auth.currentUser?.uid ?? "";
 
     const log = workoutLogs.find((log) => log.workout._ref === workoutId);
     const workoutLogId = log?._id ?? null;
@@ -31,8 +37,11 @@ export const SessionForm = ({ startTimeStamp }: { startTimeStamp: string | null 
                 workoutLogId,
                 exerciseId,
                 startTime: startTimeStamp,
-                endTime: new Date().toISOString(),
-                ...data,
+                endTime: endTimeStamp ?? new Date().toISOString(),
+                sets: Number(data.sets),
+                reps: Number(data.reps),
+                weight: Number(data.weight),
+                completed:true
             });
 
             toast.success("Workout session saved!");

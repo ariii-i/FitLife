@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { createExerciseApi, deleteExerciseApi, editExerciseApi, getExerciseApi } from "../api";
 import { Exercise } from "./types";
 
-export interface ExerciseStore {
+export type ExerciseStore ={
   exercises: Exercise[],
   setExercises: (exercises: Exercise[]) => void,
   createExercise: (data: string) => Promise<void>,

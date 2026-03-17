@@ -1,34 +1,34 @@
 import { sanityClient } from "@/shared/lib/sanity";
 import { WorkoutLog, WorkoutLogSession } from "../modal/type";
+import { getSanityUserId } from "@/entities/user/api";
 
 const get_unique_key = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
 export const createWorkoutLogApi = async (
     workoutId: string,
-    userId: string,
+    firebaseUid: string,
     date?: string
 ): Promise<WorkoutLog> => {
+    const sanityUserId = await getSanityUserId(firebaseUid);
     console.log("workoutId: string userId: string,", workoutId)
-    console.log("userId: string,", userId)
+    console.log("userId: string,", sanityUserId)
     const today = date || new Date().toISOString().split("T")[0];
 
     let log: WorkoutLog | null = await sanityClient.fetch(
-        `*[_type=="workoutLog" && date == $today && workout._ref == $workoutId && user._ref == $userId][0]`,
-        { today, workoutId, userId }
+        `*[_type=="workoutLog" && date == $today && workout._ref == $workoutId && user._id == $userId][0]`,
+        { today, workoutId, userId: sanityUserId }
     );
 
     if (!log) {
         log = await sanityClient.create<WorkoutLog>({
             _type: "workoutLog",
             date: today,
-            user: { _type: "reference", _ref: userId },
+            user: { _type: "reference", _ref: sanityUserId },
             workout: { _type: "reference", _ref: workoutId },
             sessions: [],
         });
     }
 
-    console.log("workoutId: string userId: string,", workoutId)
-    console.log("userId: string,", userId)
     return log;
 };
 
@@ -42,7 +42,6 @@ export const addSessionApi = async (
         exercise: { _type: "reference", _ref: sessionData.exercise._id || sessionData.exercise._ref }
     };
 
-    console.log("Ec",sessionData )
 
     await sanityClient
         .patch(workoutLogId)
@@ -52,9 +51,9 @@ export const addSessionApi = async (
     return newSession;
 };
 
-export const getWorkoutLogApi = async (): Promise<WorkoutLog[]> => {
+export const getWorkoutLogApi = async (userId: string): Promise<WorkoutLog[]> => {
     return sanityClient.fetch<WorkoutLog[]>(`
-    *[_type=="workoutLog"] {
+    *[_type=="workoutLog" && user._ref == $userId] {
         _id,
         date,
         user -> { _id },
@@ -69,7 +68,7 @@ export const getWorkoutLogApi = async (): Promise<WorkoutLog[]> => {
             completed,
             exercise -> { _id, name }
         }
-    }`);
+    }`, { userId });
 };
 
 export const getLast7daysApi = async (userId: string, startDate: string) => {
