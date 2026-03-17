@@ -1,6 +1,6 @@
-import { Card } from "@/components/ui/card";
-import { useExerciseStore } from "@/entities/exercise/modal/store";
-import { ExerciseActionMenu } from "@/features/exercise/action-menu/ui";
+import { Card } from "../../components/ui/card";
+import { useExerciseStore } from "../../entities/exercise/modal/store";
+import { ExerciseActionMenu } from "../../features/exercise/action-menu/ui";
 
 export const DisplayExercises = () => {
     const { exercises } = useExerciseStore();
@@ -22,10 +22,10 @@ export const DisplayExercises = () => {
         <div>
             <span className="text-xs text-stone-500">{exercises.length} {exercises.length > 0 ? "exercises" : "exercise"}</span>
             {exercises.map((exercise) => (
-                <div key={exercise._id} className="border-b border-dashed p-5 font-semibold flex items-center justify-between">
+                <div key={exercise.id} className="border-b border-dashed p-5 font-semibold flex items-center justify-between">
                     {exercise.name}
 
-                    <ExerciseActionMenu selectedRow={{ name: exercise.name, _id: exercise._id }}/>
+                    <ExerciseActionMenu selectedRow={exercise}/>
                 </div>
             ))}
         </div>
