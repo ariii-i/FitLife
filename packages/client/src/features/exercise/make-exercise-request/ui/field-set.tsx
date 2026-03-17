@@ -1,22 +1,29 @@
 import { useEffect } from "react";
-import { ExerciseField } from "./fields";
-import { Exercise } from "@/entities/exercise/modal/types";
+import { Schema_Exercise } from "server/src/orpc-server/packages/exericse/domain/schema-exercise";
+import z from "zod";
+import { DesciptionField, MuscleGroupField, NameField } from "./fields";
 
 export const ExerciseFieldSet = ({ register, setValue, selectedExercise }: {
     register: any,
     setValue: any
-    selectedExercise?: Exercise
+    selectedExercise?: z.infer<typeof Schema_Exercise>
 }) => {
 
     useEffect(() => {
         if (selectedExercise) {
-            setValue("exercise", selectedExercise.name);
+            setValue("name", selectedExercise.name);
+            setValue("description", selectedExercise.description);
+            setValue("muscle_group", selectedExercise.muscle_group);
+            setValue("id", selectedExercise.id);
+            setValue("user_id", selectedExercise.user_id);
         }
     }, [selectedExercise, setValue]);
-    
+
     return (
-        <div>
-            <ExerciseField register={register} />
+        <div className="space-y-3">
+            <NameField register={register} />
+            <DesciptionField register={register} />
+            <MuscleGroupField register={register} />
         </div>
     )
 }

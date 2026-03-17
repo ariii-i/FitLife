@@ -1,20 +1,19 @@
-import { Button } from "@/components/ui/button"
-import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer"
-import { useExerciseStore } from "@/entities/exercise/modal/store"
-import { Exercise } from "@/entities/exercise/modal/types"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
+import { Schema_Exercise } from "server/src/orpc-server/packages/exericse/domain/schema-exercise"
 import { toast } from "sonner"
+import z from "zod"
+import { useExerciseStore } from "../../../../entities/exercise/modal/store"
 import { ExerciseFieldSet } from "./field-set"
+import { Drawer, DrawerContent, DrawerTitle } from "../../../../components/ui/drawer"
+import { Button } from "../../../../components/ui/button"
 
-type FormValue = {
-    exercise: string;
-}
+type FormValue = z.infer<typeof Schema_Exercise>
 
 type ExerciseFormProp = {
     open: boolean
     setOpen: (open: boolean) => void
-    selectedExercise?: Exercise
+    selectedExercise?: z.infer<typeof Schema_Exercise>
 }
 
 export const ExerciseForm = ({ open, setOpen, selectedExercise }: ExerciseFormProp) => {
@@ -24,34 +23,35 @@ export const ExerciseForm = ({ open, setOpen, selectedExercise }: ExerciseFormPr
     const { register, handleSubmit, reset, setValue } = useForm<FormValue>()
 
     const handleSubmitExercise: SubmitHandler<FormValue> = async (data) => {
-    if (isSubmitting) return;
+        if (isSubmitting) return;
 
-    if (!data.exercise?.trim()) {
-        toast.error("Please enter exercise name.");
-        return;
-    }
-
-    try {
-        setIsSubmitting(true);
-
-        if (selectedExercise) {
-            await editExercise(selectedExercise._id, data.exercise);
-            toast.success("Exercise updated!");
-        } else {
-            await createExercise(data.exercise);
-            toast.success("Exercise added!");
+        if (!data.name?.trim()) {
+            toast.error("Please enter exercise name.");
+            return;
         }
 
-        await fetchExercises();
-        reset();
-        setOpen(false);
+        try {
+            setIsSubmitting(true);
 
-    } catch (error) {
-        toast.error("Failed to save exercise.");
-    } finally {
-        setIsSubmitting(false);
-    }
-};
+            if (selectedExercise) {
+                await editExercise(data);
+                toast.success("Exercise updated!");
+            } else {
+                await createExercise(data);
+                toast.success("Exercise added!");
+            }
+
+            await fetchExercises();
+            reset();
+            setOpen(false);
+
+        } catch (error) {
+            toast.error("Failed to save exercise.");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     return (
         <Drawer direction="right" open={open} onOpenChange={setOpen}>
             <DrawerContent className="p-2 h-full flex flex-col">
@@ -59,7 +59,7 @@ export const ExerciseForm = ({ open, setOpen, selectedExercise }: ExerciseFormPr
                     Exercises
                 </DrawerTitle>
 
-                <form className="space-y-2 flex flex-col flex-1" onSubmit={handleSubmit(handleSubmitExercise)}>
+                <form className="space-y-2 mt-3 flex flex-col flex-1" onSubmit={handleSubmit(handleSubmitExercise)}>
                     <ExerciseFieldSet register={register} setValue={setValue} selectedExercise={selectedExercise} />
 
                     <div className="flex-1" />
