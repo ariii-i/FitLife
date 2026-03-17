@@ -24,6 +24,7 @@ export const list_exercise_by_user = os
       pageIndex: z.number().int().min(0).default(0),
     })
   )
+  .output(z.array(Schema_Exercise))
   .handler(async ({ input }) => {
     return await ExerciseModel.query()
       .where("user_id", input.user_id)
@@ -49,6 +50,29 @@ export const create_exercise = os
   //     throw new ORPCError("UNAUTHORIZED");
   //   })
   .input(Schema_Exercise.omit({ id: true }))
+  .output((Schema_Exercise))
   .handler(async ({ input, context }) => {
     return await ExerciseModel.query().insert(input);
+  });
+
+export const update_exercise = os
+  .$context<{ headers: IncomingHttpHeaders }>()
+  .input(Schema_Exercise)
+  .output(Schema_Exercise)
+  .handler(async ({ input }) => {
+    const result = await ExerciseModel.query()
+      .update(input)
+      .where("id", input.id)
+      .returning("*")
+      .first();
+    if (!result) {
+      throw new Error("Exercise not found");
+    }
+    return {
+      id: result.id,
+      name: result.name,
+      description: result.description,
+      user_id: result.user_id,
+      muscle_group: result.muscle_group,
+    };
   });

@@ -1,14 +1,16 @@
 import { create } from "zustand";
+import { z } from "zod";
 import { createExerciseApi, deleteExerciseApi, editExerciseApi, getExerciseApi } from "../api";
 import { Exercise } from "./types";
+import { Schema_Exercise } from "server/src/orpc-server/packages/exericse/domain/schema-exercise";
 
-export type ExerciseStore ={
-  exercises: Exercise[],
+export type ExerciseStore = {
+  exercises: Array<z.infer<typeof Schema_Exercise>>,
   setExercises: (exercises: Exercise[]) => void,
-  createExercise: (data: string) => Promise<void>,
+  createExercise: (payload: z.infer<typeof Schema_Exercise>) => Promise<void>,
   fetchExercises: () => Promise<void>,
   deleteExercise: (id: string) => Promise<void>,
-  editExercise: (id: string, name: string) => Promise<Exercise>
+  editExercise: (payload: z.infer<typeof Schema_Exercise>) => Promise<z.infer<typeof Schema_Exercise>>
 }
 
 export const useExerciseStore = create<ExerciseStore>((set) => ({
@@ -16,8 +18,8 @@ export const useExerciseStore = create<ExerciseStore>((set) => ({
 
   setExercises: (exercises) => set({ exercises }),
 
-  createExercise: async (exercise: string) => {
-    const created: Exercise = await createExerciseApi({ exercise });
+  createExercise: async (payload) => {
+    const created = await createExerciseApi(payload);
 
     set((state) => ({
       exercises: [created, ...state.exercises],
@@ -29,6 +31,7 @@ export const useExerciseStore = create<ExerciseStore>((set) => ({
     try {
       const data = await getExerciseApi()
       set({ exercises: data })
+      console.log("ss", data)
     } catch (error) {
       console.error(error);
     }
@@ -42,16 +45,16 @@ export const useExerciseStore = create<ExerciseStore>((set) => ({
     }));
   },
 
-  editExercise: async (id: string, name: string) => {
-    const update: Exercise = await editExerciseApi(id, name);
+  editExercise: async (payload) => {
+    const updated = await editExerciseApi(payload);
 
     set((state) => ({
-      exercises: state.exercises.map((ex) =>
-        ex._id === id ? update : ex
+      exercises: state.exercises.map((exercise) =>
+        exercise.id === payload.id ? updated : exercise
       ),
     }));
 
-    return update;
+    return updated;
   },
 
 }));
