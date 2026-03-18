@@ -6,5 +6,6 @@ export const Schema_Workout_Exercise = z.object({
   exercise_id: z.number(),
   sets: z.number().int().optional(),
   reps: z.number().int().optional(),
+  name: z.string().optional(),
   created_at: z.string(),
 });

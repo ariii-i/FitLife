@@ -1,8 +1,7 @@
 import { sanityClient } from "@/shared/lib/sanity"
-import { Workout } from "../modal/types"
-import z from "zod"
-import { Schema_Create_Workout, Schema_Workout } from "server/src/orpc-server/packages/workout/domain/schema-workout"
 import { orpc } from "server/src/orpc-client"
+import { Schema_Create_Workout } from "server/src/orpc-server/packages/workout/domain/schema-workout"
+import z from "zod"
 
 const get_unique_key = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`
 
@@ -15,8 +14,8 @@ type CreateWorkoutInput = {
   }[]
 }
 
-export const createWorkoutApi = async (data) => {
-  return orpc.workout.create({ ...data, user_id: 1, });
+export const createWorkoutApi = async (data: z.infer<typeof Schema_Create_Workout>) => {
+  return orpc.workout.create({ ...data, user_id: 1 });
 };
 
 export const getWorkoutApi = async () => {
@@ -24,26 +23,11 @@ export const getWorkoutApi = async () => {
 }
 
 export const getSelectedWorkoutApi = async () => {
-  return sanityClient.fetch<Workout>(
-    `*[_type=="workout" && _id == $workoutId][0]{
-      _id,
-      name,
-      exercises[]{
-        _key,
-        sets,
-        reps,
-        exercise->{
-          _id,
-          name
-        }
-      }
-    }`,
-    { workoutId }
-  )
+  return orpc.workout.list_exercise_in_a_workout({ workout_id: 1 })
 }
 
-export const updateWorkoutApi = async (id: string, updatedField: Partial<Workout>): Promise<Workout> => {
-  return sanityClient.patch(id).set(updatedField).commit<Workout>()
+export const updateWorkoutApi = async ()=> {
+  return orpc.workout.
 }
 
 export const deleteWorkoutApi = async (id: string): Promise<void> => {

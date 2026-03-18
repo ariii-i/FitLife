@@ -10,7 +10,7 @@ export const Schema_Workout = z.object({
 
 export const Schema_Create_Workout = Schema_Workout.omit({ id: true, created_at: true }).extend({
   exercises: z
-    .array(Schema_Workout_Exercise.pick({ exercise_id: true, sets: true, reps: true }))
+    .array(Schema_Workout_Exercise.pick({ exercise_id: true, sets: true, reps: true, name:true }))
     .min(1),
 });
 
