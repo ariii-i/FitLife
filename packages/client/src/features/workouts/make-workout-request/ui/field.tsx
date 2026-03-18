@@ -1,25 +1,37 @@
 import { useFieldArray, useWatch, Control, UseFormRegister, UseFormSetValue } from "react-hook-form";
-import { WorkoutFormValue, PlannedValue } from "./form";
+import { WorkoutFormValue } from "./form";
 import { Input } from "@/components/ui/input";
 
-type Props = {
+type ExerciseProps = {
     control: Control<WorkoutFormValue>;
     register: UseFormRegister<WorkoutFormValue>;
     setValue: UseFormSetValue<WorkoutFormValue>;
 };
 
-export const ExerciseListField = ({ control, register, setValue }: Props) => {
-    const { fields } = useFieldArray<WorkoutFormValue, "exercises", "_id">({
+export const WorkoutNameField = ({ register }: {
+    register: UseFormRegister<WorkoutFormValue>
+}) => (
+    <div>
+        <label>Workout Name</label>
+        <Input {...register("name")} type="text" placeholder="Enter workout name" />
+    </div>
+);
+
+export const ExerciseListField = ({ control, register }: ExerciseProps) => {
+    const { fields } = useFieldArray({
         control,
         name: "exercises",
-        keyName: "_id",
     });
 
-    const watchExercises = useWatch({ control, name: "exercises" });
-    const selectedExercises = watchExercises?.filter((ex) => ex.sets || ex.reps ) || [];
+    const watchExercises = useWatch({
+        control,
+        name: "exercises",
+    });
+
+    const selectedExercises=watchExercises?.filter((exercise) => exercise.selected) || [];
 
     return (
-        <div className="space-y-2 ">
+        <div className="space-y-2">
             <div className="border border-dashed p-1 rounded-xl border-stone-300">
                 <table>
                     <thead>
@@ -31,16 +43,27 @@ export const ExerciseListField = ({ control, register, setValue }: Props) => {
                     </thead>
                     <tbody>
                         {fields.map((field, index) => (
-                            <tr key={field._id} className="space-y-2">
+                            <tr key={field._id}>
                                 <td className="flex items-center gap-2 p-1">
-                                    {/* <Input type="checkbox" className="w-4 h-4" {...register(`exercises.${index}.selected`)} /> */}
+                                    <Input
+                                        type="checkbox"
+                                        {...register(`exercises.${index}.selected`)}
+                                    />
                                     {field.name}
                                 </td>
                                 <td className="p-1">
-                                    <Input type="number" min={0} {...register(`exercises.${index}.sets`)} />
+                                    <Input
+                                        type="number"
+                                        min={0}
+                                        {...register(`exercises.${index}.sets`)}
+                                    />
                                 </td>
                                 <td className="p-1">
-                                    <Input type="number" min={0} {...register(`exercises.${index}.reps`)} />
+                                    <Input
+                                        type="number"
+                                        min={0}
+                                        {...register(`exercises.${index}.reps`)}
+                                    />
                                 </td>
                             </tr>
                         ))}
@@ -51,15 +74,15 @@ export const ExerciseListField = ({ control, register, setValue }: Props) => {
             {selectedExercises.length === 0 ? (
                 <p>No exercises selected</p>
             ) : (
-                <div className="p-2 border rounded-xl  font-semibold">
+                <div className="p-2 border rounded-xl font-semibold">
                     {selectedExercises.map((ex, idx) => (
                         <div key={idx}>
-                            {/* {ex.name}: {ex.sets} sets of {ex.reps} reps */}
+                            {ex.name}: {ex.sets} sets of {ex.reps} reps
                         </div>
                     ))}
                 </div>
             )}
-
         </div>
     );
 };
+

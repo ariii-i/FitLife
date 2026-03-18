@@ -2,8 +2,7 @@ import { Control, UseFormRegister, UseFormSetValue, useForm } from "react-hook-f
 import { WorkoutFormValue } from "./form";
 import { useExerciseStore } from "@/entities/exercise/modal/store";
 import { useEffect } from "react";
-import { WorkoutNameField } from "./workout-field";
-import { ExerciseListField } from "./exercise-field";
+import { ExerciseListField, WorkoutNameField } from "./field";
 
 type Props = {
     control: Control<WorkoutFormValue>;
@@ -16,15 +15,17 @@ export const WorkoutFieldSet = ({ control, setValue, register }: Props) => {
 
     useEffect(() => {
         if (exercises.length) {
-        //     setValue(
-        //         "exercises",
-        //         exercises.map((ex) => ({
-        //             ...ex,
-        //             selected: false,
-        //             sets: 0,
-        //             reps: 0,
-        //         }))
-        //     );
+            setValue(
+                "exercises",
+                exercises.map((exercise) => {
+                    return ({
+                        exercise_id:exercise.id,
+                        name: exercise.name,
+                        sets: 0,
+                        reps: 0,
+                    });
+                })
+            );
         }
     }, [exercises, setValue]);
 

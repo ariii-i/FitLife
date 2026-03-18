@@ -29,7 +29,6 @@ export const useExerciseStore = create<ExerciseStore>((set) => ({
     try {
       const data = await getExerciseApi()
       set({ exercises: data })
-      console.log("ss", data)
     } catch (error) {
       console.error(error);
     }
