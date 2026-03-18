@@ -4,46 +4,45 @@ import { useWorkoutStore } from "@/entities/workout/modal/store";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { WorkoutFieldSet } from "./field-set";
+import z from "zod";
+import { Schema_Create_Workout, Schema_Workout } from "server/src/orpc-server/packages/workout/domain/schema-workout";
 
 export type PlannedValue = {
     _key?: string
     _id: string
     name: string
-    plannedSets: number
-    plannedReps: number
+    sets: number
+    reps: number
     selected: boolean
 }
 
-export type WorkoutFormValue = {
-    name: string
-    exercises: PlannedValue[]
-}
+export type WorkoutFormValue = z.infer<typeof Schema_Create_Workout>
 
-export const WorkoutForm = ({open, setOpen}:{
-    open:boolean,
-    setOpen: (open: boolean)=>void
+export const WorkoutForm = ({ open, setOpen }: {
+    open: boolean,
+    setOpen: (open: boolean) => void
 }) => {
     const { createWorkout, fetchWorkouts } = useWorkoutStore()
     const { register, handleSubmit, setValue, control, watch, reset } = useForm<WorkoutFormValue>();
 
     const onSubmit: SubmitHandler<WorkoutFormValue> = async (data) => {
-        const selectedExercises = data.exercises.filter((ex) => ex.selected);
 
         if (!data.name) {
             return toast.error("Please enter workout name");
         }
 
-        if (!selectedExercises.length) {
+        if (!data.exercises.length) {
             return toast.error("Please select atleast one exercise");
         }
 
         try {
             const payload = {
                 name: data.name,
-                exercises: selectedExercises.map(ex => ({
-                    _id: ex._id,
-                    plannedSets: Number(ex.plannedSets),
-                    plannedReps: Number(ex.plannedReps),
+                user_id: data.user_id,
+                exercises: data.exercises.map(exercise => ({
+                    exercise_id: (exercise.exercise_id),
+                    sets: Number(exercise.sets),
+                    reps: Number(exercise.reps),
                 })),
             };
             await createWorkout(payload);
@@ -63,13 +62,11 @@ export const WorkoutForm = ({open, setOpen}:{
                 <DrawerTitle>Workout form</DrawerTitle>
 
                 <form className="space-y-2 overflow-y-auto" onSubmit={handleSubmit(onSubmit)}>
-                    <WorkoutFieldSet control={control} register={register} setValue={setValue}/>
+                    <WorkoutFieldSet control={control} register={register} setValue={setValue} />
 
                     <div className="flex gap-2">
-                        <Button className="w-full">Add Workout</Button>
-                        <Button className="w-full" onClick={() => {
-                            setOpen(false)
-                        }} type="button">
+                        <Button className="w-full" type="submit">Add Workout</Button>
+                        <Button className="w-full" onClick={() => { setOpen(false) }} type="button">
                             Close
                         </Button>
                     </div>

@@ -1,15 +1,13 @@
 import { create } from "zustand";
 import { z } from "zod";
-import { createExerciseApi, deleteExerciseApi, editExerciseApi, getExerciseApi } from "../api";
-import { Exercise } from "./types";
+import { createExerciseApi, editExerciseApi, getExerciseApi } from "../api";
 import { Schema_Exercise } from "server/src/orpc-server/packages/exericse/domain/schema-exercise";
 
 export type ExerciseStore = {
   exercises: Array<z.infer<typeof Schema_Exercise>>,
-  setExercises: (exercises: Exercise[]) => void,
+  setExercises: (exercises: Array<z.infer<typeof Schema_Exercise>>) => void,
   createExercise: (payload: z.infer<typeof Schema_Exercise>) => Promise<void>,
   fetchExercises: () => Promise<void>,
-  deleteExercise: (id: string) => Promise<void>,
   editExercise: (payload: z.infer<typeof Schema_Exercise>) => Promise<z.infer<typeof Schema_Exercise>>
 }
 
@@ -35,14 +33,6 @@ export const useExerciseStore = create<ExerciseStore>((set) => ({
     } catch (error) {
       console.error(error);
     }
-  },
-
-  deleteExercise: async (id: string) => {
-    await deleteExerciseApi(id);
-
-    set((state) => ({
-      exercises: state.exercises.filter((ex) => ex._id !== id),
-    }));
   },
 
   editExercise: async (payload) => {

@@ -1,14 +1,16 @@
 import { create } from "zustand";
 import { createWorkoutApi, deleteWorkoutApi, getSelectedWorkoutApi, getWorkoutApi, updateWorkoutApi } from "../api";
 import { Workout } from "./types";
+import z from "zod";
+import { Schema_Create_Workout, Schema_Workout } from "server/src/orpc-server/packages/workout/domain/schema-workout";
 
 type WorkoutStore = {
-  workouts: Workout[];
+  workouts: Array<z.infer<typeof Schema_Workout>>;
   workout: Workout | null;
-  createWorkout: (data: { name: string; exercises: { _id: string; plannedSets: number; plannedReps: number }[] }) => Promise<void>
+  createWorkout: (payload: z.infer<typeof Schema_Create_Workout>) => Promise<void>
   fetchWorkouts: () => Promise<void>
-  fetchSelectedWorkout: (workoutId: string) => Promise<void>
-  updateWorkout: (id: string, updatedField: Partial<Workout>) => Promise<void>
+  fetchSelectedWorkout: (payload: z.infer<typeof Schema_Workout>) => Promise<void>
+  updateWorkout: (payload: z.infer<typeof Schema_Workout>) => Promise<void>
   deleteWorkout: (id: string) => Promise<void>
   clearWorkouts: () => void;
 }
@@ -17,16 +19,14 @@ export const useWorkoutStore = create<WorkoutStore>((set) => ({
   workouts: [],
   workout: null,
 
-  createWorkout: async (data: {
-    name: string;
-    exercises: { _id: string; plannedSets: number; plannedReps: number }[]
-  }) => {
+  createWorkout: async (payload) => {
+    console.log(payload)
     try {
-      const createdDoc = await createWorkoutApi(data);
-      const fetchWorkout= await getSelectedWorkoutApi(createdDoc._id);
+      const created = await createWorkoutApi(payload);
+      console.log(created)
 
       set((state) => ({
-        workouts: [fetchWorkout, ...state.workouts],
+        workouts: [...state.workouts, created],
       }));
 
     } catch (error) {

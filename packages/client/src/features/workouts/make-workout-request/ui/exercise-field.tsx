@@ -15,8 +15,8 @@ export const ExerciseListField = ({ control, register, setValue }: Props) => {
         keyName: "_id",
     });
 
-    const watchExercises = useWatch({ control, name: "exercises" }) as PlannedValue[];
-    const selectedExercises = watchExercises?.filter((ex) => ex.selected) || [];
+    const watchExercises = useWatch({ control, name: "exercises" });
+    const selectedExercises = watchExercises?.filter((ex) => ex.sets || ex.reps ) || [];
 
     return (
         <div className="space-y-2 ">
@@ -33,14 +33,14 @@ export const ExerciseListField = ({ control, register, setValue }: Props) => {
                         {fields.map((field, index) => (
                             <tr key={field._id} className="space-y-2">
                                 <td className="flex items-center gap-2 p-1">
-                                    <Input type="checkbox" className="w-4 h-4" {...register(`exercises.${index}.selected`)} />
+                                    {/* <Input type="checkbox" className="w-4 h-4" {...register(`exercises.${index}.selected`)} /> */}
                                     {field.name}
                                 </td>
                                 <td className="p-1">
-                                    <Input type="number" min={0} {...register(`exercises.${index}.plannedSets`)} />
+                                    <Input type="number" min={0} {...register(`exercises.${index}.sets`)} />
                                 </td>
                                 <td className="p-1">
-                                    <Input type="number" min={0} {...register(`exercises.${index}.plannedReps`)} />
+                                    <Input type="number" min={0} {...register(`exercises.${index}.reps`)} />
                                 </td>
                             </tr>
                         ))}
@@ -54,7 +54,7 @@ export const ExerciseListField = ({ control, register, setValue }: Props) => {
                 <div className="p-2 border rounded-xl  font-semibold">
                     {selectedExercises.map((ex, idx) => (
                         <div key={idx}>
-                            {ex.name}: {ex.plannedSets} sets of {ex.plannedReps} reps
+                            {/* {ex.name}: {ex.sets} sets of {ex.reps} reps */}
                         </div>
                     ))}
                 </div>

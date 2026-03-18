@@ -22,6 +22,7 @@ export const DesciptionField = ({ register }: {
         </div>
     )
 }
+
 export const MuscleGroupField = ({ register }: {
     register: any
 }) => {
