@@ -1,7 +1,12 @@
 {
-	"type":"module",
+	"type": "module",
+	"scripts": {
+		"dev": "turbo dev --filter=server --filter=client",
+		"server:dev": "pnpm --filter server dev",
+		"client:dev": "pnpm --filter client dev"
+	},
 	"dependencies": {
 		"turbo": "^2.8.16"
-
-	}
+	},
+	"packageManager": "pnpm@8.6.3"
 }
