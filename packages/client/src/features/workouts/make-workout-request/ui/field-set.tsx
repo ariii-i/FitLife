@@ -16,15 +16,15 @@ export const WorkoutFieldSet = ({ control, setValue, register }: Props) => {
 
     useEffect(() => {
         if (exercises.length) {
-            setValue(
-                "exercises",
-                exercises.map((ex) => ({
-                    ...ex,
-                    selected: false,
-                    plannedSets: 0,
-                    plannedReps: 0,
-                }))
-            );
+        //     setValue(
+        //         "exercises",
+        //         exercises.map((ex) => ({
+        //             ...ex,
+        //             selected: false,
+        //             sets: 0,
+        //             reps: 0,
+        //         }))
+        //     );
         }
     }, [exercises, setValue]);
 
