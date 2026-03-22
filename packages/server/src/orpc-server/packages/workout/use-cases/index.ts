@@ -116,7 +116,7 @@ export const find_last_session_of_a_user = os
   });
 
 export const create_session = os
-  .input(Schema_Workout_Session.omit({ id: true }))
+  .input(Schema_Workout_Session.omit({ id: true, exercises_done: true }))
   .handler(async ({ input }) => {
     return WorkoutSessionModel.query().insert(input);
   });

@@ -1,13 +1,9 @@
 import { Card } from "@/components/ui/card";
-import React, { useEffect, useState } from "react"
-import { useParams } from "react-router-dom";
-
+import { useEffect, useState } from "react"
 
 export const StopWatch = ({ isActive }: {
     isActive: boolean
 }) => {
-    const { workoutId, exerciseId } = useParams<{workoutId: string, exerciseId:string}>()
-
     const [time, setTime] = useState(0);
 
     useEffect(() => {

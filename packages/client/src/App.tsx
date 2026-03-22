@@ -7,7 +7,7 @@ import { Profile } from "./pages/profile";
 import { Layout } from "./widget/layout";
 import { ProtectedRoute } from "./features/auth/protected-route";
 import { WorkoutHistory } from "./widget/workout/workout-history";
-import { SessionPage } from "./features/start-exercise/ui";
+import { SessionPage } from "./pages/session-page/ui";
 import "./App.css";
 import { WorkoutDetail } from "./pages/workout-deital/ui";
 
