@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import "./App.css";
 import { LoginPage } from "./pages/login";
 import { HomePage } from "./pages/home";
 import { Exercise } from "./pages/exercise/ui";
@@ -9,7 +8,8 @@ import { Layout } from "./widget/layout";
 import { ProtectedRoute } from "./features/auth/protected-route";
 import { WorkoutHistory } from "./widget/workout/workout-history";
 import { SessionPage } from "./features/start-exercise/ui";
-import { WorkoutDetails } from "./widget/exercise/exercise-detail";
+import "./App.css";
+import { WorkoutDetail } from "./pages/workout-deital/ui";
 
 function App() {
   return (
@@ -30,7 +30,7 @@ function App() {
                 path="/workoutHistory/:workoutLogId"
                 element={<WorkoutHistory />}
               />
-              <Route path="/workout/:workoutId" element={<WorkoutDetails />} />
+              <Route path="/workout/:workoutId" element={<WorkoutDetail />} />
               <Route
                 path="/workout/:workoutId/session/:exerciseId"
                 element={<SessionPage />}
