@@ -1,38 +1,69 @@
-import { Control, UseFormRegister, UseFormSetValue, useForm } from "react-hook-form";
-import { WorkoutFormValue } from "./form";
 import { useExerciseStore } from "@/entities/exercise/modal/store";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import { useFormContext } from "react-hook-form";
 import { ExerciseListField, WorkoutNameField } from "./field";
+import { useWorkoutStore } from "@/entities/workout/modal/store";
+export const WorkoutFieldSet = ({
+  selectedWorkout,
+}: {
+  selectedWorkout?: any;
+}) => {
+  const { exercises } = useExerciseStore();
+  const { setValue } = useFormContext();
 
-type Props = {
-    control: Control<WorkoutFormValue>;
-    setValue: UseFormSetValue<WorkoutFormValue>;
-    register: UseFormRegister<WorkoutFormValue>
-};
+  const { fetchWorkoutDetail } = useWorkoutStore();
+  const init = React.useCallback(async () => {
+    if (selectedWorkout) {
+      const res = await fetchWorkoutDetail(selectedWorkout.id);
+      console.warn(res);
 
-export const WorkoutFieldSet = ({ control, setValue, register }: Props) => {
-    const { exercises } = useExerciseStore();
-
-    useEffect(() => {
-        if (exercises.length) {
-            setValue(
-                "exercises",
-                exercises.map((exercise) => {
-                    return ({
-                        exercise_id:exercise.id,
-                        name: exercise.name,
-                        sets: 0,
-                        reps: 0,
-                    });
-                })
+      if (res) {
+        setValue("name", res.name);
+        setValue(
+          "exercises",
+          exercises.map((exercise) => {
+            const exercise_found = res.exercises.find(
+              (e: any) => e.id === exercise.id,
             );
-        }
-    }, [exercises, setValue]);
 
-    return (
-        <div className="space-y-4">
-            <WorkoutNameField register={register} />
-            <ExerciseListField control={control} register={register} setValue={setValue} />
-        </div>
-    )
-}
+            return {
+              exercise_id: exercise.id,
+              name: exercise.name,
+              sets: exercise_found ? exercise_found.sets : 0,
+              reps: exercise_found ? exercise_found.reps : 0,
+              selected: !!exercise_found,
+            };
+          }),
+        );
+      }
+    }
+  }, [fetchWorkoutDetail, selectedWorkout]);
+
+  useEffect(() => {
+    if (selectedWorkout) {
+      init();
+    } else {
+      if (exercises.length) {
+        setValue(
+          "exercises",
+          exercises.map((exercise) => {
+            return {
+              exercise_id: exercise.id,
+              name: exercise.name,
+              sets: 0,
+              reps: 0,
+              selected: false,
+            };
+          }),
+        );
+      }
+    }
+  }, [selectedWorkout, exercises, setValue]);
+
+  return (
+    <div className="flex flex-col gap-4">
+      <WorkoutNameField />
+      <ExerciseListField />
+    </div>
+  );
+};
