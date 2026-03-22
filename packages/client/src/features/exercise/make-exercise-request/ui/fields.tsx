@@ -1,37 +1,99 @@
-import { Input } from "../../../../components/ui/input"
+import { Controller, useFormContext } from "react-hook-form";
+import { Input } from "../../../../components/ui/input";
+import { When } from "react-if";
 
-export const NameField = ({ register }: {
-    register: any
-}) => {
-    return (
-        <div>
-            <label className="text-sm text-stone-500">Name</label>
-            <Input {...register("name")} placeholder="e.g. Bench Press" />
+export const NameField = () => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
+  return (
+    <div>
+      <label className="text-sm text-stone-500">Name</label>
+      <Controller
+        control={control}
+        name="name"
+        render={({ field }) => (
+          <Input
+            id="name"
+            placeholder="e.g. Bench Press"
+            value={field.value || ""}
+            onChange={(e) => {
+              field.onChange(e.target.value);
+            }}
+          />
+        )}
+      />
+      <When condition={!!errors.name}>
+        <div className="text-destructive text-sm">
+          {errors?.name?.message + ""}
         </div>
-    )
-}
+      </When>
+    </div>
+  );
+};
 
-export const DesciptionField = ({ register }: {
-    register: any
-}) => {
-    return (
-        <div className="flex flex-col gap-1">
-            <label className="text-sm text-stone-500">description</label>
+export const DesciptionField = () => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
 
-            <Input {...register("description")} placeholder="e.g. Bench Press" />
+  return (
+    <div>
+      <label className="text-sm text-stone-500">Description</label>
+      <Controller
+        control={control}
+        name="description"
+        render={({ field }) => (
+          <Input
+            id="description"
+            placeholder="Give some description about the exercise"
+            value={field.value || ""}
+            onChange={(e) => {
+              field.onChange(e.target.value);
+            }}
+          />
+        )}
+      />
+      <When condition={!!errors.name}>
+        <div className="text-destructive text-sm">
+          {errors?.name?.message + ""}
         </div>
-    )
-}
+      </When>
+    </div>
+  );
+};
 
-export const MuscleGroupField = ({ register }: {
-    register: any
-}) => {
-    return (
-        <div className="flex flex-col gap-1">
-            <label className="text-sm text-stone-500">Muscle Group</label>
+export const MuscleGroupField = () => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
 
-            <Input {...register("muscle_group")} placeholder="e.g. Bench Press" />
-
+  return (
+    <div>
+      <label className="text-sm text-stone-500">Muscle Group</label>
+      <Controller
+        control={control}
+        name="muscle_group"
+        render={({ field }) => (
+          <Input
+            id="muscle_group"
+            placeholder="e.g. Chest, Back, Legs"
+            value={field.value || ""}
+            onChange={(e) => {
+              field.onChange(e.target.value);
+            }}
+          />
+        )}
+      />
+      <When condition={!!errors.muscle_group}>
+        <div className="text-destructive text-sm">
+          {errors?.muscle_group?.message + ""}
         </div>
-    )
-}
+      </When>
+    </div>
+  );
+};

@@ -1,63 +1,44 @@
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { useUserStore } from "@/entities/user/modal/store";
-import { useWorkoutLogStore } from "@/entities/workout-log/modal/store";
-import { useWorkoutStore } from "@/entities/workout/modal/store";
-import { WorkoutButton } from "@/features/workouts/make-workout-request/ui/create-workout-button";
-import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { auth } from "../../shared/lib/firebase";
+import { Card } from "../../components/ui/card";
+import { useExerciseStore } from "../../entities/exercise/modal/store";
+import { ExerciseActionMenu } from "../../features/exercise/action-menu/ui";
+import { Switch, Case } from "react-if";
+import { ExerciseMetric } from "./ui/exercise-metric";
 
-const getExerciseId = (exercise: { _id: string; name: string } | { _type: "reference"; _ref: string }) => {
-    return "_ref" in exercise ? exercise._ref : exercise._id;
+export const Component = () => {
+  const { exercises } = useExerciseStore();
+
+  return (
+    <>
+      <ExerciseMetric />
+      <div className="flex flex-col gap-2">
+        {exercises.map((exercise) => (
+          <div
+            key={exercise.id}
+            className="bg-stone-900 border border-stone-700 px-5 py-3 rounded-sm text-gray-50 flex items-center gap-2 justify-between"
+          >
+            <p>{exercise.name}</p>
+
+            <ExerciseActionMenu selectedRow={exercise} />
+          </div>
+        ))}
+      </div>
+    </>
+  );
 };
 
-export const WorkoutDetails = () => {
-    const { workoutId } = useParams<{ workoutId: string }>();
-    const { fetchUser } = useUserStore()
-    const { workoutLogs, fetchWorkoutLogs } = useWorkoutLogStore()
-    const { workout, fetchSelectedWorkout } = useWorkoutStore();
+export const ExerciseList = () => {
+  const { exercises } = useExerciseStore();
 
-    useEffect(() => {
-        if (!workoutId) return;
-        fetchSelectedWorkout(workoutId);
-        if (auth.currentUser?.uid) {
-            fetchUser(auth.currentUser.uid);
-            fetchWorkoutLogs(auth.currentUser.uid);
-        }
-    }, [workoutId, fetchSelectedWorkout, fetchUser, fetchWorkoutLogs])
-
-
-    return (
-        <div className="font-semibold text-xl p-2">
-            {workout?.name}
-
-            {(!workout?.exercises || workout.exercises.length === 0) && (
-                <Card className="bg-stone-700 p-7 rounded-xl text-stone-100 font-semibold flex-col flex justify-center items-center text-lg">
-                    No exercises yet.
-                    <WorkoutButton />
-                </Card>
-            )}
-
-            {workout?.exercises?.map((w) => {
-                const exerciseId = getExerciseId(w.exercise)
-                return (
-                    <Link key={w._key} to={`/workout/${workoutId}/session/${exerciseId}`}>
-                        <Card className="bg-stone-700 p-5 rounded-xl text-stone-100 font-semibold flex justify-between items-center text-lg">
-
-                            <span>{"name" in w.exercise && w.exercise.name}</span>
-
-                            <div className="font-medium text-sm text-stone-300">
-                                {w.plannedSets} sets x {w.plannedReps} reps
-                            </div>
-                        </Card>
-                    </Link>
-                )
-            })}
-
-            <div className="py-2 flex justify-end">
-                <Link to="/"><Button type="button" variant="link">Back to Dashboard</Button></Link>
-            </div>
-        </div>
-    )
-}
+  return (
+    <Switch>
+      <Case condition={!exercises || exercises.length === 0}>
+        <Card className="bg-stone-700 p-7 rounded-xl text-stone-100 font-semibold flex-col flex justify-center items-center text-lg">
+          <p>No exercise yet. Create a new one?</p>
+        </Card>
+      </Case>
+      <Case condition={exercises && exercises.length > 0}>
+        <Component />
+      </Case>
+    </Switch>
+  );
+};
