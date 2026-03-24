@@ -2,7 +2,7 @@ import { os } from "@orpc/server";
 import * as z from "zod";
 import type { IncomingHttpHeaders } from "node:http";
 import { ExerciseModel } from "../domain/exercise";
-import { Schema_Exercise } from "../domain/schema-exercise";
+import { Schema_Exercise, MuscleGroupEnum } from "../domain/schema-exercise";
 
 export const list_exercise = os
   .input(
@@ -22,14 +22,23 @@ export const list_exercise_by_user = os
       user_id: z.number().int(),
       pageSize: z.number().int().min(1).max(100).default(10),
       pageIndex: z.number().int().min(0).default(0),
+      name: z.string().optional(),
+      muscle_group: MuscleGroupEnum.optional(),
     })
   )
   .output(z.array(Schema_Exercise))
   .handler(async ({ input }) => {
-    return await ExerciseModel.query()
-      .where("user_id", input.user_id)
-      .limit(input.pageSize)
-      .offset(input.pageIndex * input.pageSize);
+    let query = ExerciseModel.query().where("user_id", input.user_id);
+
+    if (input.name) {
+      query = query.where("name", "like", `%${input.name}%`);
+    }
+
+    if (input.muscle_group) {
+      query = query.where("muscle_group", input.muscle_group);
+    }
+
+    return await query.limit(input.pageSize).offset(input.pageIndex * input.pageSize);
   });
 
 export const find_exercise = os
