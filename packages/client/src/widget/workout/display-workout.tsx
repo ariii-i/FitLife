@@ -1,6 +1,5 @@
-import { WorkoutButton } from "@/features/workouts/make-workout-request/ui/create-workout-button";
-import { useWorkoutStore } from "../../entities/workout/modal/store"
 import { WorkoutActionMenu } from "@/features/workouts/action-menu/ui";
+import { useWorkoutStore } from "../../entities/workout/modal/store";
 
 export const DisplayWorkout = () => {
     const { workouts } = useWorkoutStore();
@@ -10,10 +9,10 @@ export const DisplayWorkout = () => {
             <p className="text-stone-500 text-xs">
                 {workouts.length} {workouts.length <= 1 ? "workout" : "workouts"}
             </p>
-            {workouts.map((w) => (
-                <div key={w._id} className="border-b border-dashed p-5 font-semibold flex items-center justify-between">
-                    {w.name}
-                    <WorkoutActionMenu workoutId={w._id} />
+            {workouts.map((workout) => (
+                <div key={workout.id} className="border-b border-dashed p-5 font-semibold flex items-center justify-between">
+                    {workout.name}
+                    <WorkoutActionMenu workoutId={workout.id} />
 
                 </div>
             ))}

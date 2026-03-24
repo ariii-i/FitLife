@@ -21,7 +21,10 @@ export const SessionPage = () => {
     const [endTimeStamp, setEndTimeStamp] = useState<string | null>(null);
 
     useEffect(() => {
-        if (userId) fetchUser(userId);
+        if (userId) {
+            fetchUser(userId)
+        }
+        
         setIsActive(!!activeSession);
     }, [userId, activeSession]);
 
@@ -39,20 +42,20 @@ export const SessionPage = () => {
 
             await createWorkoutLog(workoutId, userId);
         } catch (error) {
-            console.error(error);
+            console.log(error);
             toast.error("Failed to start session");
         }
     }
 
-   const handleStop = () => {
-    if (!startTimeStamp) return toast.error("Session has not started yet");
+    const handleStop = () => {
+        if (!startTimeStamp) return toast.error("Session has not started yet");
 
-    const endTime = new Date().toISOString();
-    setEndTimeStamp(endTime);
+        const endTime = new Date().toISOString();
+        setEndTimeStamp(endTime);
 
-    setIsActive(false);
-    setOpenDrawer(true);
-};
+        setIsActive(false);
+        setOpenDrawer(true);
+    }
 
     return (
         <div className="space-y-4">
@@ -84,4 +87,4 @@ export const SessionPage = () => {
             </div>
         </div>
     );
-};
+}

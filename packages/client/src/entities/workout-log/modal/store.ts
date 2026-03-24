@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { addSessionApi, createWorkoutLogApi, getLast7daysApi, getWorkoutLogApi } from "../api";
 import { WorkoutLog, WorkoutLogSession } from "./type";
+import z from "zod";
+import { Schema_Workout_Session } from "server/src/orpc-server/packages/workout/domain/schema-workout-session";
 
 type AddSessionInput = {
     workoutLogId: string | null;
@@ -14,7 +16,7 @@ type AddSessionInput = {
 };
 
 type WorkoutLogStore = {
-    workoutLogs: WorkoutLog[];
+    workoutLogs: Array<z.infer<typeof Schema_Workout_Session>>,
     logs: { date: string }[];
     activeSession: WorkoutLogSession | null;
     streak: number;

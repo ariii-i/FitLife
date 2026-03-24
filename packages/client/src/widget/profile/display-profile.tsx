@@ -1,6 +1,7 @@
 import { useUserStore } from "@/entities/user/modal/store";
 import { UserRound } from "lucide-react";
 import { Card, CardContent, CardHeader } from "../../components/ui/card";
+import { LoginForm } from "@/features/auth/login";
 
 export const DisplayProfile = () => {
     const { user } = useUserStore();
@@ -17,8 +18,9 @@ export const DisplayProfile = () => {
                 </div>
             )}
 
-            <span className="font-semibold text-lg">{user?.name}</span>
+            <span className="font-semibold text-lg">{user?.username}</span>
             <span className="text-sm text-stone-700">{user?.email}</span>
+
 
             {/* <Card className="bg-stone-700 text-stone-100">
                 <CardHeader>My details</CardHeader>

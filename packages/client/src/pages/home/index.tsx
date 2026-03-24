@@ -1,24 +1,32 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { auth } from "../../shared/lib/firebase";
 import { useUserStore } from "@/entities/user/modal/store";
 import { useWorkoutStore } from "@/entities/workout/modal/store";
 import { useWorkoutLogStore } from "@/entities/workout-log/modal/store";
 import { WorkoutList } from "@/widget/workout/workout-list";
 import { StreaksTrack } from "@/features/streaks/ui";
+import { useExerciseStore } from "@/entities/exercise/modal/store";
 
 export const HomePage = () => {
     const { user, fetchUser } = useUserStore()
     const { fetchWorkouts, workouts } = useWorkoutStore();
-    const { fetchWorkoutLogs } = useWorkoutLogStore()
+    const { fetchWorkoutLogs } = useWorkoutLogStore();
+    const { exercises, fetchExercises } = useExerciseStore()
 
     const currentUser = auth.currentUser
     useEffect(() => {
-        if (currentUser) {
-            fetchUser(currentUser.uid)
-            fetchWorkoutLogs(currentUser.uid)
+        if (user) {
+            fetchUser(user?.id)
+            fetchWorkoutLogs(user?.id)
         }
         fetchWorkouts()
+        fetchExercises()
     }, [])
+
+    const [selectedMuscle, setSelectedMuscle] = useState<string>("all");
+    const muscleGroups = [...new Set(exercises.map(e => e.muscle_group))];
+    
+    const filteredExercises = selectedMuscle === "all" ? exercises : exercises.filter(e => e.muscle_group === selectedMuscle);
 
     return (
         <div>
@@ -27,11 +35,21 @@ export const HomePage = () => {
 
             {/* <DisplayWorkoutList /> */}
 
-            <div className="space-y-2 font-semibold">
+            <div className="py-2 font-semibold flex justify-between">
                 Today's Workout:
 
-                <WorkoutList />
+                <select onChange={(e) => setSelectedMuscle(e.target.value)} className="border px-2 rounded-md">
+                    <option value="all">All</option>
+
+                    {muscleGroups.map((muscle) => (
+                        <option key={muscle} value={muscle}>
+                            {muscle}
+                        </option>
+                    ))}
+                </select>
+
             </div>
+                <WorkoutList filteredExercises={filteredExercises}/>
         </div>
     )
 }

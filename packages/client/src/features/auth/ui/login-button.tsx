@@ -3,6 +3,7 @@ import { FcGoogle } from "react-icons/fc";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Button } from "../../../components/ui/button";
 import { signInWithGoogle } from "./service";
+import { LoginForm } from "../login";
 
 export const LoginWithGoogle = () => {
     const { user } = useUserStore()
@@ -17,6 +18,7 @@ export const LoginWithGoogle = () => {
             <Button onClick={() => signInWithGoogle(navigate)}>
                 <FcGoogle /> Sign in with Google
             </Button>
+            <LoginForm/>
         </div>
     );
 };

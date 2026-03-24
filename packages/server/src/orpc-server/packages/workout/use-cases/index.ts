@@ -4,6 +4,7 @@ import type { IncomingHttpHeaders } from "node:http";
 import {
   Schema_Create_Workout,
   Schema_Create_Workout_Output,
+  Schema_Update_Workout,
   Schema_Workout,
 } from "../domain/schema-workout";
 import { Schema_Workout_Session } from "../domain/schema-workout-session";
@@ -42,7 +43,8 @@ export const list_workout_by_user = os
 export const find_workout = os
   .input(Schema_Workout.pick({ id: true }))
   .handler(async ({ input }) => {
-    return WorkoutModel.query().findById(input.id);
+    const res = await WorkoutModel.query().findById(input.id).withGraphFetched("exercises");
+    return res?.toJSON();
   });
 
 /**
@@ -52,7 +54,7 @@ export const create_workout = os
   .$context<{ headers: IncomingHttpHeaders }>()
   .input(Schema_Create_Workout)
   .output(Schema_Create_Workout_Output)
-  .handler(async ({ input, context }) => {
+  .handler(async ({ input }) => {
     const { exercises, ...workout_payload } = input;
     const workout_created = await WorkoutModel.query().insert(workout_payload);
 
@@ -68,6 +70,35 @@ export const create_workout = os
     return {
       ...workout_created,
       exercises: workout_exercises_created,
+    };
+  });
+  
+export const update_workout = os
+  .$context<{ headers: IncomingHttpHeaders }>()
+  .input(Schema_Update_Workout)
+  .output(Schema_Create_Workout_Output)
+  .handler(async ({ input }) => {
+    const { exercises, id } = input;
+
+    const workout_updated = await WorkoutModel.query().patchAndFetchById(id, {
+      name: input.name,
+    });
+
+    await WorkoutExerciseModel.query().delete().where("workout_id", id);
+
+    const workout_exercises_payload = exercises.map((exercise) => {
+      return {
+        ...exercise,
+        workout_id: id,
+      };
+    });
+
+    const workout_exercises_updated =
+      await WorkoutExerciseModel.query().insertGraph(workout_exercises_payload);
+
+    return {
+      ...workout_updated,
+      exercises: workout_exercises_updated,
     };
   });
 
@@ -86,7 +117,7 @@ export const find_last_session_of_a_user = os
   });
 
 export const create_session = os
-  .input(Schema_Workout_Session.omit({ id: true }))
+  .input(Schema_Workout_Session.omit({ id: true, exercises_done: true }))
   .handler(async ({ input }) => {
     return WorkoutSessionModel.query().insert(input);
   });

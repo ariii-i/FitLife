@@ -1,23 +1,23 @@
 import { useWorkoutStore } from "@/entities/workout/modal/store";
 import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom"
-import { WorkoutButton } from "@/features/workouts/make-workout-request/ui/create-workout-button";
+import { CreateWorkoutButton } from "@/features/workouts/make-workout-request/ui/create-workout-button";
 
-export const WorkoutList = () => {
+export const WorkoutList = ({filteredExercises}) => {
 
     const { workouts } = useWorkoutStore();
     {
         (!workouts || workouts.length === 0) && (
             <Card className="bg-stone-700 p-7 rounded-xl text-stone-100 font-semibold flex-col flex justify-center items-center text-lg">
                 No workout yet. Create a new one?
-                <WorkoutButton />
+                <CreateWorkoutButton />
             </Card>
         )
     }
     return (
         <div>
-            {workouts.map((workout) => (
-                <Link key={workout._id} to={`/workout/${workout._id}`} >
+            {filteredExercises.map((workout) => (
+                <Link key={workout.id} to={`/workout/${workout.id}`} >
                     <Card className="bg-stone-700 p-5 rounded-xl text-stone-100">
                         {workout.name}
                     </Card>

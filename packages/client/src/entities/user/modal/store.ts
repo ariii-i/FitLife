@@ -1,46 +1,50 @@
+import { Schema_User_Base, Schema_User_Create, Schema_User_Update } from "server/src/orpc-server/packages/user/domain/schema-user";
+import z from "zod";
 import { create } from "zustand";
-import { createSanityUser, deleteUserApi, getUserByFirebaseUid, signOuts } from "../api";
-import { User } from "./types";
+import { createUserApi, getUserApi, getUsersApi } from "../api";
 
 type UserStore = {
-    user: User | null;
-    userLogin: (data: Partial<User>) => Promise<void>;
-    fetchUser: (uid: string) => Promise<void>;
-    setUsers: (user: User) => void;
-    deleteUsers: (id: string) => void;
-    signOutUser: (auth: any) => Promise<void>;
+    user: z.infer<typeof Schema_User_Update> | null;
+    userLogin: (data: z.infer<typeof Schema_User_Create>) => Promise<void>;
+    fetchUser: (id: number) => Promise<void>;
+    setUsers: (user: z.infer<typeof Schema_User_Update>) => void;
+    // updateUsers: (user: z.infer<typeof Schema_User_Update>) => Promise<void>;
+    // deleteUsers: (id: number) => void;
+    signOutUser: () => Promise<void>;
 };
 
 export const useUserStore = create<UserStore>((set) => ({
     user: null,
-
-    userLogin: async (data: any) => {
-        const newUser = await createSanityUser(data);
+    
+    setUsers: (user: any) => ({ user }),
+    
+    userLogin: async (data) => {
+        const newUser = await createUserApi(data);
         set({ user: newUser });
     },
 
-    fetchUser: async (uid: string) => {
-        if (!uid) {
+    fetchUser: async (id: number) => {
+        if (!id) {
             console.error("UID is undefined");
             return;
         }
-        const data = await getUserByFirebaseUid(uid);
+        const data = await getUserApi(id);
         set({ user: data });
     },
 
-    setUsers: (user: any) => ({ user }),
 
-    deleteUsers: (id: string) => {
-        deleteUserApi(id)
+    // updateUser:()=>{
+    //     const updated=await updateuserA
+    // },
 
-        set((state) => ({
-            user: state.user && state.user._id === id ? null : state.user,
-        }));
+    // deleteUsers: (id: number) => {
+    //     set((state) => ({
+    //         user: user.id === id ? null : state.user,
+    //     }));
+    // },
+
+    signOutUser: async () => {
+        set({ user: null })
     },
 
-    signOutUser: async (auth: any) => {
-        await signOuts(auth)
-        set({ user: null })
-    }, 
-    
 }))

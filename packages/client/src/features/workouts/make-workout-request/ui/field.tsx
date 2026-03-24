@@ -1,6 +1,6 @@
-import { useFieldArray, useWatch, Control, UseFormRegister, UseFormSetValue } from "react-hook-form";
-import { WorkoutFormValue } from "./form";
 import { Input } from "@/components/ui/input";
+import { Control, useFieldArray, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form";
+import { WorkoutFormValue } from "./form";
 
 type ExerciseProps = {
     control: Control<WorkoutFormValue>;
@@ -18,6 +18,7 @@ export const WorkoutNameField = ({ register }: {
 );
 
 export const ExerciseListField = ({ control, register }: ExerciseProps) => {
+
     const { fields } = useFieldArray({
         control,
         name: "exercises",
@@ -28,7 +29,8 @@ export const ExerciseListField = ({ control, register }: ExerciseProps) => {
         name: "exercises",
     });
 
-    const selectedExercises=watchExercises?.filter((exercise) => exercise.selected) || [];
+   const selectedExercises = watchExercises?.filter((exercise) => exercise.selected) || [];
+    console.log("selectedExercises", watchExercises)
 
     return (
         <div className="space-y-2">
@@ -43,11 +45,13 @@ export const ExerciseListField = ({ control, register }: ExerciseProps) => {
                     </thead>
                     <tbody>
                         {fields.map((field, index) => (
-                            <tr key={field._id}>
+                            <tr key={field.id}>
                                 <td className="flex items-center gap-2 p-1">
                                     <Input
-                                        type="checkbox"
-                                        {...register(`exercises.${index}.selected`)}
+                                        type="checkbox" 
+                                        className="w-4 h-4"
+                                        checked={watchExercises?.[index]?.selected || false}
+                                        onChange={(e) => setValue(`exercises.${index}.selected`, e.target.checked)}
                                     />
                                     {field.name}
                                 </td>

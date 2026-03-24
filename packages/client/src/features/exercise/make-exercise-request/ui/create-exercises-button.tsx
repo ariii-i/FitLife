@@ -9,7 +9,7 @@ export const AddExercises = () => {
     return (
         <div>
             <Button onClick={() => setOpen(true)}><Plus /></Button>
-            {open && <ExerciseForm open={open} setOpen={setOpen}  />}
+            {open && <ExerciseForm open={open} setOpen={setOpen} />}
         </div>
     )
 }

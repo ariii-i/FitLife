@@ -3,7 +3,7 @@ import { AddExercises } from "../../features/exercise/make-exercise-request/ui/c
 import { DisplayExercises } from "../../widget/exercise/display-exercise"
 import { useExerciseStore } from "@/entities/exercise/modal/store"
 
-export const Exercise : React.FC= () => {
+export const Exercise = () => {
     const { fetchExercises } = useExerciseStore()
 
     useEffect(() => {

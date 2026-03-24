@@ -3,11 +3,9 @@ import { ReactNode, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { auth } from "../../shared/lib/firebase";
 
-type ProtectedRouteProps = {
+export const ProtectedRoute = ({ children }: {
   children: ReactNode;
-};
-
-export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+}) => {
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [authChecked, setAuthChecked] = useState(false);
 

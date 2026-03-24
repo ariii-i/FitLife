@@ -26,20 +26,13 @@ export const ExerciseActionMenu = ({ selectedRow }: {
                 </DropdownMenuTrigger>
 
                 <DropdownMenuContent>
-                    <DropdownMenuItem
-                        onClick={() => selectedRow && handleEditButton(selectedRow)}
-                    >
+                    <DropdownMenuItem onClick={() => handleEditButton()}>
                         Edit
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
 
-            {open && (
-                <ExerciseForm
-                    open={open}
-                    setOpen={setOpen}
-                    selectedExercise={selectedRow} />
-            )}
+            {open && (<ExerciseForm open={open} setOpen={setOpen} selectedExercise={selectedRow} />)}
         </div>
     )
 }

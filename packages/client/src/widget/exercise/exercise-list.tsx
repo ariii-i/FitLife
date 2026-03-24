@@ -3,52 +3,49 @@ import { Card } from "@/components/ui/card";
 import { useUserStore } from "@/entities/user/modal/store";
 import { useWorkoutLogStore } from "@/entities/workout-log/modal/store";
 import { useWorkoutStore } from "@/entities/workout/modal/store";
-import { WorkoutButton } from "@/features/workouts/make-workout-request/ui/create-workout-button";
+import { CreateWorkoutButton } from "@/features/workouts/make-workout-request/ui/create-workout-button";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { auth } from "../../shared/lib/firebase";
 
-const getExerciseId = (exercise: { _id: string; name: string } | { _type: "reference"; _ref: string }) => {
-    return "_ref" in exercise ? exercise._ref : exercise._id;
-};
-
 export const WorkoutDetails = () => {
     const { workoutId } = useParams<{ workoutId: string }>();
+    const id = Number(workoutId)
     const { fetchUser } = useUserStore()
     const { workoutLogs, fetchWorkoutLogs } = useWorkoutLogStore()
-    const { workout, fetchSelectedWorkout } = useWorkoutStore();
+    const { workouts, workout, fetchSelectedWorkout } = useWorkoutStore();
 
     useEffect(() => {
         if (!workoutId) return;
-        fetchSelectedWorkout(workoutId);
-        if (auth.currentUser?.uid) {
-            fetchUser(auth.currentUser.uid);
-            fetchWorkoutLogs(auth.currentUser.uid);
-        }
+        fetchSelectedWorkout(id);
+        // if (auth.currentUser?.uid) {
+        //     fetchUser(auth.currentUser.uid);
+        //     fetchWorkoutLogs(auth.currentUser.uid);
+        // }
     }, [workoutId, fetchSelectedWorkout, fetchUser, fetchWorkoutLogs])
-
 
     return (
         <div className="font-semibold text-xl p-2">
-            {workout?.name}
+            <pre>{JSON.stringify(workout, null, 2)}hh</pre>
+            {/* {workout?.name}hhh
+            {workout?.[0]?.name} */}
 
-            {(!workout?.exercises || workout.exercises.length === 0) && (
+            {(!workout || workout.length === 0) && (
                 <Card className="bg-stone-700 p-7 rounded-xl text-stone-100 font-semibold flex-col flex justify-center items-center text-lg">
                     No exercises yet.
-                    <WorkoutButton />
+                    <CreateWorkoutButton />
                 </Card>
             )}
 
-            {workout?.exercises?.map((w) => {
-                const exerciseId = getExerciseId(w.exercise)
+            {workout?.map((workout) => {
+                const exerciseId = workout.exercise_id
                 return (
-                    <Link key={w._key} to={`/workout/${workoutId}/session/${exerciseId}`}>
+                    <Link key={workout.id} to={`/workout/${workoutId}/session/${exerciseId}`}>
                         <Card className="bg-stone-700 p-5 rounded-xl text-stone-100 font-semibold flex justify-between items-center text-lg">
-
-                            <span>{"name" in w.exercise && w.exercise.name}</span>
+                            <span>{workout.name}</span>
 
                             <div className="font-medium text-sm text-stone-300">
-                                {w.plannedSets} sets x {w.plannedReps} reps
+                                {workout.sets} sets x {workout.reps} reps
                             </div>
                         </Card>
                     </Link>

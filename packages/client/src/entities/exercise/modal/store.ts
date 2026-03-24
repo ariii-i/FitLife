@@ -22,7 +22,6 @@ export const useExerciseStore = create<ExerciseStore>((set) => ({
     set((state) => ({
       exercises: [created, ...state.exercises],
     }));
-
   },
 
   fetchExercises: async () => {

@@ -5,10 +5,9 @@ import { EllipsisVertical } from "lucide-react"
 import { useState } from "react"
 import { toast } from "sonner"
 import { WorkoutForm } from "../../make-workout-request/ui/form"
-import { EditWorkout } from "./edit-workout"
 
 export const WorkoutActionMenu = ({ workoutId }: {
-    workoutId: string
+    workoutId: number
 }) => {
     const { fetchSelectedWorkout, deleteWorkout } = useWorkoutStore()
     const [open, setOpen] = useState<boolean>(false);
@@ -31,7 +30,6 @@ export const WorkoutActionMenu = ({ workoutId }: {
                     } catch (error) {
                         toast.error("Unable to delete.");
                     }
-
                 }
             }
         })
@@ -50,7 +48,7 @@ export const WorkoutActionMenu = ({ workoutId }: {
                 </DropdownMenuContent>
             </DropdownMenu>
 
-            {editing && <EditWorkout open={open} setOpen={setOpen} />}
+            {editing && <WorkoutForm open={open} setOpen={setOpen} edit={editing}/>}
         </div>
     )
 }

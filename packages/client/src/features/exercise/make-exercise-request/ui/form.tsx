@@ -68,6 +68,7 @@ export const ExerciseForm = ({ open, setOpen, selectedExercise }: ExerciseFormPr
                         <Button type="submit" className="w-full" disabled={isSubmitting}>
                             {selectedExercise ? "Update" : "Add"}
                         </Button>
+                        
                         <Button className="w-full" type="button" onClick={() => setOpen(false)}>Close</Button>
                     </div>
 

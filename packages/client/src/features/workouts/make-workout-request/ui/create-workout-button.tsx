@@ -1,21 +1,22 @@
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { Button } from "../../../../components/ui/button";
-import { WorkoutForm, WorkoutFormValue } from "./form";
+import { WorkoutForm } from "./form";
 
-export const WorkoutButton: React.FC = () => {
-    const { register, handleSubmit, setValue, control, watch, reset } = useForm<WorkoutFormValue>();
-
+export const CreateWorkoutButton = () => {
     const [open, setOpen] = useState<boolean>(false);
+    const [edit, setEdit] = useState<boolean>(false)
 
     return (
         <div>
-            <Button onClick={() => setOpen(true)}>
+            <Button onClick={() => {
+                setOpen(true)
+                setEdit(false)
+            }}>
                 <Plus />
             </Button>
 
-            {open && <WorkoutForm open={open} setOpen={setOpen} />}
+            {open && <WorkoutForm open={open} setOpen={setOpen} edit={edit} />}
         </div>
     )
 }
