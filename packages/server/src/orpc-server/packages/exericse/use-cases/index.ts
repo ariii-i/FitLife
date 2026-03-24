@@ -52,7 +52,9 @@ export const create_exercise = os
   .input(Schema_Exercise.omit({ id: true }))
   .output(Schema_Exercise)
   .handler(async ({ input, context }) => {
-    return await ExerciseModel.query().insert(input);
+    const res = await ExerciseModel.query().insert(input);
+    const res_json = res.toJSON();
+    return res_json;
   });
 
 export const update_exercise = os

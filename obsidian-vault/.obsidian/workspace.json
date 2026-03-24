@@ -186,8 +186,9 @@
       "obsidian-kanban:Create new board": false
     }
   },
-  "active": "89a74a60c2f5e624",
+  "active": "b12f5befe14ff748",
   "lastOpenFiles": [
+    "task-5 implement exercise filter, add store for filter in entities exercise as use-exercise-filter-store, add filter dropdown component as exercise-filter in features and use it in exercise page.md",
     "kanban-todo.md",
     "task-4-multi-frame-viewer.md",
     "kanban-usage-guide.md"
