@@ -216,6 +216,27 @@ function transferTask(
   );
 }
 
+function transferTaskByRef(
+  columns: Column[],
+  fromColumn: Column,
+  task: Task,
+  toColumn: Column,
+): E.Either<KanbanError, Column[]> {
+  if (fromColumn.name === toColumn.name) {
+    return E.left(`Task is already in "${toColumn.name}"`);
+  }
+  return E.right(
+    reindexed(
+      columns.map((col) => {
+        if (col.name === fromColumn.name)
+          return withTaskRemoved(col, task.index);
+        if (col.name === toColumn.name) return withTaskAppended(col, task);
+        return col;
+      }),
+    ),
+  );
+}
+
 // ─── Serialisation ────────────────────────────────────────────────────────────
 
 function rebuildContent(columns: Column[]): string {
@@ -409,7 +430,7 @@ function opPick(
       ),
     ),
     // FIX (Bug 1): getLinkContent now returns Either, so we chain it
-    E.chain(({ task }) =>
+    E.chain(({ column: sourceColumn, task }) =>
       pipe(
         task.link,
         O.fold(
@@ -429,7 +450,7 @@ function opPick(
             findColumnBy(columns, IN_PROGRESS_PATTERN),
             E.fromOption(() => '"In Progress" column not found'),
             E.chain((inProgress) =>
-              transferTask(columns, task.index, inProgress),
+              transferTaskByRef(columns, sourceColumn, task, inProgress),
             ),
             E.map((nextColumns) => ({ columns: nextColumns, result })),
           );
