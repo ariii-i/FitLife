@@ -9,6 +9,6 @@ export const Schema_Exercise = z.object({
   user_id: z.number().int().min(1),
   name: z.string(),
   description: z.string().optional(),
-  // muscle_group: z.enum(["chest", "back", "legs", "shoulders", "arms", "core"]).optional(),
   muscle_group: z.string().optional(),
+  image_path: z.string().optional(),
 });

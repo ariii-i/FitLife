@@ -3,6 +3,7 @@ import * as z from "zod";
 import type { IncomingHttpHeaders } from "node:http";
 import { ExerciseModel } from "../domain/exercise";
 import { Schema_Exercise, MuscleGroupEnum } from "../domain/schema-exercise";
+import { saveBase64Image } from "../../../../utils/file-upload";
 
 export const list_exercise = os
   .input(
@@ -49,19 +50,20 @@ export const find_exercise = os
 
 export const create_exercise = os
   .$context<{ headers: IncomingHttpHeaders }>()
-  //   .use(({ context, next }) => {
-  //     const user = parseJWT(context.headers.authorization?.split(" ")[1]);
-
-  //     if (user) {
-  //       return next({ context: { user } });
-  //     }
-
-  //     throw new ORPCError("UNAUTHORIZED");
-  //   })
-  .input(Schema_Exercise.omit({ id: true }))
+  .input(
+    Schema_Exercise.omit({ id: true }).extend({
+      image_base64: z.string().optional(),
+    })
+  )
   .output(Schema_Exercise)
-  .handler(async ({ input, context }) => {
-    const res = await ExerciseModel.query().insert(input);
+  .handler(async ({ input }) => {
+    const { image_base64, ...exerciseData } = input;
+    const image_path = saveBase64Image(image_base64 || "") || undefined;
+
+    const res = await ExerciseModel.query().insert({
+      ...exerciseData,
+      image_path,
+    });
     const res_json = res.toJSON();
     return res_json;
   });
@@ -85,5 +87,6 @@ export const update_exercise = os
       description: result.description,
       user_id: result.user_id,
       muscle_group: result.muscle_group,
+      image_path: result.image_path,
     };
   });
