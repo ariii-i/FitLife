@@ -194,3 +194,41 @@ export const list_exercise_in_a_workout = os
       .joinRelated("exercise")
       .where("workout_id", input.workout_id);
   });
+
+export const get_streak_based_on_dates = os
+  .input(
+    z.object({
+      user_id: z.number().int(),
+      start_date: z.string(),
+      end_date: z.string(),
+    })
+  )
+  .output(z.array(z.object({ date: z.string(), done: z.boolean() })))
+  .handler(async ({ input }) => {
+    const { user_id, start_date, end_date } = input;
+
+    const start = new Date(start_date);
+    const end = new Date(end_date);
+
+    const doneDates = await WorkoutSessionModel.query()
+      .select(WorkoutSessionModel.raw("DISTINCT DATE(performed_at) as workout_date"))
+      .where("user_id", user_id)
+      .whereRaw("DATE(performed_at) >= ?", [start_date])
+      .whereRaw("DATE(performed_at) <= ?", [end_date])
+      .castTo<{ workout_date: string }[]>();
+
+    const doneSet = new Set(doneDates.map((d) => d.workout_date));
+
+    const dates: { date: string; done: boolean }[] = [];
+    const current = new Date(start);
+    while (current <= end) {
+      const dateStr = current.toISOString().split("T")[0];
+      dates.push({
+        date: dateStr,
+        done: doneSet.has(dateStr),
+      });
+      current.setDate(current.getDate() + 1);
+    }
+
+    return dates;
+  });
