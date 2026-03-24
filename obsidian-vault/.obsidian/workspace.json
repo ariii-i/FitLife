@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "a5c5c8f17d8b9a58",
+        "id": "9d00d90376686955",
         "type": "tabs",
         "children": [
           {
-            "id": "2b18e9d0889407dd",
+            "id": "b12f5befe14ff748",
             "type": "leaf",
             "state": {
               "type": "kanban",
@@ -186,10 +186,10 @@
       "obsidian-kanban:Create new board": false
     }
   },
-  "active": "2b18e9d0889407dd",
+  "active": "89a74a60c2f5e624",
   "lastOpenFiles": [
+    "kanban-todo.md",
     "task-4-multi-frame-viewer.md",
-    "kanban-usage-guide.md",
-    "kanban-todo.md"
+    "kanban-usage-guide.md"
   ]
 }
