@@ -5,6 +5,7 @@ import { StreaksTrack } from "@/features/streaks/ui";
 import { useEffect } from "react";
 import { auth } from "../../shared/lib/firebase";
 import { Greetings } from "@/widget/greetings/ui";
+import { StreakView } from "@/widget/streak-view/ui";
 import { WorkoutList } from "@/widget/workout/workout-list/ui";
 
 export const HomePage = () => {
@@ -24,6 +25,7 @@ export const HomePage = () => {
   return (
     <div className="flex flex-col gap-8">
       <Greetings />
+      <StreakView />
       <StreaksTrack />
       <WorkoutList />
     </div>
