@@ -1,0 +1,195 @@
+{
+  "main": {
+    "id": "db6befd3901ab35e",
+    "type": "split",
+    "children": [
+      {
+        "id": "a5c5c8f17d8b9a58",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2b18e9d0889407dd",
+            "type": "leaf",
+            "state": {
+              "type": "kanban",
+              "state": {
+                "file": "kanban-todo.md",
+                "kanbanViewState": {
+                  "kanban-plugin": "board",
+                  "list-collapse": []
+                }
+              },
+              "icon": "lucide-trello",
+              "title": "kanban-todo"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "8fa892133058ee2c",
+    "type": "split",
+    "children": [
+      {
+        "id": "2b4d8e2966236e4c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "89a74a60c2f5e624",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "8b62b7e9b1dd1e4f",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "654d26ebe9a56c11",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "b5d60450a74df744",
+    "type": "split",
+    "children": [
+      {
+        "id": "3024b17e4991fa0c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "dbf26780851fc7ab",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "kanban-todo.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for kanban-todo"
+            }
+          },
+          {
+            "id": "e79966e38d607ac2",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "kanban-todo.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from kanban-todo"
+            }
+          },
+          {
+            "id": "3ff10f725438af7b",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "a21ff44d4f7b29c4",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "52847aa47e2dd82b",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "kanban-todo.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of kanban-todo"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false,
+      "obsidian-kanban:Create new board": false
+    }
+  },
+  "active": "2b18e9d0889407dd",
+  "lastOpenFiles": [
+    "task-4-multi-frame-viewer.md",
+    "kanban-usage-guide.md",
+    "kanban-todo.md"
+  ]
+}

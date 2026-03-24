@@ -50,7 +50,7 @@ export const create_exercise = os
   //     throw new ORPCError("UNAUTHORIZED");
   //   })
   .input(Schema_Exercise.omit({ id: true }))
-  .output((Schema_Exercise))
+  .output(Schema_Exercise)
   .handler(async ({ input, context }) => {
     return await ExerciseModel.query().insert(input);
   });
