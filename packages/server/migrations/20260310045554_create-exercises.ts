@@ -7,6 +7,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string("name").notNullable();
     table.text("description");
     table.string("muscle_group");
+    table.string("image_path");
     table.timestamp("created_at").defaultTo(knex.fn.now());
   });
 }

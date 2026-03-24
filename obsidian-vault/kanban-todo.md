@@ -6,11 +6,11 @@ kanban-plugin: board
 
 ## Backlog
 
-- [ ] task-7 implement file upload mechanism in server for create_exercise rpc in exercise's use-cases, it should add column on table as image_path, rpc should take babse64  image string save to uploads folder and link the folder path to image_path column
 
 
 ## In Progress
 
+- [ ] task-7 implement file upload mechanism in server for create_exercise rpc in exercise's use-cases, it should add column on table as image_path, rpc should take babse64  image string save to uploads folder and link the folder path to image_path column
 
 
 ## Done

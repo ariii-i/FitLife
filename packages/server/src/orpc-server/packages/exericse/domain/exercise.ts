@@ -8,6 +8,7 @@ export class ExerciseModel extends Model implements z.infer<typeof Schema_Exerci
   name!: string;
   description?: string;
   muscle_group?: string;
+  image_path?: string;
 
   static tableName = "exercises";
 }
