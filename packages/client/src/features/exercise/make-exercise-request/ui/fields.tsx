@@ -1,6 +1,14 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { Input } from "../../../../components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../../../components/ui/select";
 import { When } from "react-if";
+import { MUSCLE_GROUP_OPTIONS } from "../../../../entities/exercise/config";
 
 export const NameField = () => {
   const {
@@ -79,14 +87,29 @@ export const MuscleGroupField = () => {
         control={control}
         name="muscle_group"
         render={({ field }) => (
-          <Input
-            id="muscle_group"
-            placeholder="e.g. Chest, Back, Legs"
+          <Select
             value={field.value || ""}
-            onChange={(e) => {
-              field.onChange(e.target.value);
+            onValueChange={(value) => {
+              field.onChange(value);
             }}
-          />
+            modal={false}
+          >
+            <SelectTrigger id="muscle_group">
+              <SelectValue placeholder="Select muscle group" />
+            </SelectTrigger>
+            <SelectContent
+              portalProps={{ container: document.body }}
+              onInteractOutside={(e) => {
+                e.preventDefault();
+              }}
+            >
+              {MUSCLE_GROUP_OPTIONS.map((group) => (
+                <SelectItem key={group} value={group}>
+                  {group.charAt(0).toUpperCase() + group.slice(1)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         )}
       />
       <When condition={!!errors.muscle_group}>
