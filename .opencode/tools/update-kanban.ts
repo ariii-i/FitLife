@@ -133,8 +133,15 @@ function buildIndexMap(columns: Column[]): Map<number, TaskRef> {
   }, new Map());
 }
 
-const findByIndex = (columns: Column[], index: number): O.Option<TaskRef> =>
-  O.fromNullable(buildIndexMap(columns).get(index));
+const findByIndex = (columns: Column[], index: number, fromColumn?: string): O.Option<TaskRef> => {
+  const map = buildIndexMap(columns);
+  const taskRef = map.get(index);
+  if (!taskRef) return O.none;
+  if (fromColumn && taskRef.column.name.toLowerCase() !== fromColumn.toLowerCase()) {
+    return O.none;
+  }
+  return taskRef;
+};
 
 const findByTaskId = (columns: Column[], id: TaskId): O.Option<TaskRef> => {
   const lower = id.toLowerCase();
@@ -381,11 +388,12 @@ function opPick(
   index: number,
   taskId: O.Option<TaskId>,
   moveCard: boolean,
+  fromColumn?: string,
 ): E.Either<KanbanError, { columns: Column[]; result: PickResult }> {
   const found: O.Option<TaskRef> = pipe(
     taskId,
     O.fold(
-      () => findByIndex(columns, index),
+      () => findByIndex(columns, index, fromColumn),
       (tid) => findByTaskId(columns, tid),
     ),
   );
@@ -514,6 +522,7 @@ type Args = {
   index?: number;
   column?: string;
   moveCard?: boolean;
+  fromColumn?: string;
 };
 
 // FIX (Gap 2): use args.index == null instead of !args.index so that
@@ -557,7 +566,7 @@ function dispatch(
         ? O.some(toTaskId(args.taskId))
         : O.none;
       return pipe(
-        opPick(vaultPath, columns, args.index ?? 0, tid, moveCard),
+        opPick(vaultPath, columns, args.index ?? 0, tid, moveCard, args.fromColumn),
         E.chain(({ columns: next, result }) =>
           pipe(
             moveCard ? save(next) : E.right(next),
@@ -590,7 +599,14 @@ function dispatch(
       if (!args.column) return E.left("column is required for move");
       return pipe(
         requireIndex(args),
-        E.chain((idx) => opMove(columns, idx, args.column!)),
+        E.chain((idx) => {
+          const found = findByIndex(columns, idx, args.fromColumn);
+          return pipe(
+            found,
+            E.fromOption(() => `Task #${idx}${args.fromColumn ? ` in "${args.fromColumn}"` : ""} not found`),
+            E.chain(() => opMove(columns, idx, args.column!)),
+          );
+        }),
         E.chain(save),
         E.map(() => `Task #${args.index} moved to ${args.column}`),
       );
@@ -599,7 +615,14 @@ function dispatch(
     case "complete": {
       return pipe(
         requireIndex(args),
-        E.chain((idx) => opMove(columns, idx, "Done")),
+        E.chain((idx) => {
+          const found = findByIndex(columns, idx, args.fromColumn);
+          return pipe(
+            found,
+            E.fromOption(() => `Task #${idx}${args.fromColumn ? ` in "${args.fromColumn}"` : ""} not found`),
+            E.chain(() => opMove(columns, idx, "Done")),
+          );
+        }),
         E.chain(save),
         E.map(() => `Task #${args.index} moved to Done`),
       );
@@ -608,7 +631,14 @@ function dispatch(
     case "remove": {
       return pipe(
         requireIndex(args),
-        E.chain((idx) => opRemove(columns, idx)),
+        E.chain((idx) => {
+          const found = findByIndex(columns, idx, args.fromColumn);
+          return pipe(
+            found,
+            E.fromOption(() => `Task #${idx}${args.fromColumn ? ` in "${args.fromColumn}"` : ""} not found`),
+            E.chain(() => opRemove(columns, idx)),
+          );
+        }),
         E.chain(save),
         E.map(() => `Task #${args.index} removed`),
       );
@@ -652,6 +682,10 @@ export default tool({
       .boolean()
       .optional()
       .describe("Move card to In Progress on 'pick' (default: true)"),
+    fromColumn: tool.schema
+      .string()
+      .optional()
+      .describe("Source column for index lookup (e.g., 'Backlog', 'Done')"),
   },
 
   async execute(args): Promise<string> {
