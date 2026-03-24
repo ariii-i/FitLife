@@ -6,6 +6,7 @@ kanban-plugin: board
 
 ## Backlog
 
+- [ ] task-6 use this doc to add file uploader component `https://shadcn-dropzone.vercel.app/docs`
 
 
 ## In Progress
