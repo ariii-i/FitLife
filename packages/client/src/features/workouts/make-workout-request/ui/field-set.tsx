@@ -1,61 +1,66 @@
 import { useExerciseStore } from "@/entities/exercise/modal/store";
-import { useEffect } from "react";
-import { Control, UseFormRegister, UseFormReset, UseFormSetValue } from "react-hook-form";
-import { ExerciseListField, WorkoutNameField } from "./field";
-import { WorkoutFormValue } from "./form";
-import z from "zod";
-import { Schema_Create_Workout, Schema_Update_Workout } from "server/src/orpc-server/packages/workout/domain/schema-workout";
 import { useWorkoutStore } from "@/entities/workout/modal/store";
+import { useEffect } from "react";
+import { useFormContext } from "react-hook-form";
+import { ExerciseListField, WorkoutNameField } from "./field";
 
-type Props = {
-    control: Control<WorkoutFormValue>;
-    setValue: UseFormSetValue<WorkoutFormValue>;
-    reset: UseFormReset<WorkoutFormValue>
-    register: UseFormRegister<WorkoutFormValue>;
-    selectedWorkout?: z.infer<typeof Schema_Create_Workout> | null
-};
+export const WorkoutFieldSet = ({
+    selectedWorkout,
+}: {
+    selectedWorkout?: any;
+}) => {
+    const { exercises } = useExerciseStore();
+    const { setValue } = useFormContext();
+    const { fetchWorkoutDetail } = useWorkoutStore();
 
-export const WorkoutFieldSet = ({ control, setValue, register, selectedWorkout, reset }: Props) => {
-    const { workout } = useWorkoutStore()
     useEffect(() => {
-        if (selectedWorkout) {
-            setValue("name", selectedWorkout.name);
-            setValue(
-                "exercises",
-                selectedWorkout.exercises.map((exercise) => {
-                    return ({
-                        exercise_id: exercise.exercise_id,
-                        sets: exercise.sets,
-                        reps: exercise.reps,
-                        name: exercise.name
+        const init = async () => {
+            if (!exercises.length) return;
+
+            if (selectedWorkout) {
+                const res = await fetchWorkoutDetail(selectedWorkout.id);
+                console.log("Workout detail:", res);
+
+                if (res) {
+                    setValue("name", res.name);
+
+                    const mappedExercises = exercises.map((exercise) => {
+                        const found = res.exercises.find(
+                            (e: any) => e.exercise_id === exercise.id
+                        );
+
+                        return {
+                            exercise_id: exercise.id,
+                            name: exercise.name,
+                            sets: found ? found.sets : 0,
+                            reps: found ? found.reps : 0,
+                            selected: !!found,
+                        };
                     });
-                })
-            );
-        }
-    }, [selectedWorkout, setValue]);
 
-    useEffect(() => {
-        if (workout) {
-            console.log("workouts",workout)
-            reset({
-                name: workout.name || "",
-                exercises: workout.exercises?.map((ex: any) => ({
-                    // _key: ex._key,
-                    // id: ex.exercise?.id,
-                    // name: ex.exercise?.name,
-                    // selected: true,
-                    sets: ex.sets,
-                    reps: ex.reps,
-                })) || []
-            })
-        }
-    }, [workout, reset]);
+                    
+                    setValue("exercises", mappedExercises);
+                }
+            } else {
+                const mappedExercises = exercises.map((exercise) => ({
+                    exercise_id: exercise.id,
+                    name: exercise.name,
+                    sets: 0,
+                    reps: 0,
+                    selected: false,
+                }));
+
+                setValue("exercises", mappedExercises);
+            }
+        };
+
+        init();
+    }, [selectedWorkout, exercises]);
 
     return (
-        <div className="space-y-4">
-            <pre>{JSON.stringify(workout, null, 2)}</pre>
-            <WorkoutNameField register={register} />
-            <ExerciseListField control={control} register={register} setValue={setValue} />
+        <div className="flex flex-col gap-4">
+            <WorkoutNameField />
+            <ExerciseListField />
         </div>
-    )
-}
+    );
+};

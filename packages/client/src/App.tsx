@@ -8,7 +8,7 @@ import { Profile } from './pages/profile';
 import { Layout } from './widget/layout';
 import { ProtectedRoute } from './features/auth/protected-route';
 import { WorkoutHistory } from './widget/workout/workout-history';
-import { SessionPage } from './features/start-exercise/ui';
+import { SessionPage } from './features/session-page/ui';
 import { WorkoutDetails } from './widget/exercise/exercise-list';
 
 function App() {

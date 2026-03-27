@@ -10,6 +10,10 @@ export const getWorkoutApi = async () => {
   return await orpc.workout.list({ pageIndex: 0, pageSize: 10 });
 };
 
+export const get_workout_detail = async (workout_id: number) => {
+  return orpc.workout.find({ id: workout_id });
+};
+
 export const getSelectedWorkoutApi = async (id: number) => {
   if (!id) {
     console.error("Workout ID is required");

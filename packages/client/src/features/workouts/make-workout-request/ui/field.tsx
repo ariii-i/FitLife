@@ -1,36 +1,46 @@
 import { Input } from "@/components/ui/input";
-import { Control, useFieldArray, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form";
-import { WorkoutFormValue } from "./form";
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
+import { When } from "react-if";
 
-type ExerciseProps = {
-    control: Control<WorkoutFormValue>;
-    register: UseFormRegister<WorkoutFormValue>;
-    setValue: UseFormSetValue<WorkoutFormValue>;
+export const WorkoutNameField = () => {
+    const {
+        control,
+        formState: { errors },
+    } = useFormContext();
+
+    return (
+        <div>
+            <label className="text-sm text-stone-500">Workout Name</label>
+            <Controller
+                control={control}
+                name="name"
+                render={({ field }) => (
+                    <Input
+                        id="name"
+                        placeholder="e.g. Bench Press"
+                        value={field.value || ""}
+                        onChange={(e) => {
+                            field.onChange(e.target.value);
+                        }}
+                    />
+                )}
+            />
+            
+            <When condition={!!errors.name}>
+                <div className="text-destructive text-sm">
+                    {errors?.name?.message + ""}
+                </div>
+            </When>
+        </div>
+    );
 };
 
-export const WorkoutNameField = ({ register }: {
-    register: UseFormRegister<WorkoutFormValue>
-}) => (
-    <div>
-        <label>Workout Name</label>
-        <Input {...register("name")} type="text" placeholder="Enter workout name" />
-    </div>
-);
-
-export const ExerciseListField = ({ control, register }: ExerciseProps) => {
-
+export const ExerciseListField = () => {
+    const { control } = useFormContext();
     const { fields } = useFieldArray({
         control,
         name: "exercises",
     });
-
-    const watchExercises = useWatch({
-        control,
-        name: "exercises",
-    });
-
-   const selectedExercises = watchExercises?.filter((exercise) => exercise.selected) || [];
-    console.log("selectedExercises", watchExercises)
 
     return (
         <div className="space-y-2">
@@ -44,29 +54,61 @@ export const ExerciseListField = ({ control, register }: ExerciseProps) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {fields.map((field, index) => (
+                        {fields.map((field: any, index) => (
                             <tr key={field.id}>
                                 <td className="flex items-center gap-2 p-1">
-                                    <Input
-                                        type="checkbox" 
-                                        className="w-4 h-4"
-                                        checked={watchExercises?.[index]?.selected || false}
-                                        onChange={(e) => setValue(`exercises.${index}.selected`, e.target.checked)}
+                                    <Controller
+                                        control={control}
+                                        name={`exercises.${index}.selected`}
+                                        render={({ field }) => (
+                                            <Input
+                                                id={`exercises.${index}.selected`}
+                                                name={`exercises.${index}.selected`}
+                                                type="checkbox"
+                                                className="h-4 w-4"
+                                                checked={field.value || false}
+                                                onChange={(e) => {
+                                                    field.onChange(e.target.checked);
+                                                }}
+                                            />
+                                        )}
                                     />
                                     {field.name}
                                 </td>
                                 <td className="p-1">
-                                    <Input
-                                        type="number"
-                                        min={0}
-                                        {...register(`exercises.${index}.sets`)}
+                                    <Controller
+                                        control={control}
+                                        name={`exercises.${index}.sets`}
+                                        render={({ field }) => (
+                                            <Input
+                                                id={`exercises.${index}.sets`}
+                                                name={`exercises.${index}.sets`}
+                                                type="number"
+                                                min={0}
+                                                value={field.value || ""}
+                                                onChange={(e) => {
+                                                    field.onChange(e.target.value);
+                                                }}
+                                            />
+                                        )}
                                     />
                                 </td>
                                 <td className="p-1">
-                                    <Input
-                                        type="number"
-                                        min={0}
-                                        {...register(`exercises.${index}.reps`)}
+                                    <Controller
+                                        control={control}
+                                        name={`exercises.${index}.reps`}
+                                        render={({ field }) => (
+                                            <Input
+                                                id={`exercises.${index}.reps`}
+                                                name={`exercises.${index}.reps`}
+                                                type="number"
+                                                min={0}
+                                                value={field.value || ""}
+                                                onChange={(e) => {
+                                                    field.onChange(e.target.value);
+                                                }}
+                                            />
+                                        )}
                                     />
                                 </td>
                             </tr>
@@ -74,19 +116,6 @@ export const ExerciseListField = ({ control, register }: ExerciseProps) => {
                     </tbody>
                 </table>
             </div>
-
-            {selectedExercises.length === 0 ? (
-                <p>No exercises selected</p>
-            ) : (
-                <div className="p-2 border rounded-xl font-semibold">
-                    {selectedExercises.map((ex, idx) => (
-                        <div key={idx}>
-                            {ex.name}: {ex.sets} sets of {ex.reps} reps
-                        </div>
-                    ))}
-                </div>
-            )}
         </div>
     );
 };
-

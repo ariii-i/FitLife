@@ -2,21 +2,20 @@ import { Plus } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../../../../components/ui/button";
 import { WorkoutForm } from "./form";
+import { When } from "react-if";
 
 export const CreateWorkoutButton = () => {
     const [open, setOpen] = useState<boolean>(false);
-    const [edit, setEdit] = useState<boolean>(false)
 
     return (
         <div>
-            <Button onClick={() => {
-                setOpen(true)
-                setEdit(false)
-            }}>
+            <Button onClick={() => { setOpen(true) }}>
                 <Plus />
             </Button>
 
-            {open && <WorkoutForm open={open} setOpen={setOpen} edit={edit} />}
+            <When condition={open}>
+                <WorkoutForm open={open} setOpen={setOpen} />
+            </When>
         </div>
     )
 }

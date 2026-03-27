@@ -81,7 +81,7 @@ export const SessionPage = () => {
             {openDrawer && <WorkoutLogDrawer open={openDrawer} setOpen={setOpenDrawer} startTimeStamp={startTimeStamp} endTimeStamp={endTimeStamp} />}
 
             <div className="py-2 flex justify-end">
-                <Link to="/">Q
+                <Link to="/">
                     <Button variant="link">Back to Dashboard</Button>
                 </Link>
             </div>

@@ -8,7 +8,7 @@ type StreakData = {
 
 type StreakStore = {
     streakData: StreakData[];
-    fetchStreak: (userId: number) => Promise<void>;
+    fetchStreak: (userId: string) => Promise<void>;
 };
 
 const getDateRange = () => {
@@ -27,7 +27,7 @@ const getDateRange = () => {
 export const useStreakStore = create<StreakStore>((set) => ({
     streakData: [],
 
-    fetchStreak: async (userId: number) => {
+    fetchStreak: async (userId: string) => {
         const { start_date, end_date } = getDateRange();
         const data = await getStreakApi(userId, start_date, end_date);
         set({ streakData: data });

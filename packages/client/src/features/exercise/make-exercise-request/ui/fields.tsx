@@ -37,7 +37,7 @@ export const MuscleGroupField = ({ register }: {
         <div className="flex flex-col gap-1">
             <label className="text-sm text-stone-500">Muscle Group</label>
 
-            <select onChange={(e) => setSelectedMuscle(e.target.value)} className="border px-2 rounded-md">
+            <select onChange={(e) => setSelectedMuscle(e.target.value)} className="border p-2 rounded-md">
                 {muscleGroups.map((muscle) => (
                     <option key={muscle} value={muscle}>
                         {muscle}

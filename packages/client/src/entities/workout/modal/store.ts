@@ -1,7 +1,7 @@
 import { Schema_Create_Workout, Schema_Create_Workout_Output, Schema_Update_Workout, Schema_Workout } from "server/src/orpc-server/packages/workout/domain/schema-workout";
 import z from "zod";
 import { create } from "zustand";
-import { createWorkoutApi, getSelectedWorkoutApi, getWorkoutApi, updateWorkoutApi } from "../api";
+import { createWorkoutApi, get_workout_detail, getSelectedWorkoutApi, getWorkoutApi, updateWorkoutApi } from "../api";
 
 type WorkoutStore = {
   workouts: Array<z.infer<typeof Schema_Workout>>;
@@ -9,6 +9,7 @@ type WorkoutStore = {
 
   createWorkout: (payload: z.infer<typeof Schema_Create_Workout>) => Promise<void>;
   fetchWorkouts: () => Promise<void>;
+  fetchWorkoutDetail: (workout_id: number) => Promise<any>;
   fetchSelectedWorkout: (id: number) => Promise<void>;
   updateWorkout: (payload: z.infer<typeof Schema_Update_Workout>) => Promise<void>;
   // deleteWorkout: (id: number) => Promise<void>;
@@ -37,24 +38,23 @@ export const useWorkoutStore = create<WorkoutStore>((set) => ({
     set({ workouts: data });
   },
 
+  fetchWorkoutDetail: async (workout_id) => {
+    const data = await get_workout_detail(workout_id);
+    console.log(data);
+    return data;
+  },
+
   fetchSelectedWorkout: async (id) => {
     if (!id) {
       console.error("No workoutId provided");
       return;
     }
     const data = await getSelectedWorkoutApi(id);
-    set({ workout: data || null});
+    set({ workout: data || null });
   },
 
   updateWorkout: async (payload) => {
-    const updated = await updateWorkoutApi(payload);
-
-    set((state) => ({
-      workouts: state.workouts.map((w) =>
-        w.id === updated.id ? updated : w
-      ),
-      workout: updated,
-    }));
+    await updateWorkoutApi(payload);
   },
 
   // deleteWorkout: async (id) => {

@@ -12,7 +12,7 @@ export const DisplayWorkout = () => {
             {workouts.map((workout) => (
                 <div key={workout.id} className="border-b border-dashed p-5 font-semibold flex items-center justify-between">
                     {workout.name}
-                    <WorkoutActionMenu workoutId={workout.id} />
+                    <WorkoutActionMenu selectedWorkout={workout} />
 
                 </div>
             ))}

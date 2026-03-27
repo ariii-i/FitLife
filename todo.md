@@ -13,7 +13,7 @@ as a user, i want to:
 as a user i want to:
 - create an workout [X]
 - view workout [X]
-- view exercises in workout []
+- view exercises in workout [X]
 - edit workout []
 - delete []
 

@@ -1,11 +1,10 @@
 import { useUserStore } from "@/entities/user/modal/store";
 import { UserRound } from "lucide-react";
-import { Else, If, Then, When } from "react-if";
+import { Else, If, Then } from "react-if";
 
 export const DisplayProfile = () => {
     const { user } = useUserStore();
 
-    // return <pre>{JSON.stringify(user)}</pre>
     return (
         <div className="flex flex-col justify-center items-center">
             <If condition={user?.photoURL}>

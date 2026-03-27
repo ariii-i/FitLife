@@ -3,7 +3,9 @@ import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom"
 import { CreateWorkoutButton } from "@/features/workouts/make-workout-request/ui/create-workout-button";
 
-export const WorkoutList = ({filteredExercises}) => {
+export const WorkoutList = ({ filteredExercises }: {
+    filteredExercises: any
+}) => {
 
     const { workouts } = useWorkoutStore();
     {

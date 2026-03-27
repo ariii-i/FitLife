@@ -25,12 +25,8 @@ export const useExerciseStore = create<ExerciseStore>((set) => ({
   },
 
   fetchExercises: async (user_id, filters) => {
-    try {
-      const data = await getExerciseApi(user_id, filters)
-      set({ exercises: data })
-    } catch (error) {
-      console.error(error);
-    }
+    const data = await getExerciseApi(user_id, filters)
+    set({ exercises: data })
   },
 
   editExercise: async (payload) => {

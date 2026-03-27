@@ -1,11 +1,12 @@
+import { useExerciseStore } from "@/entities/exercise/modal/store";
+import { useUserStore } from "@/entities/user/modal/store";
+import { useWorkoutLogStore } from "@/entities/workout-log/modal/store";
+import { useWorkoutStore } from "@/entities/workout/modal/store";
+import { Greeting } from "@/widget/greetings/ui";
+import { StreakView } from "@/widget/streak-view/ui";
+import { WorkoutList } from "@/widget/workout/workout-list";
 import { useEffect, useState } from "react";
 import { auth } from "../../shared/lib/firebase";
-import { useUserStore } from "@/entities/user/modal/store";
-import { useWorkoutStore } from "@/entities/workout/modal/store";
-import { useWorkoutLogStore } from "@/entities/workout-log/modal/store";
-import { WorkoutList } from "@/widget/workout/workout-list";
-import { StreaksTrack } from "@/features/streaks/ui";
-import { useExerciseStore } from "@/entities/exercise/modal/store";
 
 export const HomePage = () => {
     const { user, } = useUserStore()
@@ -16,7 +17,7 @@ export const HomePage = () => {
     const currentUser = auth.currentUser
     useEffect(() => {
         if (user) {
-            fetchWorkoutLogs(user?.id)
+            fetchWorkoutLogs(user?.uid)
         }
         fetchWorkouts()
         fetchExercises(user?.uid ?? "")
@@ -29,10 +30,10 @@ export const HomePage = () => {
 
     return (
         <div>
-            <span className="font-semibold text-xl">Hi {currentUser?.displayName}</span>
-            <StreaksTrack />
+            <Greeting />
+            <StreakView/>
 
-            {/* <DisplayWorkoutList /> */}
+            {/* <DisplayWorkoutList />  */}
 
             <div className="py-2 font-semibold flex justify-between">
                 Today's Workout:
