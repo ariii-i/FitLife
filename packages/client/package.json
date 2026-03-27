@@ -35,6 +35,7 @@
     "react-icons": "^5.5.0",
     "react-if": "^4.1.6",
     "react-router-dom": "^7.12.0",
+    "recharts": "^3.8.1",
     "server": "workspace:^",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",

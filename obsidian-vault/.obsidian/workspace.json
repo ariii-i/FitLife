@@ -11,16 +11,14 @@
             "id": "6e0517536170e813",
             "type": "leaf",
             "state": {
-              "type": "kanban",
+              "type": "markdown",
               "state": {
-                "file": "kanban-todo.md",
-                "kanbanViewState": {
-                  "kanban-plugin": "board",
-                  "list-collapse": []
-                }
+                "file": "task-10 add rpc on server workout use-cases to fetch workout histtory chart data.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-trello",
-              "title": "kanban-todo"
+              "icon": "lucide-file",
+              "title": "task-10 add rpc on server workout use-cases to fetch workout histtory chart data"
             }
           }
         ]
@@ -186,10 +184,10 @@
       "obsidian-kanban:Create new board": false
     }
   },
-  "active": "89a74a60c2f5e624",
+  "active": "6e0517536170e813",
   "lastOpenFiles": [
-    "task-10 add rpc on server workout use-cases to fetch workout histtory chart data.md",
     "kanban-todo.md",
+    "task-10 add rpc on server workout use-cases to fetch workout histtory chart data.md",
     "task-12 add linking table to track which exercise is performed with how much amount of sets and reps.md",
     "task-9 use rechart to create line-chart.md",
     "task-5 implement exercise filter, add store for filter in entities exercise as use-exercise-filter-store, add filter dropdown component as exercise-filter in features and use it in exercise page.md",

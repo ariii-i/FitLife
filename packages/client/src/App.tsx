@@ -10,6 +10,7 @@ import { WorkoutHistory } from "./widget/workout/workout-history";
 import { SessionPage } from "./pages/session-page/ui";
 import "./App.css";
 import { WorkoutDetail } from "./pages/workout-deital/ui";
+import { WorkoutHistoryChartPage } from "./pages/workout-history-chart/ui";
 
 function App() {
   return (
@@ -29,6 +30,10 @@ function App() {
               <Route
                 path="/workoutHistory/:workoutLogId"
                 element={<WorkoutHistory />}
+              />
+              <Route
+                path="/workout-history-chart/:date"
+                element={<WorkoutHistoryChartPage />}
               />
               <Route path="/workout/:workoutId" element={<WorkoutDetail />} />
               <Route

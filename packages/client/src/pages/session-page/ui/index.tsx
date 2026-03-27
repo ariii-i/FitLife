@@ -8,7 +8,10 @@ import { Card } from "@/components/ui/card";
 import { orpc } from "@/shared/lib/orpc";
 
 export const SessionPage = () => {
-  const { workoutId } = useParams<{ workoutId: string }>();
+  const { workoutId, exerciseId } = useParams<{
+    workoutId: string;
+    exerciseId: string;
+  }>();
   const navigate = useNavigate();
 
   const [isActive, setIsActive] = useState(false);
@@ -51,7 +54,7 @@ export const SessionPage = () => {
         workout_id: Number(workoutId),
         duration_minutes: durationMinutes,
         performed_at: startTimeStamp,
-        exercise_id: 1, // TODO: allow user to select exercise
+        exercise_id: Number(exerciseId), // TODO: allow user to select exercise
         sets,
         reps,
       });

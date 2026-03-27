@@ -11,6 +11,7 @@ import { Schema_Workout_Session } from "../domain/schema-workout-session";
 import { WorkoutModel } from "../domain/workout";
 import { WorkoutSessionModel } from "../domain/workout-session";
 import { WorkoutExerciseModel } from "../domain/workout-exercise";
+import { ExerciseModel } from "../../exericse/domain/exercise";
 
 export const list_workout = os
   .input(
@@ -231,4 +232,120 @@ export const get_streak_based_on_dates = os
     }
 
     return dates;
+  });
+
+export const get_workout_history_chart_data = os
+  .input(
+    z.object({
+      user_id: z.number().int(),
+      date: z.string(),
+    })
+  )
+  .output(
+    z.array(
+      z.object({
+        workout_id: z.number(),
+        workout_name: z.string(),
+        performed_at: z.string(),
+        exercises_data: z.array(
+          z.object({
+            exercise_name: z.string(),
+            planned_sets: z.number().nullable(),
+            planned_reps: z.number().nullable(),
+            actual_sets: z.number().nullable(),
+            actual_reps: z.number().nullable(),
+            performed_at: z.string().nullable(),
+          })
+        ),
+      })
+    )
+  )
+  .handler(async ({ input }) => {
+    const { user_id, date } = input;
+
+    const sessions = await WorkoutSessionModel.query()
+      .select(
+        "workout_sessions.*",
+        "workout.name as workout_name",
+        "exercise.name as exercise_name"
+      )
+      .joinRelated("workout")
+      .joinRelated("exercise")
+      .where("workout_sessions.user_id", user_id)
+      .whereRaw("DATE(workout_sessions.performed_at) = ?", [date])
+      .castTo<
+        {
+          id: number;
+          workout_id: number;
+          workout_name: string;
+          exercise_id: number;
+          exercise_name: string;
+          sets: number | null;
+          reps: number | null;
+          performed_at: string;
+        }[]
+      >();
+
+    const workoutMap = new Map<
+      number,
+      {
+        workout_id: number;
+        workout_name: string;
+        performed_at: string;
+        exercises_data: {
+          exercise_name: string;
+          planned_sets: number | null;
+          planned_reps: number | null;
+          actual_sets: number | null;
+          actual_reps: number | null;
+          performed_at: string | null;
+        }[];
+      }
+    >();
+
+    for (const session of sessions) {
+      if (!workoutMap.has(session.workout_id)) {
+        const plannedExercises = await WorkoutExerciseModel.query()
+          .select(
+            "exercise.name as exercise_name",
+            "workout_exercises.sets",
+            "workout_exercises.reps"
+          )
+          .joinRelated("exercise")
+          .where("workout_exercises.workout_id", session.workout_id)
+          .castTo<
+            {
+              exercise_name: string;
+              sets: number | null;
+              reps: number | null;
+            }[]
+          >();
+
+        workoutMap.set(session.workout_id, {
+          workout_id: session.workout_id,
+          workout_name: session.workout_name,
+          performed_at: session.performed_at,
+          exercises_data: plannedExercises.map((pe) => ({
+            exercise_name: pe.exercise_name,
+            planned_sets: pe.sets,
+            planned_reps: pe.reps,
+            actual_sets: null,
+            actual_reps: null,
+            performed_at: null,
+          })),
+        });
+      }
+
+      const workout = workoutMap.get(session.workout_id)!;
+      const exerciseData = workout.exercises_data.find(
+        (e) => e.exercise_name === session.exercise_name
+      );
+      if (exerciseData) {
+        exerciseData.actual_sets = session.sets;
+        exerciseData.actual_reps = session.reps;
+        exerciseData.performed_at = session.performed_at;
+      }
+    }
+
+    return Array.from(workoutMap.values());
   });
