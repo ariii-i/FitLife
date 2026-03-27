@@ -15,9 +15,10 @@ import {
   DrawerTitle,
 } from "../../../../components/ui/drawer";
 import { useExerciseStore } from "../../../../entities/exercise/modal/store";
+import { ExerciseFormSchema } from "../../../../entities/exercise/api";
 import { ExerciseFieldSet } from "./field-set";
 
-type FormValue = z.infer<typeof Schema_Exercise>;
+type FormValue = z.infer<typeof ExerciseFormSchema>;
 
 type ExerciseFormProp = {
   open: boolean;

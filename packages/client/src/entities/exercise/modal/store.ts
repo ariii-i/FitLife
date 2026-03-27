@@ -1,14 +1,14 @@
 import { create } from "zustand";
 import { z } from "zod";
-import { createExerciseApi, editExerciseApi, getExerciseApi, type T_GetExerciseParams } from "../api";
+import { createExerciseApi, editExerciseApi, getExerciseApi, type T_GetExerciseParams, ExerciseFormSchema } from "../api";
 import { Schema_Exercise } from "server/src/orpc-server/packages/exericse/domain/schema-exercise";
 
 export type ExerciseStore = {
   exercises: Array<z.infer<typeof Schema_Exercise>>,
   setExercises: (exercises: Array<z.infer<typeof Schema_Exercise>>) => void,
-  createExercise: (payload: z.infer<typeof Schema_Exercise>) => Promise<void>,
+  createExercise: (payload: z.infer<typeof ExerciseFormSchema>) => Promise<void>,
   fetchExercises: (filters?: T_GetExerciseParams) => Promise<void>,
-  editExercise: (payload: z.infer<typeof Schema_Exercise>) => Promise<z.infer<typeof Schema_Exercise>>
+  editExercise: (payload: z.infer<typeof ExerciseFormSchema>) => Promise<z.infer<typeof Schema_Exercise>>
 }
 
 export const useExerciseStore = create<ExerciseStore>((set) => ({
