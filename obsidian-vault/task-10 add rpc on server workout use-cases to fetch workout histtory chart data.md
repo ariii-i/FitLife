@@ -1,11 +1,15 @@
 following should be data shape 
 ```ts
   cosnt data = Array<{
-	  planned_sets: number,
-	  planned_repss: number,
-	  actual_sets:number,
-	  actual_repss:number,
-	  name:string
+	  workout_id:number, 
+	  workout_name: string,
+	  exercises_data: Array<{
+		  planned_sets: number,
+		  planned_reps: number,
+		  actual_sets:number,
+		  actual_repss:number,
+		  exercise_name:string
+	  }>
   }>
 ```
 tables involved are

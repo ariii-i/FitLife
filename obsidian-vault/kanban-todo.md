@@ -10,7 +10,6 @@ kanban-plugin: board
 - [ ] [[task-9 use rechart to create line-chart]]
 - [ ] [[task-10 add rpc on server workout use-cases to fetch workout histtory chart data]]
 - [ ] task-11 update each rpc on server use-cases to have user_id attached which will have string signature
-- [ ] [[task-12 add linking table to track which exercise is performed with how much amount of sets and reps]]
 
 
 ## In Progress
@@ -20,6 +19,7 @@ kanban-plugin: board
 
 ## Done
 
+- [ ] [[task-12 add linking table to track which exercise is performed with how much amount of sets and reps]]
 - [ ] task-6 use this doc to add file uploader component `https://shadcn-dropzone.vercel.app/docs`
 - [ ] task-5 implement exercise filter, add store for filter in entities exercise as use-exercise-filter-store, add filter dropdown component as exercise-filter in features and use it in exercise page
 - [ ] task-4 in exercise form in make-exercise-request, change the muscle group from input to select, hardcode the values as enum in entities/exercise config,
