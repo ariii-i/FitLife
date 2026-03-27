@@ -2,12 +2,14 @@ import { useEffect } from "react"
 import { AddExercises } from "../../features/exercise/make-exercise-request/ui/create-exercises-button"
 import { DisplayExercises } from "../../widget/exercise/display-exercise"
 import { useExerciseStore } from "@/entities/exercise/modal/store"
+import { useUserStore } from "@/entities/user/modal/store"
 
 export const Exercise = () => {
-    const { fetchExercises } = useExerciseStore()
+    const { fetchExercises } = useExerciseStore();
+    const { user } = useUserStore()
 
     useEffect(() => {
-        fetchExercises()
+        fetchExercises(user?.uid ?? "")
     }, [fetchExercises])
 
     return (

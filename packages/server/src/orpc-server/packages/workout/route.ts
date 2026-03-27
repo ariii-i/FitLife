@@ -9,6 +9,7 @@ import {
   check_if_user_has_done_workout_on_this_date,
   list_exercise_in_a_workout,
   update_workout,
+  get_streak_based_on_dates,
 } from "./use-cases";
 
 export const workout = {
@@ -22,4 +23,5 @@ export const workout = {
   get_current_streak_for_a_user,
   check_if_user_has_done_workout_on_this_date,
   list_exercise_in_a_workout,
+  get_streak_based_on_dates,
 };

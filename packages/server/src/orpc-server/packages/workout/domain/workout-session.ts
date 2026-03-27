@@ -5,7 +5,7 @@ import { WorkoutModel } from "./workout";
 
 export class WorkoutSessionModel extends Model implements z.infer<typeof Schema_Workout_Session> {
   id!: number;
-  user_id!: number;
+  user_id!: string;
   workout_id!: number;
   duration_minutes!: number;
   performed_at!: string;

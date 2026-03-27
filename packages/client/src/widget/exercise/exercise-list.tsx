@@ -1,17 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useUserStore } from "@/entities/user/modal/store";
 import { useWorkoutLogStore } from "@/entities/workout-log/modal/store";
 import { useWorkoutStore } from "@/entities/workout/modal/store";
 import { CreateWorkoutButton } from "@/features/workouts/make-workout-request/ui/create-workout-button";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { auth } from "../../shared/lib/firebase";
 
 export const WorkoutDetails = () => {
     const { workoutId } = useParams<{ workoutId: string }>();
     const id = Number(workoutId)
-    const { fetchUser } = useUserStore()
     const { workoutLogs, fetchWorkoutLogs } = useWorkoutLogStore()
     const { workouts, workout, fetchSelectedWorkout } = useWorkoutStore();
 
@@ -22,7 +19,7 @@ export const WorkoutDetails = () => {
         //     fetchUser(auth.currentUser.uid);
         //     fetchWorkoutLogs(auth.currentUser.uid);
         // }
-    }, [workoutId, fetchSelectedWorkout, fetchUser, fetchWorkoutLogs])
+    }, [workoutId, fetchSelectedWorkout, fetchWorkoutLogs])
 
     return (
         <div className="font-semibold text-xl p-2">

@@ -1,36 +1,14 @@
 import { useUserStore } from "@/entities/user/modal/store";
 import { sanityClient } from "@/shared/lib/sanity";
 import { WorkoutLog, WorkoutLogSession } from "../modal/type";
+import { orpc } from "server/src/orpc-client";
+import z from "zod";
+import { Schema_Workout_Session } from "server/src/orpc-server/packages/workout/domain/schema-workout-session";
 
 const get_unique_key = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
-export const createWorkoutLogApi = async (
-    workoutId: string,
-    firebaseUid: number,
-    date?: string
-): Promise<WorkoutLog> => {
-    const { fetchUser } = useUserStore()
-    const sanityUserId = await fetchUser(firebaseUid);
-    // console.log("workoutId: string userId: string,", workoutId)
-    // console.log("userId: string,", sanityUserId)
-    const today = date || new Date().toISOString().split("T")[0];
-
-    let log: WorkoutLog | null = await sanityClient.fetch(
-        `*[_type=="workoutLog" && date == $today && workout._ref == $workoutId && user._id == $userId][0]`,
-        { today, workoutId, userId: sanityUserId }
-    );
-
-    if (!log) {
-        log = await sanityClient.create<WorkoutLog>({
-            _type: "workoutLog",
-            date: today,
-            user: { _type: "reference", _ref: sanityUserId },
-            workout: { _type: "reference", _ref: workoutId },
-            sessions: [],
-        });
-    }
-
-    return log;
+export const createWorkoutLogApi = async (data:z.infer<typeof Schema_Workout_Session>) => {
+    return await orpc.workout.create_session(data)
 };
 
 export const addSessionApi = async (

@@ -1,24 +1,28 @@
 import { useUserStore } from "@/entities/user/modal/store";
 import { UserRound } from "lucide-react";
-import { Card, CardContent, CardHeader } from "../../components/ui/card";
-import { LoginForm } from "@/features/auth/login";
+import { Else, If, Then, When } from "react-if";
 
 export const DisplayProfile = () => {
     const { user } = useUserStore();
 
-    console.log("Photo URL:", user?.photo)
-
+    // return <pre>{JSON.stringify(user)}</pre>
     return (
         <div className="flex flex-col justify-center items-center">
-            {user?.photo && user.photo !== "" ? (
-                <img src={user.photo} alt={user.name ?? "User Avatar"} className="w-20 h-20 rounded-full object-cover" />
-            ) : (
+            <If condition={user?.photoURL}>
+                <Then>
+                    <img src={user?.photoURL} alt={user?.displayName ?? "User Avatar"} className="w-20 h-20 rounded-full object-cover" />
+                </Then>
+                <Else>
                 <div className="w-20 h-20 rounded-full bg-stone-600 flex items-center justify-center">
                     <UserRound className="w-10 h-10 text-stone-300" />
                 </div>
-            )}
+                </Else>
+            </If>
+            {/* {user?.photoURL && user.photoURL !== "" ? (
+            ) : (
+            {/* )} */}
 
-            <span className="font-semibold text-lg">{user?.username}</span>
+            <span className="font-semibold text-lg">{user?.displayName}</span>
             <span className="text-sm text-stone-700">{user?.email}</span>
 
 

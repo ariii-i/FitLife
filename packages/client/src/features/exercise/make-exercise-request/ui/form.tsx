@@ -7,18 +7,18 @@ import { useExerciseStore } from "../../../../entities/exercise/modal/store"
 import { ExerciseFieldSet } from "./field-set"
 import { Drawer, DrawerContent, DrawerTitle } from "../../../../components/ui/drawer"
 import { Button } from "../../../../components/ui/button"
+import { useUserStore } from "@/entities/user/modal/store"
 
 type FormValue = z.infer<typeof Schema_Exercise>
 
-type ExerciseFormProp = {
+export const ExerciseForm = ({ open, setOpen, selectedExercise }: {
     open: boolean
     setOpen: (open: boolean) => void
     selectedExercise?: z.infer<typeof Schema_Exercise>
-}
-
-export const ExerciseForm = ({ open, setOpen, selectedExercise }: ExerciseFormProp) => {
+}) => {
     const { createExercise, editExercise, fetchExercises } = useExerciseStore();
-    const [isSubmitting, setIsSubmitting] = useState(false)
+    const { user } = useUserStore();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const { register, handleSubmit, reset, setValue } = useForm<FormValue>()
 
@@ -33,15 +33,19 @@ export const ExerciseForm = ({ open, setOpen, selectedExercise }: ExerciseFormPr
         try {
             setIsSubmitting(true);
 
+            if (!user) {
+                return
+            }
+            
             if (selectedExercise) {
-                await editExercise(data);
+                await editExercise({...data, user_id: user.uid});
                 toast.success("Exercise updated!");
             } else {
-                await createExercise(data);
+                await createExercise({ ...data, user_id: user.uid});
                 toast.success("Exercise added!");
             }
 
-            await fetchExercises();
+            await fetchExercises(user?.uid ?? "");
             reset();
             setOpen(false);
 
@@ -68,7 +72,7 @@ export const ExerciseForm = ({ open, setOpen, selectedExercise }: ExerciseFormPr
                         <Button type="submit" className="w-full" disabled={isSubmitting}>
                             {selectedExercise ? "Update" : "Add"}
                         </Button>
-                        
+
                         <Button className="w-full" type="button" onClick={() => setOpen(false)}>Close</Button>
                     </div>
 

@@ -3,13 +3,12 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useWorkoutStore } from "@/entities/workout/modal/store"
 import { EllipsisVertical } from "lucide-react"
 import { useState } from "react"
-import { toast } from "sonner"
 import { WorkoutForm } from "../../make-workout-request/ui/form"
 
 export const WorkoutActionMenu = ({ workoutId }: {
     workoutId: number
 }) => {
-    const { fetchSelectedWorkout, deleteWorkout } = useWorkoutStore()
+    const { fetchSelectedWorkout } = useWorkoutStore()
     const [open, setOpen] = useState<boolean>(false);
     const [editing, setEditing] = useState(false);
 
@@ -19,21 +18,21 @@ export const WorkoutActionMenu = ({ workoutId }: {
         setOpen(true);
     }
 
-    const handleDelete = () => {
-        toast.warning("Are you sure you want to delete this workout?", {
-            action: {
-                label: "Delete",
-                onClick: async () => {
-                    try {
-                        await deleteWorkout(workoutId);
-                        toast.success("Workout Deleted!");
-                    } catch (error) {
-                        toast.error("Unable to delete.");
-                    }
-                }
-            }
-        })
-    }
+    // const handleDelete = () => {
+    //     toast.warning("Are you sure you want to delete this workout?", {
+    //         action: {
+    //             label: "Delete",
+    //             onClick: async () => {
+    //                 try {
+    //                     await deleteWorkout(workoutId);
+    //                     toast.success("Workout Deleted!");
+    //                 } catch (error) {
+    //                     toast.error("Unable to delete.");
+    //                 }
+    //             }
+    //         }
+    //     })
+    // }
 
     return (
         <div>
@@ -44,7 +43,7 @@ export const WorkoutActionMenu = ({ workoutId }: {
 
                 <DropdownMenuContent>
                     <DropdownMenuItem onClick={handleEdit}>Edit</DropdownMenuItem>
-                    <DropdownMenuItem onClick={handleDelete}>Delete</DropdownMenuItem>
+                    {/* <DropdownMenuItem onClick={handleDelete}>Delete</DropdownMenuItem> */}
                 </DropdownMenuContent>
             </DropdownMenu>
 

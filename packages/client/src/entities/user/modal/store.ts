@@ -2,12 +2,15 @@ import { Schema_User_Base, Schema_User_Create, Schema_User_Update } from "server
 import z from "zod";
 import { create } from "zustand";
 import { createUserApi, getUserApi, getUsersApi } from "../api";
+import { Type_User } from "./types";
+
+export type LoginFormData = z.infer<typeof Schema_User_Base>;
 
 type UserStore = {
-    user: z.infer<typeof Schema_User_Update> | null;
+    user: Type_User | null;
     userLogin: (data: z.infer<typeof Schema_User_Create>) => Promise<void>;
     fetchUser: (id: number) => Promise<void>;
-    setUsers: (user: z.infer<typeof Schema_User_Update>) => void;
+    setUsers: (user: Type_User & any) => void;
     // updateUsers: (user: z.infer<typeof Schema_User_Update>) => Promise<void>;
     // deleteUsers: (id: number) => void;
     signOutUser: () => Promise<void>;
@@ -16,7 +19,9 @@ type UserStore = {
 export const useUserStore = create<UserStore>((set) => ({
     user: null,
     
-    setUsers: (user: any) => ({ user }),
+    setUsers: (user) => {
+        set({ user })
+    },
     
     userLogin: async (data) => {
         const newUser = await createUserApi(data);
@@ -44,7 +49,7 @@ export const useUserStore = create<UserStore>((set) => ({
     // },
 
     signOutUser: async () => {
-        set({ user: null })
+        set({ user: null });
     },
 
 }))

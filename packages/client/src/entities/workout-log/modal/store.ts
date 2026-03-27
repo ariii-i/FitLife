@@ -1,8 +1,8 @@
+import { Schema_Workout_Session } from "server/src/orpc-server/packages/workout/domain/schema-workout-session";
+import z from "zod";
 import { create } from "zustand";
 import { addSessionApi, createWorkoutLogApi, getLast7daysApi, getWorkoutLogApi } from "../api";
-import { WorkoutLog, WorkoutLogSession } from "./type";
-import z from "zod";
-import { Schema_Workout_Session } from "server/src/orpc-server/packages/workout/domain/schema-workout-session";
+import { WorkoutLogSession } from "./type";
 
 type AddSessionInput = {
     workoutLogId: string | null;
@@ -20,20 +20,20 @@ type WorkoutLogStore = {
     logs: { date: string }[];
     activeSession: WorkoutLogSession | null;
     streak: number;
-    createWorkoutLog: (workoutId: string, userId: string) => Promise<void>;
+    createWorkoutLog: (data:z.infer<typeof Schema_Workout_Session>) => Promise<void>;
     addSession: (input: AddSessionInput) => Promise<void>;
     fetchWorkoutLogs: (userId: string) => Promise<void>;
     fetchLast7Days: (userId: string) => Promise<void>;
 };
 
-export const useWorkoutLogStore = create<WorkoutLogStore>((set, get) => ({
+export const useWorkoutLogStore = create<WorkoutLogStore>((set) => ({
     workoutLogs: [],
     logs: [],
     activeSession: null,
     streak: 0,
 
-    createWorkoutLog: async (workoutId, userId) => {
-        const log = await createWorkoutLogApi(workoutId, userId);
+    createWorkoutLog: async (data) => {
+        const log = await createWorkoutLogApi(data);
         set((state) => ({ workoutLogs: [log, ...state.workoutLogs] }));
     },
 

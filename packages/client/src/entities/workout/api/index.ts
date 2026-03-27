@@ -3,7 +3,7 @@ import { Schema_Create_Workout, Schema_Update_Workout } from "server/src/orpc-se
 import z from "zod";
 
 export const createWorkoutApi = async (data: z.infer<typeof Schema_Create_Workout>) => {
-  return await orpc.workout.create({ ...data, user_id: 1 });
+  return await orpc.workout.create(data);
 };
 
 export const getWorkoutApi = async () => {
@@ -17,8 +17,8 @@ export const getSelectedWorkoutApi = async (id: number) => {
   return await orpc.workout.list_exercise_in_a_workout({ workout_id: id });
 };
 
-export const updateWorkoutApi = async (data: z.infer<typeof Schema_Update_Workout>) => {
-  return await orpc.workout.update_workout(data);
+export const updateWorkoutApi = async (payload: z.infer<typeof Schema_Update_Workout>) => {
+  return await orpc.workout.update(payload);
 };
 
 // export const deleteWorkoutApi = async (id: string): Promise<void> => {

@@ -12,7 +12,7 @@ export const SessionPage = () => {
     const { workoutId, exerciseId } = useParams<{ workoutId: string; exerciseId: string }>();
 
     const { activeSession, createWorkoutLog } = useWorkoutLogStore();
-    const { fetchUser, user } = useUserStore();
+    const {  user } = useUserStore();
     const userId = auth?.currentUser?.uid ?? "";
 
     const [isActive, setIsActive] = useState(false);
@@ -21,9 +21,9 @@ export const SessionPage = () => {
     const [endTimeStamp, setEndTimeStamp] = useState<string | null>(null);
 
     useEffect(() => {
-        if (userId) {
-            fetchUser(userId)
-        }
+        // if (userId) {
+        //     fetchUser(userId)
+        // }
         
         setIsActive(!!activeSession);
     }, [userId, activeSession]);

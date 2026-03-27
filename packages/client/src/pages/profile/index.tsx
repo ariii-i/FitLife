@@ -6,14 +6,14 @@ import { DisplayProfile } from "@/widget/profile/display-profile"
 import { SignOut } from "@/features/auth/ui/sign-out"
 
 export const Profile = () => {
-    const { user, fetchUser } = useUserStore();
+    const { user,  } = useUserStore();
 
-    useEffect(() => {
-        if (user) {
-            console.log("User cha", user)
-            fetchUser(user?.id)
-        }
-    }, [fetchUser])
+    // useEffect(() => {
+    //     if (user) {
+    //         console.log("User cha", user)
+    //         fetchUser(user?.id)
+    //     }
+    // }, [fetchUser])
 
     return (
         <div className="flex flex-col flex-1 gap-3 items-center justify-center space-y-2">

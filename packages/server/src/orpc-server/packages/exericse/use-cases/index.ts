@@ -2,7 +2,8 @@ import { os } from "@orpc/server";
 import * as z from "zod";
 import type { IncomingHttpHeaders } from "node:http";
 import { ExerciseModel } from "../domain/exercise";
-import { Schema_Exercise } from "../domain/schema-exercise";
+import { Schema_Exercise, MuscleGroupEnum } from "../domain/schema-exercise";
+import { saveBase64Image } from "../../../../utils/file-upload";
 
 export const list_exercise = os
   .input(
@@ -19,17 +20,26 @@ export const list_exercise = os
 export const list_exercise_by_user = os
   .input(
     z.object({
-      user_id: z.number().int(),
+      user_id: z.string(),
       pageSize: z.number().int().min(1).max(100).default(10),
       pageIndex: z.number().int().min(0).default(0),
+      name: z.string().optional(),
+      muscle_group: MuscleGroupEnum.optional(),
     })
   )
   .output(z.array(Schema_Exercise))
   .handler(async ({ input }) => {
-    return await ExerciseModel.query()
-      .where("user_id", input.user_id)
-      .limit(input.pageSize)
-      .offset(input.pageIndex * input.pageSize);
+    let query = ExerciseModel.query().where("user_id", input.user_id);
+
+    if (input.name) {
+      query = query.where("name", "like", `%${input.name}%`);
+    }
+
+    if (input.muscle_group) {
+      query = query.where("muscle_group", input.muscle_group);
+    }
+
+    return await query.limit(input.pageSize).offset(input.pageIndex * input.pageSize);
   });
 
 export const find_exercise = os
@@ -40,19 +50,22 @@ export const find_exercise = os
 
 export const create_exercise = os
   .$context<{ headers: IncomingHttpHeaders }>()
-  //   .use(({ context, next }) => {
-  //     const user = parseJWT(context.headers.authorization?.split(" ")[1]);
+  .input(
+    Schema_Exercise.omit({ id: true }).extend({
+      image_base64: z.string().optional(),
+    })
+  )
+  .output(Schema_Exercise)
+  .handler(async ({ input }) => {
+    const { image_base64, ...exerciseData } = input;
+    const image_path = saveBase64Image(image_base64 || "") || undefined;
 
-  //     if (user) {
-  //       return next({ context: { user } });
-  //     }
-
-  //     throw new ORPCError("UNAUTHORIZED");
-  //   })
-  .input(Schema_Exercise.omit({ id: true }))
-  .output((Schema_Exercise))
-  .handler(async ({ input, context }) => {
-    return await ExerciseModel.query().insert(input);
+    const res = await ExerciseModel.query().insert({
+      ...exerciseData,
+      image_path,
+    });
+    const res_json = res.toJSON();
+    return res_json;
   });
 
 export const update_exercise = os
@@ -74,5 +87,6 @@ export const update_exercise = os
       description: result.description,
       user_id: result.user_id,
       muscle_group: result.muscle_group,
+      image_path: result.image_path,
     };
   });

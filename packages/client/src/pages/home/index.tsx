@@ -8,7 +8,7 @@ import { StreaksTrack } from "@/features/streaks/ui";
 import { useExerciseStore } from "@/entities/exercise/modal/store";
 
 export const HomePage = () => {
-    const { user, fetchUser } = useUserStore()
+    const { user, } = useUserStore()
     const { fetchWorkouts, workouts } = useWorkoutStore();
     const { fetchWorkoutLogs } = useWorkoutLogStore();
     const { exercises, fetchExercises } = useExerciseStore()
@@ -16,16 +16,15 @@ export const HomePage = () => {
     const currentUser = auth.currentUser
     useEffect(() => {
         if (user) {
-            fetchUser(user?.id)
             fetchWorkoutLogs(user?.id)
         }
         fetchWorkouts()
-        fetchExercises()
+        fetchExercises(user?.uid ?? "")
     }, [])
 
     const [selectedMuscle, setSelectedMuscle] = useState<string>("all");
     const muscleGroups = [...new Set(exercises.map(e => e.muscle_group))];
-    
+
     const filteredExercises = selectedMuscle === "all" ? exercises : exercises.filter(e => e.muscle_group === selectedMuscle);
 
     return (
@@ -49,7 +48,7 @@ export const HomePage = () => {
                 </select>
 
             </div>
-                <WorkoutList filteredExercises={filteredExercises}/>
+            <WorkoutList filteredExercises={filteredExercises} />
         </div>
     )
 }

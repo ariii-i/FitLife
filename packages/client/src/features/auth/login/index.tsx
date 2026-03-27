@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useUserStore } from "@/entities/user/modal/store";
+import { LoginFormData, useUserStore } from "@/entities/user/modal/store";
 import { useForm } from "react-hook-form"
 
 export const LoginForm = () => {
-    const { register, reset, handleSubmit } = useForm();
+    const { register, reset, handleSubmit } = useForm<LoginFormData>();
     const { userLogin } = useUserStore()
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (data: LoginFormData) => {
         await userLogin(data);
         reset()
     }

@@ -5,7 +5,7 @@ import { ExerciseModel } from "../../exericse/domain/exercise";
 
 export class WorkoutModel extends Model implements z.infer<typeof Schema_Workout> {
   id!: number;
-  user_id!: number;
+  user_id!: string;
   name!: string;
   created_at!: string;
 
