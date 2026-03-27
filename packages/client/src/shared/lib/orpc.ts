@@ -3,8 +3,11 @@ import type { RouterClient } from "@orpc/server";
 import { createORPCClient } from "@orpc/client";
 import { RPCLink } from "@orpc/client/fetch";
 
+export const API_BASE_URL = "http://127.0.0.1:3000";
+export const IMAGE_PATH_BASE = "http://127.0.0.1:3000";
+
 const link = new RPCLink({
-  url: "http://127.0.0.1:3000",
+  url: API_BASE_URL,
   headers: { Authorization: "Bearer token" },
 });
 

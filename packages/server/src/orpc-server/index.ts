@@ -1,7 +1,9 @@
 import { onError } from "@orpc/server";
 import { RPCHandler } from "@orpc/server/node";
 import { CORSPlugin } from "@orpc/server/plugins";
-import { createServer } from "node:http";
+import { createServer, IncomingMessage, ServerResponse } from "node:http";
+import * as fs from "node:fs";
+import * as path from "node:path";
 import { Model } from "objection";
 
 import knex from "./db/knex";
@@ -33,7 +35,37 @@ const handler = new RPCHandler(router, {
   ],
 });
 
-const server = createServer(async (req, res) => {
+const server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
+  const url = req.url || "";
+
+  if (url.startsWith("/uploads/")) {
+    const fileName = url.replace("/uploads/", "");
+    const filePath = path.join(__dirname, "..", "..", "uploads", fileName);
+
+    if (fs.existsSync(filePath)) {
+      const ext = path.extname(fileName).toLowerCase();
+      const mimeTypes: Record<string, string> = {
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".png": "image/png",
+        ".gif": "image/gif",
+        ".webp": "image/webp",
+      };
+      const contentType = mimeTypes[ext] || "application/octet-stream";
+
+      res.writeHead(200, {
+        "Content-Type": contentType,
+        "Access-Control-Allow-Origin": "*",
+      });
+      fs.createReadStream(filePath).pipe(res);
+      return;
+    } else {
+      res.writeHead(404);
+      res.end("File not found");
+      return;
+    }
+  }
+
   const result = await handler.handle(req, res, {
     context: { headers: req.headers },
   });
