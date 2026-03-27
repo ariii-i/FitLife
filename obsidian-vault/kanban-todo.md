@@ -6,6 +6,10 @@ kanban-plugin: board
 
 ## Backlog
 
+- [ ] task-8 add file-update field on client features make exercise request fields.tsx file, that field is file upload field where user will select image and upload to server
+- [ ] [[task-9 use rechart to create line-chart]]
+- [ ] [[task-10 add rpc on server workout use-cases to fetch workout histtory chart data]]
+- [ ] task-11 update each rpc on server use-cases to have user_id attached which will have string signature
 
 
 ## In Progress
