@@ -13,13 +13,11 @@ import { MUSCLE_GROUP_OPTIONS } from "../../../../entities/exercise/config";
 import { useState, useCallback } from "react";
 
 export const NameField = () => {
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext();
-
+  const { control, watch, formState } = useFormContext();
+  const { errors } = formState;
   return (
     <div>
+      <pre>{JSON.stringify(watch(), null, 2)}</pre>
       <label className="text-sm text-stone-500">Name</label>
       <Controller
         control={control}
@@ -67,9 +65,9 @@ export const DesciptionField = () => {
           />
         )}
       />
-      <When condition={!!errors.name}>
+      <When condition={!!errors.description}>
         <div className="text-destructive text-sm">
-          {errors?.name?.message + ""}
+          {errors?.description?.message + ""}
         </div>
       </When>
     </div>
@@ -89,29 +87,19 @@ export const MuscleGroupField = () => {
         control={control}
         name="muscle_group"
         render={({ field }) => (
-          <Select
+          <select
+            id="muscle_group"
             value={field.value || ""}
-            onValueChange={(value) => {
-              field.onChange(value);
-            }}
-            modal={false}
+            onChange={(e) => field.onChange(e.target.value)}
+            className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <SelectTrigger id="muscle_group">
-              <SelectValue placeholder="Select muscle group" />
-            </SelectTrigger>
-            <SelectContent
-              portalProps={{ container: document.body }}
-              onInteractOutside={(e) => {
-                e.preventDefault();
-              }}
-            >
-              {MUSCLE_GROUP_OPTIONS.map((group) => (
-                <SelectItem key={group} value={group}>
-                  {group.charAt(0).toUpperCase() + group.slice(1)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            <option value="">Select muscle group</option>
+            {MUSCLE_GROUP_OPTIONS.map((group) => (
+              <option key={group} value={group}>
+                {group.charAt(0).toUpperCase() + group.slice(1)}
+              </option>
+            ))}
+          </select>
         )}
       />
       <When condition={!!errors.muscle_group}>
