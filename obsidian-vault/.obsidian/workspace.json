@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "270dfb3e185858fe",
+        "id": "024d10d5dbfe401d",
         "type": "tabs",
         "children": [
           {
-            "id": "4d820c03cce20473",
+            "id": "6e0517536170e813",
             "type": "leaf",
             "state": {
               "type": "kanban",
@@ -21,46 +21,6 @@
               },
               "icon": "lucide-trello",
               "title": "kanban-todo"
-            }
-          }
-        ]
-      },
-      {
-        "id": "15951deb330513d8",
-        "type": "tabs",
-        "children": [
-          {
-            "id": "dddd6479a614b6fb",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "task-10 add rpc on server workout use-cases to fetch workout histtory chart data.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "task-10 add rpc on server workout use-cases to fetch workout histtory chart data"
-            }
-          }
-        ]
-      },
-      {
-        "id": "f97427ce594e0b58",
-        "type": "tabs",
-        "children": [
-          {
-            "id": "85b42419b03d9eda",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "task-9 use rechart to create line-chart.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "task-9 use rechart to create line-chart"
             }
           }
         ]
@@ -226,11 +186,11 @@
       "obsidian-kanban:Create new board": false
     }
   },
-  "active": "dddd6479a614b6fb",
+  "active": "89a74a60c2f5e624",
   "lastOpenFiles": [
+    "task-10 add rpc on server workout use-cases to fetch workout histtory chart data.md",
     "kanban-todo.md",
     "task-12 add linking table to track which exercise is performed with how much amount of sets and reps.md",
-    "task-10 add rpc on server workout use-cases to fetch workout histtory chart data.md",
     "task-9 use rechart to create line-chart.md",
     "task-5 implement exercise filter, add store for filter in entities exercise as use-exercise-filter-store, add filter dropdown component as exercise-filter in features and use it in exercise page.md",
     "task-4-multi-frame-viewer.md",
