@@ -48,3 +48,10 @@ export const updateWorkoutApi = async (
 export const deleteWorkoutApi = async (id: string): Promise<void> => {
   await sanityClient.delete(id);
 };
+
+export const get_workout_history_chart_data_api = async (
+  user_id: number,
+  date: string,
+) => {
+  return orpc.workout.get_workout_history_chart_data({ user_id, date });
+};
