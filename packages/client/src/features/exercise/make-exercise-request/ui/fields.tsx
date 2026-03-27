@@ -1,4 +1,4 @@
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
 import { Input } from "../../../../components/ui/input";
 import {
   Select,
@@ -10,7 +10,8 @@ import {
 import { useDropzone } from "../../../../components/ui/dropzone";
 import { When } from "react-if";
 import { MUSCLE_GROUP_OPTIONS } from "../../../../entities/exercise/config";
-import { useState, useCallback } from "react";
+import { IMAGE_PATH_BASE } from "../../../../shared/lib/orpc";
+import { useState, useEffect } from "react";
 
 export const NameField = () => {
   const { control, watch, formState } = useFormContext();
@@ -128,6 +129,19 @@ export const ImageField = () => {
   } = useFormContext();
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const image_path = useWatch({ name: "image_path" });
+  const image_base64 = useWatch({ name: "image_base64" });
+
+  const hasExistingImage = image_path && !image_base64;
+  const existingImageUrl = hasExistingImage ? `${IMAGE_PATH_BASE}${image_path}` : null;
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, []);
 
   const { getRootProps, getInputProps, onRemoveFile } = useDropzone({
     validation: {
@@ -151,8 +165,18 @@ export const ImageField = () => {
   });
 
   const handleRemove = () => {
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+      setPreviewUrl(null);
+    }
+    setValue("image_base64", undefined);
+    setValue("image_path", undefined);
     onRemoveFile("");
   };
+
+  const showNewFileUpload = !previewUrl && !existingImageUrl;
+  const showNewFilePreview = previewUrl;
+  const showExistingImage = existingImageUrl && !previewUrl;
 
   return (
     <div>
@@ -162,7 +186,23 @@ export const ImageField = () => {
         name="image_base64"
         render={() => (
           <div className="space-y-2">
-            {previewUrl ? (
+            {showExistingImage && (
+              <div className="relative w-full h-40 rounded-md border overflow-hidden">
+                <img
+                  src={existingImageUrl}
+                  alt="Existing"
+                  className="w-full h-full object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={handleRemove}
+                  className="absolute top-2 right-2 bg-destructive text-white rounded-full w-6 h-6 flex items-center justify-center text-sm"
+                >
+                  ×
+                </button>
+              </div>
+            )}
+            {showNewFilePreview && (
               <div className="relative w-full h-40 rounded-md border overflow-hidden">
                 <img
                   src={previewUrl}
@@ -177,7 +217,8 @@ export const ImageField = () => {
                   ×
                 </button>
               </div>
-            ) : (
+            )}
+            {showNewFileUpload && (
               <div
                 {...getRootProps()}
                 className="border-2 border-dashed border-gray-300 rounded-md p-4 text-center cursor-pointer hover:border-gray-400 transition-colors"
