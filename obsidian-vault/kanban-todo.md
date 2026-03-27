@@ -10,6 +10,7 @@ kanban-plugin: board
 - [ ] [[task-9 use rechart to create line-chart]]
 - [ ] [[task-10 add rpc on server workout use-cases to fetch workout histtory chart data]]
 - [ ] task-11 update each rpc on server use-cases to have user_id attached which will have string signature
+- [ ] [[task-12 add linking table to track which exercise is performed with how much amount of sets and reps]]
 
 
 ## In Progress

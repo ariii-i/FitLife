@@ -7,4 +7,7 @@ export const Schema_Workout_Session = z.object({
   duration_minutes: z.number().int(),
   performed_at: z.string(),
   exercises_done: z.number().int().optional(),
+  exercise_id: z.number().int(),
+  sets: z.number().int().optional(),
+  reps: z.number().int().optional(),
 });

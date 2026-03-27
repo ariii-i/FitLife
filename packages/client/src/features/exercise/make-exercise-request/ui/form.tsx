@@ -40,8 +40,6 @@ export const ExerciseForm = ({
     }
 
     try {
-      //   setIsSubmitting(true);
-
       if (selectedExercise) {
         await editExercise(data);
         toast.success("Exercise updated!");
@@ -62,6 +60,7 @@ export const ExerciseForm = ({
     <Drawer open={open} onOpenChange={setOpen} direction="right">
       <DrawerContent className="p-4">
         <FormProvider
+          defaultValues={{}}
           className="flex flex-col flex-1"
           onSubmit={handleSubmitExercise}
         >
@@ -80,7 +79,7 @@ export const ExerciseForm = ({
             <ConnectForm<FormData>>
               {({ formState }) => {
                 return (
-                  <Button type="submit" form="exam-form">
+                  <Button type="submit">
                     {formState.isSubmitting ? "Saving..." : "Save"}
                   </Button>
                 );

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Schema_Exercise } from "server/src/orpc-server/packages/exericse/domain/schema-exercise";
 import z from "zod";
-import { DesciptionField, ImageField, MuscleGroupField, NameField } from "./fields";
+import { DesciptionField, MuscleGroupField, NameField } from "./fields";
 import { useFormContext } from "react-hook-form";
 
 export const ExerciseFieldSet = ({
@@ -27,7 +27,7 @@ export const ExerciseFieldSet = ({
       <NameField />
       <DesciptionField />
       <MuscleGroupField />
-      <ImageField />
+      {/* <ImageField /> */}
     </div>
   );
 };

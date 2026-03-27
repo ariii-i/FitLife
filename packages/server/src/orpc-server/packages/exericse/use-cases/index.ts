@@ -39,7 +39,19 @@ export const list_exercise_by_user = os
       query = query.where("muscle_group", input.muscle_group);
     }
 
-    return await query.limit(input.pageSize).offset(input.pageIndex * input.pageSize);
+    const res = await query.limit(input.pageSize).offset(input.pageIndex * input.pageSize);
+    const mapped = res.map((e) => {
+      return {
+        id: e.id,
+        user_id: e.user_id,
+        name: e.name,
+        description: e.description,
+        muscle_group: e.muscle_group,
+        image_path: e.image_path ?? "",
+      };
+    });
+
+    return mapped;
   });
 
 export const find_exercise = os
