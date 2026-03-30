@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useWorkoutStore } from "@/entities/workout/modal/store";
 import { WorkoutButton } from "@/features/workouts/make-workout-request/ui/update-wkrout-button";
@@ -5,7 +6,7 @@ import { Case, Switch } from "react-if";
 import { Link } from "react-router-dom";
 
 export const Component = () => {
-  const { workouts, workout } = useWorkoutStore(); 
+  const { workouts, workout } = useWorkoutStore();
 
   return (
     <div className="space-y-2">
@@ -26,20 +27,18 @@ export const Component = () => {
                 {work.name}
               </CardHeader>
               <CardContent>
-                <pre>
-                  {JSON.stringify(workout, null, 2)}
-                </pre>
-                {workout?.workout_id }
-                {/* {workout
-                  .filter((ex) => ex.id === workout.id)
-                  .map((ex) => (
-                    <div key={ex.id}>
-                      {ex.name}
-                    </div>
-                  ))} */}
+
+                {work.exercises?.map((ex) => (
+                  <li>{ex.name}</li>
+                ))}
               </CardContent>
+              <Link key={work.id} to={`/workout/${work.id}`}>
+                <Button type="button">Start Workout</Button>
+              </Link>
             </Card>
           ))}
+
+
         </div>
       </div>
     </div>

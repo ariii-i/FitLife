@@ -5,6 +5,8 @@ import { toast } from "sonner";
 import { useWorkoutLogStore } from "@/entities/workout-log/modal/store";
 import { SessionFieldSet } from "./field-set";
 import { auth } from "@/shared/lib/firebase";
+import { useState } from "react";
+import { WorkoutCompletedWidget } from "@/widget/workout-completed/ui";
 
 type SessionFormValue = {
     sets: number;
@@ -19,6 +21,8 @@ export const SessionForm = ({ startTimeStamp, endTimeStamp }: {
 }) => {
     const { workoutId, exerciseId } = useParams<{ workoutId: string; exerciseId: string }>();
     const navigate = useNavigate();
+
+    const [open, setOpen] = useState<boolean>(false);
 
     const { addSession, workoutLogs } = useWorkoutLogStore();
     const { register, handleSubmit } = useForm<SessionFormValue>();
@@ -41,11 +45,12 @@ export const SessionForm = ({ startTimeStamp, endTimeStamp }: {
                 sets: Number(data.sets),
                 reps: Number(data.reps),
                 weight: Number(data.weight),
-                completed:true
+                completed: true
             });
 
             toast.success("Workout session saved!");
-            navigate(`/workout/${workoutId}`);
+            setOpen(true);
+            // navigate(`/workout/${workoutId}`);
         } catch (error) {
             console.error(error);
             toast.error("Unable to save session");
@@ -53,20 +58,23 @@ export const SessionForm = ({ startTimeStamp, endTimeStamp }: {
     };
 
     return (
-        <form onSubmit={handleSubmit(handleAdd)} className="flex flex-col flex-1 gap-3">
-            <SessionFieldSet register={register} />
+        <>
+            <form onSubmit={handleSubmit(handleAdd)} className="flex flex-col flex-1 gap-3">
+                <SessionFieldSet register={register} />
 
-            <div className="flex flex-1" />
+                <div className="flex flex-1" />
 
-            <div className="flex gap-2 w-full">
-                <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-stone-100 w-full">
-                    Add
-                </Button>
+                <div className="flex gap-2 w-full">
+                    <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-stone-100 w-full">
+                        Add
+                    </Button>
 
-                <Button type="button" className="w-full" onClick={() => navigate(-1)}>
-                    Cancel
-                </Button>
-            </div>
-        </form>
+                    <Button type="button" className="w-full" onClick={() => navigate(-1)}>
+                        Cancel
+                    </Button>
+                </div>
+            </form>
+            {open && <WorkoutCompletedWidget open={open} setOpen={setOpen} />}
+        </>
     );
 };
