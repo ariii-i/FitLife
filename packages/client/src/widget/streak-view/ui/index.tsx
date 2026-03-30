@@ -1,8 +1,8 @@
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useStreakStore } from "@/entities/streak/modal/store";
 import { cn } from "@/shared/lib/utils";
-import { Activity } from "lucide-react";
+import { Activity, Check } from "lucide-react";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const getDayName = (dateStr: string) => {
   const date = new Date(dateStr + "T00:00:00");
@@ -16,6 +16,19 @@ const getDayNumber = (dateStr: string) => {
 
 export const StreakView = () => {
   const { streakData, fetchStreak } = useStreakStore();
+  const sortedData = [...streakData].sort(
+    (a, b) => new Date(b.date) - new Date(a.date)
+  );
+
+  let streak = 0;
+
+  for (const day of sortedData) {
+    if (day.done) {
+      streak++;
+    } else {
+      break;
+    }
+  }
 
   useEffect(() => {
     fetchStreak(1);
@@ -23,35 +36,33 @@ export const StreakView = () => {
 
   return (
     <div className="space-y-4">
+
+      {streak}{streak > 1 ? " days streaks" : " day streak"}
+
       <div className="flex gap-2">
         {streakData.map((item) => (
-          <Link
-            key={item.date}
-            to={`/workout-history-chart/${item.date}`}
-            className={cn(
-              "flex flex-col items-center justify-center w-10 h-14 rounded-lg",
-              item.done ? "bg-green-500 cursor-pointer hover:bg-green-600" : "bg-gray-200"
-            )}
-          >
-            <span
+          <div className="flex flex-col justify-center items-center">
+            <Link
+              key={item.date}
+              to={`/workout-history-chart/${item.date}`}
               className={cn(
-                "text-xs font-medium",
-                item.done ? "text-white" : "text-gray-500"
+                "flex flex-col items-center justify-center w-20 h-16 rounded-lg text-black",
+                item.done
+                  ? "bg-[#A1FAFF] cursor-pointer hover:bg-primary_container"
+                  : "bg-[#FFA1A1]"
               )}
             >
+
+              {item.done ? <Check /> : ""}
+            </Link>
+
+            <span className="text-center">
               {getDayName(item.date)}
             </span>
-            <span
-              className={cn(
-                "text-sm font-bold",
-                item.done ? "text-white" : "text-gray-700"
-              )}
-            >
-              {getDayNumber(item.date)}
-            </span>
-          </Link>
+          </div>
         ))}
       </div>
+
       <div className="flex justify-end">
         <Link
           to={`/workout-history-chart/${new Date().toISOString().split("T")[0]}`}

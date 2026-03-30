@@ -1,4 +1,4 @@
-import { orpc } from "server/src/orpc-client";
+import { orpc } from "@/shared/lib/orpc";
 
 export const getStreakApi = async (
   user_id: number,

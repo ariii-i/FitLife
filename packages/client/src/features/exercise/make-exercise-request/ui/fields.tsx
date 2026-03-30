@@ -1,17 +1,10 @@
+import { useEffect, useState } from "react";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
-import { Input } from "../../../../components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../../../components/ui/select";
-import { useDropzone } from "../../../../components/ui/dropzone";
 import { When } from "react-if";
+import { useDropzone } from "../../../../components/ui/dropzone";
+import { Input } from "../../../../components/ui/input";
 import { MUSCLE_GROUP_OPTIONS } from "../../../../entities/exercise/config";
 import { IMAGE_PATH_BASE } from "../../../../shared/lib/orpc";
-import { useState, useEffect } from "react";
 
 export const NameField = () => {
   const { control, watch, formState } = useFormContext();
