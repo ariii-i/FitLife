@@ -22,6 +22,7 @@ export const ExerciseFilter: React.FC = () => {
         onChange={(e) => setName(e.target.value)}
         className="w-48"
       />
+
       <Select
         value={muscleGroup ?? "all"}
         onValueChange={(value) =>
@@ -31,6 +32,7 @@ export const ExerciseFilter: React.FC = () => {
         <SelectTrigger className="w-40">
           <SelectValue placeholder="Muscle Group" />
         </SelectTrigger>
+        
         <SelectContent>
           <SelectItem value="all">All</SelectItem>
           {MUSCLE_GROUP_OPTIONS.map((group) => (
@@ -40,7 +42,7 @@ export const ExerciseFilter: React.FC = () => {
           ))}
         </SelectContent>
       </Select>
-      <Button variant="outline" size="sm" onClick={clearFilters}>
+      <Button variant="ghost" size="sm" onClick={clearFilters}>
         Clear
       </Button>
     </div>

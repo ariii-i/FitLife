@@ -37,6 +37,7 @@ export const list_workout_by_user = os
   .handler(async ({ input }) => {
     return WorkoutModel.query()
       .where("user_id", input.user_id)
+      .withGraphFetched("exercises")
       .limit(input.pageSize)
       .offset(input.pageIndex * input.pageSize);
   });

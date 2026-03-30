@@ -14,10 +14,11 @@ import {
   Schema_Update_Workout,
   Schema_Workout,
 } from "server/src/orpc-server/packages/workout/domain/schema-workout";
+import { Schema_Workout_Exercise } from "server/src/orpc-server/packages/workout/domain/schema-workout-exercise";
 
 type WorkoutStore = {
   workouts: Array<z.infer<typeof Schema_Workout>>;
-  workout: Workout | null;
+  workout: z.infer<typeof Schema_Workout_Exercise> | null;
   createWorkout: (
     payload: z.infer<typeof Schema_Create_Workout>,
     cb?: () => void,

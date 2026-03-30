@@ -1,5 +1,5 @@
+import { orpc } from "@/shared/lib/orpc";
 import { sanityClient } from "@/shared/lib/sanity";
-import { orpc } from "server/src/orpc-client";
 import {
   Schema_Create_Workout,
   Schema_Update_Workout,

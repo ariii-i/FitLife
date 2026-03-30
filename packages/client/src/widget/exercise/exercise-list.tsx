@@ -32,7 +32,7 @@ export const ExerciseList = () => {
   return (
     <Switch>
       <Case condition={!exercises || exercises.length === 0}>
-        <Card className="bg-stone-700 p-7 rounded-xl text-stone-100 font-semibold flex-col flex justify-center items-center text-lg">
+        <Card className="bg-stone-700 p-7 rounded-xl text-stone-100 font-semibold flex-col flex justify-center items-center text-2xl">
           <p>No exercise yet. Create a new one?</p>
         </Card>
       </Case>

@@ -1,7 +1,6 @@
 import { useUserStore } from "@/entities/user/modal/store";
 import { useWorkoutLogStore } from "@/entities/workout-log/modal/store";
 import { useWorkoutStore } from "@/entities/workout/modal/store";
-import { StreaksTrack } from "@/features/streaks/ui";
 import { useEffect } from "react";
 import { auth } from "../../shared/lib/firebase";
 import { Greetings } from "@/widget/greetings/ui";
@@ -26,7 +25,6 @@ export const HomePage = () => {
     <div className="flex flex-col gap-8">
       <Greetings />
       <StreakView />
-      <StreaksTrack />
       <WorkoutList />
     </div>
   );
