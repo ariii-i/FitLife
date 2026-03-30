@@ -7,12 +7,11 @@ import { MUSCLE_GROUP_OPTIONS } from "../../../../entities/exercise/config";
 import { IMAGE_PATH_BASE } from "../../../../shared/lib/orpc";
 
 export const NameField = () => {
-  const { control, watch, formState } = useFormContext();
+  const { control, formState } = useFormContext();
   const { errors } = formState;
   return (
-    <div>
-      <pre>{JSON.stringify(watch(), null, 2)}</pre>
-      <label className="text-sm text-stone-500">Name</label>
+    <div className="flex-col gap-4">
+      <label className="text-sm text-stone-500 ">Name</label>
       <Controller
         control={control}
         name="name"
@@ -24,6 +23,7 @@ export const NameField = () => {
             onChange={(e) => {
               field.onChange(e.target.value);
             }}
+            className="w-full border-gray-700 h-8 bg-gray-800 rounded-md"
           />
         )}
       />
@@ -43,8 +43,8 @@ export const DesciptionField = () => {
   } = useFormContext();
 
   return (
-    <div>
-      <label className="text-sm text-stone-500">Description</label>
+    <div className="flex-col gap-4">
+      <label className="text-sm text-stone-500 mb-2">Description</label>
       <Controller
         control={control}
         name="description"
@@ -56,6 +56,7 @@ export const DesciptionField = () => {
             onChange={(e) => {
               field.onChange(e.target.value);
             }}
+            className="w-full border-gray-700 h-8 bg-gray-800 rounded-md"
           />
         )}
       />
@@ -75,8 +76,8 @@ export const MuscleGroupField = () => {
   } = useFormContext();
 
   return (
-    <div>
-      <label className="text-sm text-stone-500">Muscle Group</label>
+    <div className="flex-col gap-4">
+      <label className="text-sm text-stone-500 mb-2">Muscle Group</label>
       <Controller
         control={control}
         name="muscle_group"
@@ -85,7 +86,7 @@ export const MuscleGroupField = () => {
             id="muscle_group"
             value={field.value || ""}
             onChange={(e) => field.onChange(e.target.value)}
-            className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full px-3 py-2 rounded-md text-white bg-gray-800 border-gray-700 active:outline-none focus:outline-none"
           >
             <option value="">Select muscle group</option>
             {MUSCLE_GROUP_OPTIONS.map((group) => (
@@ -172,7 +173,7 @@ export const ImageField = () => {
   const showExistingImage = existingImageUrl && !previewUrl;
 
   return (
-    <div>
+    <div className="flex-col gap-4">
       <label className="text-sm text-stone-500">Image</label>
       <Controller
         control={control}

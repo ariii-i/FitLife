@@ -28,7 +28,7 @@ export const ExerciseFieldSet = ({
   }, [selectedExercise, setValue]);
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 px-4">
       <NameField />
       <DesciptionField />
       <MuscleGroupField />

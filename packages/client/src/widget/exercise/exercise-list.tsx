@@ -8,21 +8,20 @@ export const Component = () => {
   const { exercises } = useExerciseStore();
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
       <ExerciseMetric />
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-3 text-lg">
         {exercises.map((exercise) => (
           <div
             key={exercise.id}
-            className="bg-stone-900 border border-stone-700 px-5 py-3 rounded-sm text-gray-50 flex items-center gap-2 justify-between"
-          >
+            className="bg-gray-800 border border-gray-700 px-5 py-3 rounded-sm text-gray-50 flex items-center justify-between">
             <p>{exercise.name}</p>
 
             <ExerciseActionMenu selectedRow={exercise} />
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 };
 
