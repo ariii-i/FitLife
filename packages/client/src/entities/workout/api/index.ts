@@ -1,22 +1,9 @@
 import { orpc } from "@/shared/lib/orpc";
-import { sanityClient } from "@/shared/lib/sanity";
 import {
   Schema_Create_Workout,
   Schema_Update_Workout,
 } from "server/src/orpc-server/packages/workout/domain/schema-workout";
 import z from "zod";
-
-const get_unique_key = () =>
-  `${Date.now()}-${Math.random().toString(36).slice(2)}`;
-
-type CreateWorkoutInput = {
-  name: string;
-  exercises: {
-    _id: string;
-    plannedSets: number;
-    plannedReps: number;
-  }[];
-};
 
 export const createWorkoutApi = async (
   data: z.infer<typeof Schema_Create_Workout>,
@@ -45,9 +32,9 @@ export const updateWorkoutApi = async (
   return orpc.workout.update(payload);
 };
 
-export const deleteWorkoutApi = async (id: string): Promise<void> => {
-  await sanityClient.delete(id);
-};
+// export const deleteWorkoutApi = async (id: string): Promise<void> => {
+//   await sanityClient.delete(id);
+// };
 
 export const get_workout_history_chart_data_api = async (
   user_id: number,

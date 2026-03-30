@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
-export const ExerciseFilter: React.FC = () => {
+export const ExerciseFilter = () => {
   const { name, muscleGroup, setName, setMuscleGroup, clearFilters } =
     useExerciseFilterStore();
 
@@ -20,7 +20,7 @@ export const ExerciseFilter: React.FC = () => {
         placeholder="Search by name..."
         value={name}
         onChange={(e) => setName(e.target.value)}
-        className="w-48"
+        className="w-48 border-gray-700 h-8 bg-gray-800 rounded-md"
       />
 
       <Select
@@ -29,10 +29,10 @@ export const ExerciseFilter: React.FC = () => {
           setMuscleGroup(value === "all" ? null : (value as MuscleGroup))
         }
       >
-        <SelectTrigger className="w-40">
+        <SelectTrigger className="w-40 border border-gray-700 h-8 bg-gray-800 rounded-md">
           <SelectValue placeholder="Muscle Group" />
         </SelectTrigger>
-        
+
         <SelectContent>
           <SelectItem value="all">All</SelectItem>
           {MUSCLE_GROUP_OPTIONS.map((group) => (
@@ -42,7 +42,8 @@ export const ExerciseFilter: React.FC = () => {
           ))}
         </SelectContent>
       </Select>
-      <Button variant="ghost" size="sm" onClick={clearFilters}>
+
+      <Button variant="ghost" size="sm" onClick={clearFilters} className="bg-emerald-800 hover:bg-emerald-700 hover:text-white">
         Clear
       </Button>
     </div>

@@ -9,7 +9,7 @@ export const AddExercises = () => {
 
   return (
     <>
-      <Button onClick={() => setOpen(true)}>
+      <Button onClick={() => setOpen(true)} className="bg-emerald-800 hover:bg-emerald-700 hover:text-white">
         <Plus />
       </Button>
       <When condition={open}>

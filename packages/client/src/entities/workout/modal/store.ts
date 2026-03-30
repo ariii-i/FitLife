@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import {
   createWorkoutApi,
-  deleteWorkoutApi,
   get_workout_detail,
   getSelectedWorkoutApi,
   getWorkoutApi,
@@ -31,7 +30,7 @@ type WorkoutStore = {
   updateWorkout: (
     payload: z.infer<typeof Schema_Update_Workout>,
   ) => Promise<void>;
-  deleteWorkout: (id: string) => Promise<void>;
+  // deleteWorkout: (id: string) => Promise<void>;
   clearWorkouts: () => void;
 };
 
@@ -65,13 +64,13 @@ export const useWorkoutStore = create<WorkoutStore>((set) => ({
     await updateWorkoutApi(payload);
   },
 
-  deleteWorkout: async (id) => {
-    await deleteWorkoutApi(id);
+  // deleteWorkout: async (id) => {
+  //   await deleteWorkoutApi(id);
 
-    set((state) => ({
-      workouts: state.workouts.filter((w) => w._id !== id),
-    }));
-  },
+  //   set((state) => ({
+  //     workouts: state.workouts.filter((w) => w._id !== id),
+  //   }));
+  // },
 
   clearWorkouts: () => {
     set({ workouts: [] });
