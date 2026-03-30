@@ -74,6 +74,7 @@ export const SessionForm = ({ startTimeStamp, endTimeStamp }: {
                     </Button>
                 </div>
             </form>
+            
             {open && <WorkoutCompletedWidget open={open} setOpen={setOpen} />}
         </>
     );

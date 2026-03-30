@@ -11,6 +11,7 @@ import { SessionPage } from "./pages/session-page/ui";
 import "./App.css";
 import { WorkoutDetail } from "./pages/workout-deital/ui";
 import { WorkoutHistoryChartPage } from "./pages/workout-history-chart/ui";
+import { WorkoutCompletedPage } from "./pages/workout-completed/ui";
 
 function App() {
   return (
@@ -39,6 +40,10 @@ function App() {
               <Route
                 path="/workout/:workoutId/session/:exerciseId"
                 element={<SessionPage />}
+              />
+              <Route
+                path="/workout-completed"
+                element={<WorkoutCompletedPage />}
               />
               <Route path="/exercise" element={<Exercise />} />
               <Route path="/workout" element={<Workout />} />

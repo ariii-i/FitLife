@@ -63,7 +63,7 @@ export const WorkoutHistoryChartPage = () => {
   // return <pre>{JSON.stringify(chartData, null, 2)}</pre>;
 
   return (
-    <div className="p-4 space-y-8">
+    <div className="p-4 space-y-8 ">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">
           Workout History - {effectiveDate}

@@ -49,7 +49,7 @@ export const SessionPage = () => {
         (end.getTime() - start.getTime()) / 60000,
       );
 
-      await orpc.workout.create_session({
+      const payload= await orpc.workout.create_session({
         user_id: 1,
         workout_id: Number(workoutId),
         duration_minutes: durationMinutes,
@@ -60,7 +60,7 @@ export const SessionPage = () => {
       });
 
       toast.success("Session saved!");
-      navigate(`/workout/${workoutId}`);
+      navigate(`/workout-completed`, { state: payload });
     } catch (error) {
       console.error(error);
       toast.error("Failed to save session");
