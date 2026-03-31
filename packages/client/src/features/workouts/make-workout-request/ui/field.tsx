@@ -9,7 +9,7 @@ export const WorkoutNameField = () => {
   } = useFormContext();
   return (
     <div>
-      <label className="text-sm text-stone-500">Workout Name</label>
+      <label className="text-sm text-white">Workout Name</label>
       <Controller
         control={control}
         name="name"
@@ -41,78 +41,66 @@ export const ExerciseListField = () => {
   });
 
   return (
-    <div className="space-y-2">
-      <div className="border border-dashed p-1 rounded-xl border-stone-300">
-        <table>
-          <thead>
-            <tr>
-              <th>Exercises</th>
-              <th>Sets</th>
-              <th>Reps</th>
-            </tr>
-          </thead>
-          <tbody>
-            {fields.map((field: any, index) => (
-              <tr key={field.id}>
-                <td className="flex items-center gap-2 p-1">
-                  <Controller
-                    control={control}
-                    name={`exercises.${index}.selected`}
-                    render={({ field }) => (
-                      <input
-                        id={`exercises.${index}.selected`}
-                        name={`exercises.${index}.selected`}
-                        type="checkbox"
-                        checked={field.value || false}
-                        onChange={(e) => {
-                          field.onChange(e.target.checked);
-                        }}
-                      />
-                    )}
+    <div className="space-y-4 text-white">
+      {fields.map((field: any, index) => (
+        <div key={field.id} className="border border-dashed p-2 rounded-xl border-stone-300">
+
+          <div className="flex items-center gap-2 p-2">
+            <Controller
+              control={control}
+              name={`exercises.${index}.selected`}
+              render={({ field }) => (
+                <input
+                  type="checkbox"
+                  checked={field.value || false}
+                  onChange={(e) => field.onChange(e.target.checked)}
+                />
+              )}
+            />
+            <span className="font-medium">{field.name}</span>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <label htmlFor={`exercises.${index}.sets`} className="block text-sm font-semibold">
+                Sets
+              </label>
+              <Controller
+                control={control}
+                name={`exercises.${index}.sets`}
+                render={({ field }) => (
+                  <Input
+                    id={`exercises.${index}.sets`}
+                    type="number"
+                    min={0}
+                    value={field.value || ""}
+                    onChange={(e) => field.onChange(e.target.value)}
                   />
-                  {field.name}
-                </td>
-                <td className="p-1">
-                  <Controller
-                    control={control}
-                    name={`exercises.${index}.sets`}
-                    render={({ field }) => (
-                      <Input
-                        id={`exercises.${index}.sets`}
-                        name={`exercises.${index}.sets`}
-                        type="number"
-                        min={0}
-                        value={field.value || ""}
-                        onChange={(e) => {
-                          field.onChange(e.target.value);
-                        }}
-                      />
-                    )}
+                )}
+              />
+            </div>
+
+            <div>
+              <label htmlFor={`exercises.${index}.reps`} className="block text-sm font-semibold">
+                Reps
+              </label>
+              <Controller
+                control={control}
+                name={`exercises.${index}.reps`}
+                render={({ field }) => (
+                  <Input
+                    id={`exercises.${index}.reps`}
+                    type="number"
+                    min={0}
+                    value={field.value || ""}
+                    onChange={(e) => field.onChange(e.target.value)}
                   />
-                </td>
-                <td className="p-1">
-                  <Controller
-                    control={control}
-                    name={`exercises.${index}.reps`}
-                    render={({ field }) => (
-                      <Input
-                        id={`exercises.${index}.reps`}
-                        name={`exercises.${index}.reps`}
-                        type="number"
-                        min={0}
-                        value={field.value || ""}
-                        onChange={(e) => {
-                          field.onChange(e.target.value);
-                        }}
-                      />
-                    )}
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                )}
+              />
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

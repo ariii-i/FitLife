@@ -13,10 +13,10 @@ export const Component = () => {
     <div className="space-y-2 text-lg">
       <p>Today's Workout:</p>
 
-      <div className="flex flex-col gap-z">  
+      <div className="flex flex-col gap-z">
         <div className="grid grid-cols-3 gap-2 items-center">
           {workouts.map((work) => (
-            <Card key={work.id} className="bg-stone-800 text-white border-none p-2">
+            <Card key={work.id} className="bg-gray-800 border border-gray-700 rounded-md p-2 text-stone-100 font-semibold text-2xl">
               <CardHeader className="text-2xl font-semibold py-2">
                 {work.name}
               </CardHeader>
@@ -24,7 +24,7 @@ export const Component = () => {
               <CardContent>
                 <ul>
                   {work.exercises?.map((ex) => (
-                    <li className="flex text-lg"><Dot/>{ex.name}</li>
+                    <li className="flex text-lg"><Dot />{ex.name}</li>
                   ))}
                 </ul>
               </CardContent>
@@ -49,7 +49,7 @@ export const WorkoutList = () => {
   return (
     <Switch>
       <Case condition={!workouts || workouts.length === 0}>
-        <Card className="bg-stone-700 p-7 rounded-xl text-stone-100 font-semibold flex-col flex justify-center items-center text-2xl">
+        <Card className="bg-gray-800 border border-gray-700 p-7 rounded-xl text-stone-100 font-semibold flex-col flex justify-center items-center text-2xl">
           <WorkoutButton />
           <p>No workout yet. Create a new one?</p>
         </Card>

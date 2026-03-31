@@ -1,9 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { DialogHeader } from "@/components/ui/dialog";
-import { Dialog, DialogContent } from "@radix-ui/react-dialog";
 import { CircleCheckBig } from "lucide-react";
-import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 export const WorkoutCompletedPage = () => {

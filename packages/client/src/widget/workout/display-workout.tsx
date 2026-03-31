@@ -1,3 +1,4 @@
+import { Card } from "@/components/ui/card";
 import { useWorkoutStore } from "../../entities/workout/modal/store";
 import { WorkoutActionMenu } from "@/features/workouts/action-menu/ui";
 
@@ -9,14 +10,14 @@ export const DisplayWorkout = () => {
       <p className="text-stone-500 text-xs">
         {workouts.length} {workouts.length <= 1 ? "workout" : "workouts"}
       </p>
+
       {workouts.map((workout) => (
-        <div
+        <Card
           key={workout.id}
-          className="border-b border-dashed p-5 font-semibold flex items-center justify-between"
-        >
+         className="bg-gray-800 border border-gray-700 rounded-md p-5 text-stone-100 font-semibold text-lg flex justify-between mt-2" >
           {workout.name}
           <WorkoutActionMenu selectedWorkout={workout} />
-        </div>
+        </Card>
       ))}
     </div>
   );

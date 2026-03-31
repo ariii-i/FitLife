@@ -68,7 +68,7 @@ export const ExerciseForm = ({
             <DrawerTitle className="text-white">
               {selectedExercise?.id ? "Edit Exercise" : "New Exercise"}
             </DrawerTitle>
-            <DrawerDescription>
+            <DrawerDescription >
               {selectedExercise ? "Update exercise" : "Create a new exercise"}
             </DrawerDescription>
           </DrawerHeader>
