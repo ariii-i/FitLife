@@ -1,11 +1,10 @@
-import { useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { orpc } from "@/shared/lib/orpc";
+import { useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { StopWatch } from "./stopwatch";
-import { Input } from "@/components/ui/input";
-import { Card } from "@/components/ui/card";
-import { orpc } from "@/shared/lib/orpc";
 
 export const SessionPage = () => {
   const { workoutId, exerciseId } = useParams<{

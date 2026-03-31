@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useWorkoutStore } from "@/entities/workout/modal/store";
 import { WorkoutButton } from "@/features/workouts/make-workout-request/ui/create-workout-button";
-import React from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Case, Default, Switch, When } from "react-if";
 import { Link, useParams } from "react-router-dom";
 
@@ -10,15 +10,15 @@ const Component = () => {
   const { workoutId } = useParams<{ workoutId: string }>();
   const { fetchWorkoutDetail } = useWorkoutStore();
 
-  const [detail, setDetail] = React.useState<any>(null);
+  const [detail, setDetail] = useState<any>(null);
   // const {exercises, fetchExerciseForWorkout } = useExerciseStore();
 
-  const init = React.useCallback(async () => {
+  const init = useCallback(async () => {
     const res = await fetchWorkoutDetail(Number(workoutId));
     setDetail(res);
   }, [workoutId, fetchWorkoutDetail]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     init();
   }, [init]);
 
