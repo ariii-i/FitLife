@@ -1,0 +1,199 @@
+{
+  "main": {
+    "id": "db6befd3901ab35e",
+    "type": "split",
+    "children": [
+      {
+        "id": "024d10d5dbfe401d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "6e0517536170e813",
+            "type": "leaf",
+            "state": {
+              "type": "kanban",
+              "state": {
+                "file": "kanban-todo.md",
+                "kanbanViewState": {
+                  "kanban-plugin": "board",
+                  "list-collapse": []
+                }
+              },
+              "icon": "lucide-trello",
+              "title": "kanban-todo"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "8fa892133058ee2c",
+    "type": "split",
+    "children": [
+      {
+        "id": "2b4d8e2966236e4c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "89a74a60c2f5e624",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "8b62b7e9b1dd1e4f",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "654d26ebe9a56c11",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "b5d60450a74df744",
+    "type": "split",
+    "children": [
+      {
+        "id": "3024b17e4991fa0c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "dbf26780851fc7ab",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "kanban-todo.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for kanban-todo"
+            }
+          },
+          {
+            "id": "e79966e38d607ac2",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "kanban-todo.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from kanban-todo"
+            }
+          },
+          {
+            "id": "3ff10f725438af7b",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "a21ff44d4f7b29c4",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "52847aa47e2dd82b",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "kanban-todo.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of kanban-todo"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false,
+      "obsidian-kanban:Create new board": false
+    }
+  },
+  "active": "89a74a60c2f5e624",
+  "lastOpenFiles": [
+    "task-10 add rpc on server workout use-cases to fetch workout histtory chart data.md",
+    "kanban-todo.md",
+    "task-12 add linking table to track which exercise is performed with how much amount of sets and reps.md",
+    "task-9 use rechart to create line-chart.md",
+    "task-5 implement exercise filter, add store for filter in entities exercise as use-exercise-filter-store, add filter dropdown component as exercise-filter in features and use it in exercise page.md",
+    "task-4-multi-frame-viewer.md",
+    "kanban-usage-guide.md"
+  ]
+}
