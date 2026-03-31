@@ -1,80 +1,126 @@
 import { Button } from "@/components/ui/button";
-import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
+import { ConnectForm } from "@/custom-components/ui/connect-form";
+import { FormProvider } from "@/custom-components/ui/form-provider";
 import { useWorkoutStore } from "@/entities/workout/modal/store";
-import { SubmitHandler, useForm } from "react-hook-form";
+import {
+  Schema_Create_Workout,
+  Schema_Update_Workout,
+} from "server/src/orpc-server/packages/workout/domain/schema-workout";
 import { toast } from "sonner";
+import z from "zod";
 import { WorkoutFieldSet } from "./field-set";
 
 export type PlannedValue = {
-    _key?: string
-    _id: string
-    name: string
-    plannedSets: number
-    plannedReps: number
-    selected: boolean
-}
+  _key?: string;
+  _id: string;
+  name: string;
+  sets: number;
+  reps: number;
+  selected: boolean;
+};
 
-export type WorkoutFormValue = {
-    name: string
-    exercises: PlannedValue[]
-}
+export type WorkoutFormValue = z.infer<typeof Schema_Create_Workout>;
 
-export const WorkoutForm = ({open, setOpen}:{
-    open:boolean,
-    setOpen: (open: boolean)=>void
+export const WorkoutForm = ({
+  open,
+  setOpen,
+  selectedWorkout,
+}: {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  selectedWorkout?: any;
 }) => {
-    const { createWorkout, fetchWorkouts } = useWorkoutStore()
-    const { register, handleSubmit, setValue, control, watch, reset } = useForm<WorkoutFormValue>();
+  const { createWorkout, updateWorkout, fetchWorkouts } = useWorkoutStore();
 
-    const onSubmit: SubmitHandler<WorkoutFormValue> = async (data) => {
-        const selectedExercises = data.exercises.filter((ex) => ex.selected);
+  const onSubmit = async (data: any) => {
+    if (selectedWorkout) {
+      const payload: z.infer<typeof Schema_Update_Workout> = {
+        id: selectedWorkout.id,
+        name: data.name,
+        user_id: 1,
+        exercises: data.exercises.map((exercise: any) => ({
+          exercise_id: exercise.exercise_id,
+          sets: Number(exercise.sets),
+          reps: Number(exercise.reps),
+        })),
+      };
+      await updateWorkout(payload);
+      toast.success("Workout updated successfully");
+      setOpen(false);
+      await fetchWorkouts();
+    } else {
+      try {
+        const payload: z.infer<typeof Schema_Create_Workout> = {
+          name: data.name,
+          user_id: 1,
+          exercises: data.exercises.map((exercise: any) => ({
+            exercise_id: exercise.exercise_id,
+            sets: Number(exercise.sets),
+            reps: Number(exercise.reps),
+          })),
+        };
 
-        if (!data.name) {
-            return toast.error("Please enter workout name");
+        const { success, error } = Schema_Create_Workout.safeParse(payload);
+
+        if (!success) {
+          toast.error(JSON.stringify(error.format()));
+          return;
         }
 
-        if (!selectedExercises.length) {
-            return toast.error("Please select atleast one exercise");
-        }
+        await createWorkout(payload);
+        toast.success("Workout created successfully");
 
-        try {
-            const payload = {
-                name: data.name,
-                exercises: selectedExercises.map(ex => ({
-                    _id: ex._id,
-                    plannedSets: Number(ex.plannedSets),
-                    plannedReps: Number(ex.plannedReps),
-                })),
-            };
-            await createWorkout(payload);
-            toast.success("Workout created successfully")
-
-            reset();
-            setOpen(false);
-            await fetchWorkouts();
-        } catch (error) {
-            toast.error("Unable to create exercise.")
-        }
+        setOpen(false);
+        await fetchWorkouts();
+      } catch (error) {
+        toast.error("Unable to create exercise.");
+      }
     }
+  };
 
-    return (
-        <Drawer direction="right" open={open} onOpenChange={setOpen}>
-            <DrawerContent className="max-w-screen-md p-2 ">
-                <DrawerTitle>Workout form</DrawerTitle>
+  return (
+    <Drawer open={open} onOpenChange={setOpen} direction="right">
+      <DrawerContent className="bg-gray-900 border-gray-900">
+        <FormProvider className="flex flex-col flex-1" onSubmit={onSubmit}>
+          
+          <DrawerHeader className="gap-1">
+            <DrawerTitle className="text-white">
+              {selectedWorkout?.id ? "Edit Workout" : "New Workout"}
+            </DrawerTitle>
+            
+            <DrawerDescription>
+              {selectedWorkout ? "Update workout" : "Create a new workout"}
+            </DrawerDescription>
+          </DrawerHeader>
 
-                <form className="space-y-2 overflow-y-auto" onSubmit={handleSubmit(onSubmit)}>
-                    <WorkoutFieldSet control={control} register={register} setValue={setValue}/>
+          <WorkoutFieldSet selectedWorkout={selectedWorkout} />
 
-                    <div className="flex gap-2">
-                        <Button className="w-full">Add Workout</Button>
-                        <Button className="w-full" onClick={() => {
-                            setOpen(false)
-                        }} type="button">
-                            Close
-                        </Button>
-                    </div>
-                </form>
-            </DrawerContent>
-        </Drawer>
-    )
-}
+          <DrawerFooter>
+            <ConnectForm<FormData>>
+              {({ formState }) => {
+                return (
+                  <Button type="submit" className="bg-emerald-800 hover:bg-emerald-700 hover:text-white">
+                    {formState.isSubmitting ? "Saving..." : "Save"}
+                  </Button>
+                );
+              }}
+            </ConnectForm>
+            
+            <DrawerClose asChild>
+              <Button variant="outline" className="bg-gray-600 border-0 text-white hover:bg-gray-500 hover:text-white">Done</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </FormProvider>
+      </DrawerContent>
+    </Drawer>
+  );
+};

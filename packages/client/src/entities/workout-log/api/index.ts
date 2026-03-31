@@ -1,6 +1,6 @@
 import { sanityClient } from "@/shared/lib/sanity";
 import { WorkoutLog, WorkoutLogSession } from "../modal/type";
-import { getSanityUserId } from "@/entities/user/api";
+import { getUserApi } from "@/entities/user/api";
 
 const get_unique_key = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
@@ -9,9 +9,7 @@ export const createWorkoutLogApi = async (
     firebaseUid: string,
     date?: string
 ): Promise<WorkoutLog> => {
-    const sanityUserId = await getSanityUserId(firebaseUid);
-    console.log("workoutId: string userId: string,", workoutId)
-    console.log("userId: string,", sanityUserId)
+    const user = await getUserApi();
     const today = date || new Date().toISOString().split("T")[0];
 
     let log: WorkoutLog | null = await sanityClient.fetch(

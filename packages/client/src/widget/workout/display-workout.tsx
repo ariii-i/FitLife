@@ -1,22 +1,24 @@
-import { WorkoutButton } from "@/features/workouts/make-workout-request/ui/create-workout-button";
-import { useWorkoutStore } from "../../entities/workout/modal/store"
+import { Card } from "@/components/ui/card";
+import { useWorkoutStore } from "../../entities/workout/modal/store";
 import { WorkoutActionMenu } from "@/features/workouts/action-menu/ui";
 
 export const DisplayWorkout = () => {
-    const { workouts } = useWorkoutStore();
+  const { workouts } = useWorkoutStore();
 
-    return (
-        <div>
-            <p className="text-stone-500 text-xs">
-                {workouts.length} {workouts.length <= 1 ? "workout" : "workouts"}
-            </p>
-            {workouts.map((w) => (
-                <div key={w._id} className="border-b border-dashed p-5 font-semibold flex items-center justify-between">
-                    {w.name}
-                    <WorkoutActionMenu workoutId={w._id} />
+  return (
+    <div>
+      <p className="text-stone-500 text-xs">
+        {workouts.length} {workouts.length <= 1 ? "workout" : "workouts"}
+      </p>
 
-                </div>
-            ))}
-        </div>
-    )
-}
+      {workouts.map((workout) => (
+        <Card
+          key={workout.id}
+         className="bg-gray-800 border border-gray-700 rounded-md p-5 text-stone-100 font-semibold text-lg flex justify-between mt-2" >
+          {workout.name}
+          <WorkoutActionMenu selectedWorkout={workout} />
+        </Card>
+      ))}
+    </div>
+  );
+};
