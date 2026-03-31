@@ -9,7 +9,7 @@ import { ProtectedRoute } from "./features/auth/protected-route";
 import { WorkoutHistory } from "./widget/workout/workout-history";
 import { SessionPage } from "./pages/session-page/ui";
 import "./App.css";
-import { WorkoutDetail } from "./pages/workout-deital/ui";
+import { WorkoutDetail } from "./pages/workout-detail/ui";
 import { WorkoutHistoryChartPage } from "./pages/workout-history-chart/ui";
 import { WorkoutCompletedPage } from "./pages/workout-completed/ui";
 
