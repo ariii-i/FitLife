@@ -39,11 +39,14 @@ const Component = () => {
             key={exercise.id}
             to={`/workout/${workoutId}/session/${exercise.id}`}
           >
-            <Card className="bg-stone-700 p-5 rounded-xl text-stone-100 font-semibold flex justify-between items-center text-lg">
-              <span>{exercise?.name}</span>
+            <Card className="bg-gray-800 border border-gray-700 p-4 rounded-xl mb-3 hover:bg-stone-600 transition-colors">
 
-              <div className="font-medium text-sm text-stone-300">
-                {exercise.plannedSets} sets x {exercise.plannedReps} reps
+              <div className="flex justify-between items-center">
+                <span className="text-stone-100 font-semibold text-lg">{exercise?.name}</span>
+
+                <span className="text-stone-300 text-sm">
+                  {exercise.sets} sets × {exercise.reps} reps
+                </span>
               </div>
             </Card>
           </Link>

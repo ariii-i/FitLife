@@ -98,14 +98,12 @@ export const SessionPage = () => {
             className="fixed inset-0 bg-black/50"
             onClick={() => setOpenDrawer(false)}
           />
-          <div className="ml-auto h-full w-full max-w-md bg-stone-800 p-4 flex flex-col gap-4 z-10">
+          <div className="ml-auto h-full w-full max-w-md bg-gray-900 border-gray-900 rounded-md p-4 flex flex-col gap-4 z-10">
             <h2 className="text-xl font-bold text-stone-100">
               Session Complete
             </h2>
-
-            <Card className="bg-stone-700 p-4 rounded-xl flex flex-col gap-3">
-              <div className="flex flex-col gap-1">
-                <label className="text-sm text-stone-300">Sets</label>
+            <div className="flex flex-col gap-1">
+                <label className="text-sm text-stone-500">Sets</label>
                 <Input
                   type="number"
                   min={0}
@@ -116,7 +114,7 @@ export const SessionPage = () => {
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="text-sm text-stone-300">Reps</label>
+                <label className="text-sm text-stone-500">Reps</label>
                 <Input
                   type="number"
                   min={0}
@@ -125,7 +123,6 @@ export const SessionPage = () => {
                   className="bg-stone-600 text-stone-100 px-3 py-2 rounded"
                 />
               </div>
-            </Card>
 
             <div className="flex flex-col flex-1" />
 
@@ -136,7 +133,8 @@ export const SessionPage = () => {
               >
                 Add
               </Button>
-              <Button onClick={() => setOpenDrawer(false)} className="w-full">
+
+              <Button onClick={() => setOpenDrawer(false)} className="bg-gray-600 border-0 text-white hover:bg-gray-500 hover:text-white w-full">
                 Cancel
               </Button>
             </div>

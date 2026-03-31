@@ -4,12 +4,12 @@ import { useState } from "react";
 import { When } from "react-if";
 import { WorkoutForm } from "./form";
 
-export const WorkoutButton: React.FC = () => {
+export const WorkoutButton= () => {
   const [open, setOpen] = useState<boolean>(false);
 
   return (
     <div>
-      <Button onClick={() => setOpen(true)}>
+      <Button onClick={() => setOpen(true)} className="bg-emerald-800 hover:bg-emerald-700 hover:text-white">
         <Plus />
       </Button>
 

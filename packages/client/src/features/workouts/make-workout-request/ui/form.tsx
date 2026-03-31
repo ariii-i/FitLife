@@ -89,12 +89,14 @@ export const WorkoutForm = ({
 
   return (
     <Drawer open={open} onOpenChange={setOpen} direction="right">
-      <DrawerContent className="p-4">
+      <DrawerContent className="bg-gray-900 border-gray-900">
         <FormProvider className="flex flex-col flex-1" onSubmit={onSubmit}>
+          
           <DrawerHeader className="gap-1">
-            <DrawerTitle>
+            <DrawerTitle className="text-white">
               {selectedWorkout?.id ? "Edit Workout" : "New Workout"}
             </DrawerTitle>
+            
             <DrawerDescription>
               {selectedWorkout ? "Update workout" : "Create a new workout"}
             </DrawerDescription>
@@ -106,14 +108,15 @@ export const WorkoutForm = ({
             <ConnectForm<FormData>>
               {({ formState }) => {
                 return (
-                  <Button type="submit">
+                  <Button type="submit" className="bg-emerald-800 hover:bg-emerald-700 hover:text-white">
                     {formState.isSubmitting ? "Saving..." : "Save"}
                   </Button>
                 );
               }}
             </ConnectForm>
+            
             <DrawerClose asChild>
-              <Button variant="outline">Done</Button>
+              <Button variant="outline" className="bg-gray-600 border-0 text-white hover:bg-gray-500 hover:text-white">Done</Button>
             </DrawerClose>
           </DrawerFooter>
         </FormProvider>

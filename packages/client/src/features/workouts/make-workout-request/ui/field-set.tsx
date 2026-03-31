@@ -61,7 +61,7 @@ export const WorkoutFieldSet = ({
   }, [selectedWorkout, exercises, setValue]);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 space-y-3 px-4 text-white">
       <WorkoutNameField />
       <ExerciseListField />
     </div>
