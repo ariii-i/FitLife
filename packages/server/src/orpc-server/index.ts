@@ -1,17 +1,17 @@
 import { onError } from "@orpc/server";
 import { RPCHandler } from "@orpc/server/node";
-import { CORSPlugin } from "@orpc/server/plugins";
-import { createServer } from "node:http";
+import cors from "cors";
+import express from "express";
 import { Model } from "objection";
 
 import knex from "./db/knex";
 
 // routes
-import { exercise } from "./packages/exericse/route";
-import { workout } from "./packages/workout/route";
-import { init_client } from "../orpc-client";
 import dotenv from "dotenv";
+import { exercise } from "./packages/exericse/route";
 import { user } from "./packages/user/route";
+import { workout } from "./packages/workout/route";
+// import { init_client } from "../orpc-client";
 
 dotenv.config();
 
@@ -25,7 +25,6 @@ export const router = {
 };
 
 const handler = new RPCHandler(router, {
-  plugins: [new CORSPlugin()],
   interceptors: [
     onError((error) => {
       console.error(error);
@@ -33,18 +32,22 @@ const handler = new RPCHandler(router, {
   ],
 });
 
-const server = createServer(async (req, res) => {
-  const result = await handler.handle(req, res, {
+const app = express();
+
+app.use(cors());
+app.use("/uploads", express.static("uploads"));
+
+app.use("/rpc{/*path}", async (req, res, next) => {
+  const { matched } = await handler.handle(req, res, {
+    prefix: "/rpc",
     context: { headers: req.headers },
   });
 
-  if (!result.matched) {
-    res.statusCode = 404;
-    res.end("No procedure matched");
+  if (matched) {
+    return;
   }
+
+  next();
 });
 
-server.listen(3000, "127.0.0.1", () => {
-  console.log("Listening on 127.0.0.1:3000");
-  // init_client();
-});
+app.listen(3000, () => console.log("Server listening on port 3000"));

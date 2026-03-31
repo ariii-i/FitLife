@@ -1,78 +1,97 @@
-import { useState } from "react"
-import { SubmitHandler, useForm } from "react-hook-form"
-import { Schema_Exercise } from "server/src/orpc-server/packages/exericse/domain/schema-exercise"
-import { toast } from "sonner"
-import z from "zod"
-import { useExerciseStore } from "../../../../entities/exercise/modal/store"
-import { ExerciseFieldSet } from "./field-set"
-import { Drawer, DrawerContent, DrawerTitle } from "../../../../components/ui/drawer"
-import { Button } from "../../../../components/ui/button"
+import { ConnectForm } from "@/custom-components/ui/connect-form";
+import { FormProvider } from "@/custom-components/ui/form-provider";
+import { SubmitHandler } from "react-hook-form";
+import { Schema_Exercise } from "server/src/orpc-server/packages/exericse/domain/schema-exercise";
+import { toast } from "sonner";
+import z from "zod";
+import { Button } from "../../../../components/ui/button";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+} from "../../../../components/ui/drawer";
+import { useExerciseStore } from "../../../../entities/exercise/modal/store";
+import { ExerciseFormSchema } from "../../../../entities/exercise/api";
+import { ExerciseFieldSet } from "./field-set";
 
-type FormValue = z.infer<typeof Schema_Exercise>
+type FormValue = z.infer<typeof ExerciseFormSchema>;
 
 type ExerciseFormProp = {
-    open: boolean
-    setOpen: (open: boolean) => void
-    selectedExercise?: z.infer<typeof Schema_Exercise>
-}
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  selectedExercise?: z.infer<typeof Schema_Exercise>;
+};
 
-export const ExerciseForm = ({ open, setOpen, selectedExercise }: ExerciseFormProp) => {
-    const { createExercise, editExercise, fetchExercises } = useExerciseStore();
-    const [isSubmitting, setIsSubmitting] = useState(false)
+export const ExerciseForm = ({
+  open,
+  setOpen,
+  selectedExercise,
+}: ExerciseFormProp) => {
+  const { createExercise, editExercise, fetchExercises } = useExerciseStore();
 
-    const { register, handleSubmit, reset, setValue } = useForm<FormValue>()
+  const handleSubmitExercise: SubmitHandler<FormValue> = async (data) => {
+    if (!data.name?.trim()) {
+      toast.error("Please enter exercise name.");
+      return;
+    }
 
-    const handleSubmitExercise: SubmitHandler<FormValue> = async (data) => {
-        if (isSubmitting) return;
+    try {
+      if (selectedExercise) {
+        await editExercise(data);
+        toast.success("Exercise updated!");
+      } else {
+        await createExercise(data);
+        toast.success("Exercise added!");
+      }
 
-        if (!data.name?.trim()) {
-            toast.error("Please enter exercise name.");
-            return;
-        }
+      await fetchExercises();
+      //   reset();
+      setOpen(false);
+    } catch (error) {
+      toast.error("Failed to save exercise.");
+    }
+  };
 
-        try {
-            setIsSubmitting(true);
+  return (
+    <Drawer open={open} onOpenChange={setOpen} direction="right">
+      <DrawerContent className="bg-gray-900 border-gray-900">
+        <FormProvider
+          defaultValues={{}}
+          className="flex flex-col flex-1"
+          onSubmit={handleSubmitExercise}
+        >
+          <DrawerHeader className="gap-1">
+            <DrawerTitle className="text-white">
+              {selectedExercise?.id ? "Edit Exercise" : "New Exercise"}
+            </DrawerTitle>
+            <DrawerDescription >
+              {selectedExercise ? "Update exercise" : "Create a new exercise"}
+            </DrawerDescription>
+          </DrawerHeader>
 
-            if (selectedExercise) {
-                await editExercise(data);
-                toast.success("Exercise updated!");
-            } else {
-                await createExercise(data);
-                toast.success("Exercise added!");
-            }
+          <ExerciseFieldSet selectedExercise={selectedExercise} />
 
-            await fetchExercises();
-            reset();
-            setOpen(false);
+          <DrawerFooter>
+            <ConnectForm<FormData>>
+              {({ formState }) => {
+                return (
+                  <Button type="submit"  className="bg-emerald-800 hover:bg-emerald-700 hover:text-white">
+                    {formState.isSubmitting ? "Saving..." : "Save"}
+                  </Button>
+                );
+              }}
+            </ConnectForm>
 
-        } catch (error) {
-            toast.error("Failed to save exercise.");
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
-
-    return (
-        <Drawer direction="right" open={open} onOpenChange={setOpen}>
-            <DrawerContent className="p-2 h-full flex flex-col">
-                <DrawerTitle>
-                    Exercises
-                </DrawerTitle>
-
-                <form className="space-y-2 mt-3 flex flex-col flex-1" onSubmit={handleSubmit(handleSubmitExercise)}>
-                    <ExerciseFieldSet register={register} setValue={setValue} selectedExercise={selectedExercise} />
-
-                    <div className="flex-1" />
-
-                    <div className="flex gap-2 justify-end w-full">
-                        <Button type="submit" className="w-full" disabled={isSubmitting}>
-                            {selectedExercise ? "Update" : "Add"}
-                        </Button>
-                        <Button className="w-full" type="button" onClick={() => setOpen(false)}>Close</Button>
-                    </div>
-
-                </form>
-            </DrawerContent>
-        </Drawer>
-    )
-}
+            <DrawerClose asChild>
+              <Button variant="outline" className="bg-gray-600 border-0 text-white hover:bg-gray-500 hover:text-white">Done</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </FormProvider>
+      </DrawerContent>
+    </Drawer>
+  );
+};

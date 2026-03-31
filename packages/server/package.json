@@ -1,5 +1,5 @@
 {
-	"name":"server",
+	"name": "server",
 	"type": "module",
 	"scripts": {
 		"dev": "tsx watch src/index.ts",
@@ -14,7 +14,9 @@
 		"@orpc/client": "^1.13.6",
 		"@orpc/server": "^1.13.6",
 		"ast-types": "^0.14.2",
+		"cors": "^2.8.6",
 		"dotenv": "^17.3.1",
+		"express": "^5.2.1",
 		"fp-ts": "^2.16.11",
 		"gray-matter": "^4.0.3",
 		"knex": "^3.1.0",
@@ -28,6 +30,8 @@
 	},
 	"devDependencies": {
 		"@babel/parser": "^7.28.6",
+		"@types/cors": "^2.8.19",
+		"@types/express": "^5.0.6",
 		"@types/node": "^25.0.10",
 		"ts-node": "^10.9.2",
 		"vitest": "^4.0.18"

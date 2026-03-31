@@ -12,6 +12,9 @@ export async function up(knex: Knex): Promise<void> {
       .onDelete("CASCADE");
     table.integer("duration_minutes");
     table.timestamp("performed_at").defaultTo(knex.fn.now());
+    table.integer("exercise_id").references("id").inTable("exercises").onDelete("CASCADE");
+    table.integer("sets").nullable();
+    table.integer("reps").nullable();
   });
 }
 
