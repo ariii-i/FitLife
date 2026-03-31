@@ -1,0 +1,2 @@
+- this should track the amount of sets and reps linked with exercise and workout
+- may be update the create_worhout_session to add exercise id
