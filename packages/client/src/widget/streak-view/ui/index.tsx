@@ -10,11 +10,6 @@ const getDayName = (dateStr: string) => {
   return date.toLocaleDateString("en-US", { weekday: "short" });
 };
 
-// const getDayNumber = (dateStr: string) => {
-//   const date = new Date(dateStr + "T00:00:00");
-//   return date.getDate();
-// };
-
 export const StreakView = () => {
   const { streakData, fetchStreak } = useStreakStore();
   const sortedData = [...streakData].sort(
