@@ -6,7 +6,6 @@ import {
   getWorkoutApi,
   updateWorkoutApi,
 } from "../api";
-import { Workout } from "./types";
 import z from "zod";
 import {
   Schema_Create_Workout,
