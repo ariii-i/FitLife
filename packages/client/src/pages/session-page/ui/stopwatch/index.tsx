@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
 export const StopWatch = ({ isActive }: {
     isActive: boolean
@@ -25,7 +25,7 @@ export const StopWatch = ({ isActive }: {
     const seconds = Math.floor((time / 1000) % 60).toString().padStart(2, "0");
 
     return (
-        <Card className="text-5xl font-bold bg-stone-950 text-stone-100 px-8 py-4 rounded-2xl shadow-xl border border-stone-600 font-mono">
+        <Card className="text-5xl font-bold bg-stone-900 border-stone-950 text-stone-100 px-8 py-4 rounded-2xl shadow-xl font-mono text-center ">
             {hours}:{minutes}:{seconds}
         </Card>
     );

@@ -1,12 +1,12 @@
-import { useEffect } from "react"
-import { useWorkoutStore } from "@/entities/workout/modal/store"
 import { useExerciseStore } from "@/entities/exercise/modal/store"
-import { DisplayWorkout } from "@/widget/workout/display-workout"
+import { useWorkoutStore } from "@/entities/workout/modal/store"
 import { WorkoutButton } from "@/features/workouts/make-workout-request/ui/create-workout-button"
+import { DisplayWorkout } from "@/widget/workout/display-workout"
+import { useEffect } from "react"
 
 export const Workout = () => {
 
-    const { workouts, fetchWorkouts } = useWorkoutStore()
+    const { fetchWorkouts } = useWorkoutStore()
     const { fetchExercises } = useExerciseStore()
     
     useEffect(() => {

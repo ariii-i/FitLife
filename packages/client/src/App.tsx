@@ -6,7 +6,6 @@ import { Workout } from "./pages/workout";
 import { Profile } from "./pages/profile";
 import { Layout } from "./widget/layout";
 import { ProtectedRoute } from "./features/auth/protected-route";
-import { WorkoutHistory } from "./widget/workout/workout-history";
 import { SessionPage } from "./pages/session-page/ui";
 import "./App.css";
 import { WorkoutDetail } from "./pages/workout-detail/ui";
@@ -15,7 +14,7 @@ import { WorkoutCompletedPage } from "./pages/workout-completed/ui";
 
 function App() {
   return (
-    <div className=" bg-gray-900 text-gray-100 h-screen">
+    <div className=" bg-gray-900 text-gray-100 h-screen max-h-screen overflow-y-auto">
       <div className="max-w-7xl mx-auto h-full">
         <BrowserRouter>
           <Routes>
@@ -28,10 +27,6 @@ function App() {
               }
             >
               <Route path="/" element={<HomePage />} />
-              <Route
-                path="/workoutHistory/:workoutLogId"
-                element={<WorkoutHistory />}
-              />
               <Route
                 path="/workout-history-chart/:date"
                 element={<WorkoutHistoryChartPage />}
