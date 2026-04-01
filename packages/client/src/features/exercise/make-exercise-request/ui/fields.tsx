@@ -21,7 +21,8 @@ export const NameField = () => {
                         placeholder="e.g. Bench Press"
                         value={field.value || ""}
                         onChange={(e) => {
-                            field.onChange(e.target.value);
+                            const value = e.target.value;
+                            field.onChange(value.charAt(0).toUpperCase() + value.slice(1))
                         }}
                         className="w-full border-gray-700 h-8 bg-gray-800 rounded-md"
                     />
@@ -53,8 +54,9 @@ export const DesciptionField = () => {
                         id="description"
                         placeholder="Give some description about the exercise"
                         value={field.value || ""}
-                        onChange={(e) => {
-                            field.onChange(e.target.value);
+                        onChange={(e)=>{
+                            const value=e.target.value;
+                            field.onChange(value.charAt(0).toUpperCase()+value.slice(1))
                         }}
                         className="w-full border-gray-700 h-8 bg-gray-800 rounded-md"
                     />

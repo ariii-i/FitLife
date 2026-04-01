@@ -7,6 +7,7 @@ export const WorkoutNameField = () => {
         control,
         formState: { errors },
     } = useFormContext();
+    
     return (
         <div>
             <label className="text-sm text-white">Workout Name</label>
@@ -74,7 +75,7 @@ export const ExerciseListField = () => {
                                         type="number"
                                         min={0}
                                         value={field.value || ""}
-                                        onChange={(e) => field.onChange(e.target.value)}
+                                        onChange={(e) => field.onChange(Number(e.target.value))}
                                     />
                                 )}
                             />
@@ -93,7 +94,7 @@ export const ExerciseListField = () => {
                                         type="number"
                                         min={0}
                                         value={field.value || ""}
-                                        onChange={(e) => field.onChange(e.target.value)}
+                                        onChange={(e) => field.onChange(Number(e.target.value))}
                                     />
                                 )}
                             />

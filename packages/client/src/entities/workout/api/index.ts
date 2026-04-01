@@ -22,8 +22,8 @@ export const getWorkoutApi = async () => {
     });
 };
 
-export const getSelectedWorkoutApi = async () => {
-    return orpc.workout.list_exercise_in_a_workout({ workout_id: 1 });
+export const getSelectedWorkoutApi = async (workout_id: number) => {
+    return orpc.workout.list_exercise_in_a_workout({ workout_id: workout_id });
 };
 
 export const updateWorkoutApi = async (
