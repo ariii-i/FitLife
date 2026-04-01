@@ -44,7 +44,7 @@ export const WorkoutForm = ({
                 id: selectedWorkout.id,
                 name: data.name,
                 user_id: 1,
-                exercises: data.exercises.filter((ex:any) => ex.sets > 0 || ex.reps > 0).map((exercise: any) => ({
+                exercises: data.exercises.filter((ex:any) => ex.selected && ex.sets > 0 || ex.reps > 0).map((exercise: any) => ({
                     exercise_id: exercise.exercise_id,
                     sets: Number(exercise.sets),
                     reps: Number(exercise.reps),
