@@ -26,8 +26,8 @@ export const router = {
 
 const handler = new RPCHandler(router, {
   interceptors: [
-    onError((error) => {
-      console.error(error);
+    onError((error: any) => {
+      console.error(error.message);
     }),
   ],
 });
@@ -50,4 +50,6 @@ app.use("/rpc{/*path}", async (req, res, next) => {
   next();
 });
 
-app.listen(3000, () => console.log("Server listening on port 3000"));
+export const main = () => {
+  app.listen(3000, () => console.log("Server listening on port 3000"));
+};

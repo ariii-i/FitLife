@@ -31,6 +31,13 @@ export const find_user = os
 export const create_user = os
   .$context<{ headers: IncomingHttpHeaders }>()
   .input(Schema_User_Create)
-  .handler(async ({ input, context }) => {
+  .handler(async ({ input }) => {
+    const existingUser = await UserModel.query()
+      .where("email", input.email)
+      .orWhere("user_id", input.user_id)
+      .first();
+    if (existingUser) {
+      return await UserModel.query().patch(input).where("id", existingUser.id);
+    }
     return await UserModel.query().insert(input);
   });

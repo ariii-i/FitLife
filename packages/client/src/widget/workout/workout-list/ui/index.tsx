@@ -35,7 +35,7 @@ export const Component = () => {
                             </ul>
                         </CardContent>
 
-                        <Link to={`/workout/${work.id}`} className="w-full mt-2">
+                        <Link to={`/session/${work.id}`} className="w-full mt-2">
                             <Button type="button" className="w-full">
                                 Start Workout
                             </Button>

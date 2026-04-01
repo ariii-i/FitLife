@@ -3,6 +3,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "tsx watch src/index.ts",
+		"build": "tsc",
 		"test": "vitest",
 		"format": "prettier --write \"src/**/*.{ts,tsx}\"",
 		"migrate:latest": "node -r ts-node/register ./node_modules/knex/bin/cli.js migrate:latest --knexfile ./knexfile.ts",
@@ -34,6 +35,7 @@
 		"@types/express": "^5.0.6",
 		"@types/node": "^25.0.10",
 		"ts-node": "^10.9.2",
+		"tsup": "^8.5.1",
 		"vitest": "^4.0.18"
 	}
 }
