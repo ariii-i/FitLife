@@ -34,7 +34,7 @@ const Component = () => {
                 return (
                     <Link
                         key={exercise.id}
-                        to={`/workout/${workoutId}/session/${exercise.id}`}
+                        to={`/session/${workoutId}/current/${exercise.id}`}
                     >
                         <Card className="bg-gray-800 border border-gray-700 p-4 rounded-xl mb-3 hover:bg-stone-600 transition-colors">
 

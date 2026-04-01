@@ -27,9 +27,9 @@ function App() {
                         >
                             <Route path="/" element={<HomePage />} />
                             <Route path="/workout-history-chart/:date" element={<WorkoutHistoryChartPage />} />
-                            <Route path="/workout/:workoutId" element={<WorkoutDetail />} />
+                            <Route path="/session/:workoutId" element={<WorkoutDetail />} />
                             <Route path="/workout/:workoutId/:workoutName" element={<ExerciseDetail />} />
-                            <Route path="/workout/:workoutId/session/:exerciseId" element={<SessionPage />} />
+                            <Route path="/session/:workoutId/current/:exerciseId" element={<SessionPage />} />
                             <Route path="/workout-completed" element={<WorkoutCompletedPage />} />
                             <Route path="/exercise" element={<Exercise />} />
                             <Route path="/workout" element={<Workout />} />
