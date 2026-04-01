@@ -5,25 +5,25 @@ import { AddExercises } from "@/features/exercise/make-exercise-request/ui/creat
 import { ExerciseFilter } from "@/features/exercise/ui/exercise-filter";
 import { ExerciseList } from "@/widget/exercise/exercise-list";
 
-export const Exercise: React.FC = () => {
-  const { fetchExercises } = useExerciseStore();
-  const { name, muscleGroup } = useExerciseFilterStore();
+export const Exercise = () => {
+    const { fetchExercises } = useExerciseStore();
+    const { name, muscleGroup } = useExerciseFilterStore();
 
-  useEffect(() => {
-    fetchExercises({
-      name: name || undefined,
-      muscle_group: muscleGroup || undefined,
-    });
-  }, [fetchExercises, name, muscleGroup]);
+    useEffect(() => {
+        fetchExercises({
+            name: name || undefined,
+            muscle_group: muscleGroup || undefined,
+        });
+    }, [fetchExercises, name, muscleGroup]);
 
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="flex justify-between items-center font-semibold text-xl">
-        <h3>Exercises</h3>
-        <AddExercises />
-      </div>
-      <ExerciseFilter />
-      <ExerciseList />
-    </div>
-  );
+    return (
+        <div className="flex flex-col gap-3">
+            <div className="flex justify-between items-center font-semibold text-xl">
+                <h3>Exercises</h3>
+                <AddExercises />
+            </div>
+            <ExerciseFilter />
+            <ExerciseList />
+        </div>
+    );
 };

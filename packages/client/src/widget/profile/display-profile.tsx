@@ -1,6 +1,5 @@
 import { useUserStore } from "@/entities/user/modal/store";
 import { UserRound } from "lucide-react";
-import { Card, CardContent, CardHeader } from "../../components/ui/card";
 
 export const DisplayProfile = () => {
     const { user } = useUserStore();
@@ -19,27 +18,6 @@ export const DisplayProfile = () => {
 
             <span className="font-semibold text-lg">{user?.name}</span>
             <span className="text-sm text-stone-700">{user?.email}</span>
-
-            {/* <Card className="bg-stone-700 text-stone-100">
-                <CardHeader>My details</CardHeader>
-
-                <CardContent className="flex gap-10">
-                    <div>
-                        Weight
-
-                    </div>
-
-                    <div>
-                        Height
-
-                    </div>
-
-                    <div>
-                        Total time
-
-                    </div>
-                </CardContent>
-            </Card> */}
         </div>
     )
 }
