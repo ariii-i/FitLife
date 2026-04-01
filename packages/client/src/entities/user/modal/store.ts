@@ -1,46 +1,76 @@
+import { auth, googleProvider } from "@/shared/lib/firebase";
+import { signInWithPopup, User } from "firebase/auth";
 import { create } from "zustand";
-import { createSanityUser, deleteUserApi, getUserByFirebaseUid, signOuts } from "../api";
-import { User } from "./types";
+import { createUserApi, deleteUserApi, getUserByFirebaseUid } from "../api";
 
 type UserStore = {
-    user: User | null;
-    userLogin: (data: Partial<User>) => Promise<void>;
-    fetchUser: (uid: string) => Promise<void>;
-    setUsers: (user: User) => void;
-    deleteUsers: (id: string) => void;
-    signOutUser: (auth: any) => Promise<void>;
+  user: (User & { photo: string; name: string }) | null;
+  userLogin: (data: Partial<User>) => Promise<void>;
+  handleLogin: (nabigate: any) => Promise<void>;
+  fetchUser: (uid: string) => Promise<void>;
+  setUsers: (user: User) => void;
+  deleteUsers: (id: string) => void;
+  signOutUser: (naviagte: any) => Promise<void>;
 };
 
 export const useUserStore = create<UserStore>((set) => ({
-    user: null,
+  user: null,
 
-    userLogin: async (data: any) => {
-        const newUser = await createSanityUser(data);
-        set({ user: newUser });
-    },
+  userLogin: async (data: any) => {
+    // const newUser = await createSanityUser(data);
+    set({ user: null });
+  },
+  handleLogin: async (navigate) => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const firebaseUser = result.user;
 
-    fetchUser: async (uid: string) => {
-        if (!uid) {
-            console.error("UID is undefined");
-            return;
-        }
-        const data = await getUserByFirebaseUid(uid);
-        set({ user: data });
-    },
+      // let existingUser = await getUserByFirebaseUid(firebaseUser.uid);
 
-    setUsers: (user: any) => ({ user }),
+      // if (!existingUser?._id) {
+      //   // await createSanityUser({
+      //   //   firebaseUid: firebaseUser.uid,
+      //   //   name: firebaseUser.displayName || "No Name",
+      //   //   email: firebaseUser.email,
+      //   //   photo: firebaseUser.photoURL || null,
+      //   // });
+      //   //   toast.success("Account created");
+      // } else {
+      //   //   toast.success("Logged in");
+      // }
+      await createUserApi({
+        user_id: firebaseUser.uid,
+        username: firebaseUser.displayName || "No Name",
+        email: firebaseUser.email + "",
+      });
+      set({ user: firebaseUser as any });
+      navigate("/");
+    } catch (error) {
+      console.log("Google login error:", error);
+    }
+  },
 
-    deleteUsers: (id: string) => {
-        deleteUserApi(id)
+  fetchUser: async (uid: string) => {
+    if (!uid) {
+      console.error("UID is undefined");
+      return;
+    }
+    const data = await getUserByFirebaseUid(uid);
+    set({ user: data });
+  },
 
-        set((state) => ({
-            user: state.user && state.user._id === id ? null : state.user,
-        }));
-    },
+  setUsers: (user: any) => ({ user }),
 
-    signOutUser: async (auth: any) => {
-        await signOuts(auth)
-        set({ user: null })
-    }, 
-    
-}))
+  deleteUsers: (id: string) => {
+    deleteUserApi(id);
+
+    set((state) => ({
+      user: state.user && state.user?._id === id ? null : state.user,
+    }));
+  },
+
+  signOutUser: async (navigate) => {
+    set({ user: null });
+    navigate("/login");
+  },
+}));

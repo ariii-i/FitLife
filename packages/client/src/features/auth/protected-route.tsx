@@ -4,23 +4,23 @@ import { Navigate } from "react-router-dom";
 import { auth } from "../../shared/lib/firebase";
 
 type ProtectedRouteProps = {
-    children: ReactNode;
+  children: ReactNode;
 };
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-    const [user, setUser] = useState<FirebaseUser | null>(null);
-    const [authChecked, setAuthChecked] = useState(false);
+  const [user, setUser] = useState<FirebaseUser | null>(null);
+  const [authChecked, setAuthChecked] = useState(false);
 
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-            setUser(firebaseUser);
-            setAuthChecked(true);
-        });
-        return () => unsubscribe();
-    }, []);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+      setAuthChecked(true);
+    });
+    return () => unsubscribe();
+  }, []);
 
-    if (!authChecked) return <div>Loading</div>;
-    if (!user) return <Navigate to="/login" replace />;
+  if (!authChecked) return <div>Loading</div>;
+  if (!user) return <Navigate to="/login" replace />;
 
-    return <>{children}</>;
+  return <>{children}</>;
 };

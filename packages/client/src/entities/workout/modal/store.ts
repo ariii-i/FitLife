@@ -21,7 +21,11 @@ type WorkoutStore = {
     payload: z.infer<typeof Schema_Create_Workout>,
     cb?: () => void,
   ) => Promise<void>;
-  fetchWorkouts: () => Promise<void>;
+  fetchWorkouts: (params: {
+    user_id: string;
+    pageIndex?: number;
+    pageSize?: number;
+  }) => Promise<void>;
   fetchWorkoutDetail: (workout_id: number) => Promise<any>;
   fetchSelectedWorkout: (
     payload: z.infer<typeof Schema_Create_Workout>,
@@ -37,8 +41,9 @@ export const useWorkoutStore = create<WorkoutStore>((set) => ({
   workouts: [],
   workout: null,
 
-  fetchWorkouts: async () => {
-    const data = await getWorkoutApi();
+  fetchWorkouts: async (params) => {
+    const data = await getWorkoutApi(params);
+    console.log(data);
     set({ workouts: data });
   },
 

@@ -1,11 +1,11 @@
+import { Model } from "objection";
 import z from "zod";
-import { Model, QueryContext } from "objection";
-import { Schema_Workout } from "./schema-workout";
 import { ExerciseModel } from "../../exericse/domain/exercise";
+import { Schema_Workout } from "./schema-workout";
 
 export class WorkoutModel extends Model implements z.infer<typeof Schema_Workout> {
   id!: number;
-  user_id!: number;
+  user_id!: string;
   name!: string;
   created_at!: string;
 
