@@ -5,6 +5,7 @@ import { useState } from "react"
 import { Schema_Exercise } from "server/src/orpc-server/packages/exericse/domain/schema-exercise"
 import z from "zod"
 import { ExerciseForm } from "../../make-exercise-request/ui/form"
+import { When } from "react-if"
 
 export const ExerciseActionMenu = ({ selectedRow }: {
     selectedRow?: z.infer<typeof Schema_Exercise>
@@ -27,19 +28,19 @@ export const ExerciseActionMenu = ({ selectedRow }: {
 
                 <DropdownMenuContent>
                     <DropdownMenuItem
-                        onClick={() => selectedRow && handleEditButton(selectedRow)}
+                        onClick={() => selectedRow && handleEditButton()}
                     >
                         Edit
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
 
-            {open && (
+            <When condition={open}>
                 <ExerciseForm
                     open={open}
                     setOpen={setOpen}
                     selectedExercise={selectedRow} />
-            )}
+            </When>
         </div>
     )
 }
