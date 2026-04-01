@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useWorkoutStore } from "@/entities/workout/modal/store";
 import { IMAGE_PATH_BASE } from "@/shared/lib/orpc";
 import { useEffect, useState, useCallback } from "react";
+import { Else, If, Then } from "react-if";
 import { useParams } from "react-router-dom";
 
 export const ExerciseDetail = () => {
@@ -53,11 +54,15 @@ export const ExerciseDetail = () => {
                                 </div>
                             </div>
 
-                            {ex.image_path ? (
-                                <img src={image} alt={ex.name} className="w-full h-40 object-cover py-2" />
-                            ) : (
-                                <img src="https://i.pinimg.com/474x/3f/3d/b8/3f3db8e4c64d1ee9e69c7fec91c45556.jpg" alt={ex.name} className="w-full h-40 object-cover py-2" />
-                            )}
+                            <If condition={ex.image_path}>
+                                <Then>
+                                    <img src={image} alt={ex.name} className="w-full h-40 object-cover py-2" />
+                                </Then>
+
+                                <Else>
+                                    <img src="https://i.pinimg.com/474x/3f/3d/b8/3f3db8e4c64d1ee9e69c7fec91c45556.jpg" alt={ex.name} className="w-full h-40 object-cover py-2" />
+                                </Else>
+                            </If>
 
                             <CardContent className="px-4 py-2 flex flex-col gap-1">
                                 {ex.description && <p className="text-md font-semibold">{ex.description}</p>}

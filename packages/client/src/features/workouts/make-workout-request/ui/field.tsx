@@ -7,7 +7,7 @@ export const WorkoutNameField = () => {
         control,
         formState: { errors },
     } = useFormContext();
-    
+
     return (
         <div>
             <label className="text-sm text-white">Workout Name</label>
@@ -22,6 +22,7 @@ export const WorkoutNameField = () => {
                         onChange={(e) => {
                             field.onChange(e.target.value);
                         }}
+                        className="w-full border-gray-700 h-8 bg-gray-800 rounded-md"
                     />
                 )}
             />
@@ -44,9 +45,9 @@ export const ExerciseListField = () => {
     return (
         <div className="space-y-4 text-white max-h-screen overflow-y-auto">
             {fields.map((field: any, index) => (
-                <div key={field.id} className="border border-dashed p-2 rounded-xl border-stone-300">
+                <div key={field.id} className="border border-stone-700 p-4 rounded-xl">
 
-                    <div className="flex items-center gap-2 p-2">
+                    <div className="flex items-center gap-2">
                         <Controller
                             control={control}
                             name={`exercises.${index}.selected`}
@@ -61,7 +62,7 @@ export const ExerciseListField = () => {
                         <span className="font-medium">{field.name}</span>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-2 gap-2 pt-2">
                         <div>
                             <label htmlFor={`exercises.${index}.sets`} className="block text-sm font-semibold">
                                 Sets
@@ -76,6 +77,7 @@ export const ExerciseListField = () => {
                                         min={0}
                                         value={field.value || ""}
                                         onChange={(e) => field.onChange(Number(e.target.value))}
+                                        className="w-full border-gray-700 h-8 bg-gray-800 rounded-md"
                                     />
                                 )}
                             />
@@ -95,6 +97,7 @@ export const ExerciseListField = () => {
                                         min={0}
                                         value={field.value || ""}
                                         onChange={(e) => field.onChange(Number(e.target.value))}
+                                        className="w-full border-gray-700 h-8 bg-gray-800 rounded-md"
                                     />
                                 )}
                             />
