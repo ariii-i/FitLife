@@ -1,21 +1,32 @@
+import { MuscleGroupEnum } from "server/src/orpc-server/packages/exericse/domain/schema-exercise";
+import z from "zod";
 import { create } from "zustand";
-import { MuscleGroup } from "../config";
 
+const tttt = z.object({
+  name: z.string().optional(),
+  muscle_group: MuscleGroupEnum.optional(),
+});
 export type ExerciseFilterStore = {
-	name: string;
-	muscleGroup: MuscleGroup | null;
-	setName: (name: string) => void;
-	setMuscleGroup: (group: MuscleGroup | null) => void;
-	clearFilters: () => void;
-}
+  filters: z.infer<typeof tttt>;
+  setFilters: (
+    filters: ExerciseFilterStore["filters"],
+  ) => ExerciseFilterStore["filters"];
+  clearFilters: () => void;
+};
 
-export const useExerciseFilterStore = create<ExerciseFilterStore>((set) => ({
-	name: "",
-	muscleGroup: null,
+export const useExerciseFilterStore = create<ExerciseFilterStore>(
+  (set, get) => ({
+    filters: {
+      name: "",
+      muscle_group: "all",
+    },
 
-	setName: (name) => set({ name }),
+    setFilters: (filters) => {
+      set({ filters });
 
-	setMuscleGroup: (muscleGroup) => set({ muscleGroup }),
+      return get().filters;
+    },
 
-	clearFilters: () => set({ name: "", muscleGroup: null }),
-}));
+    clearFilters: () => set({ filters: { name: "" } }),
+  }),
+);

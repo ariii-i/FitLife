@@ -1,17 +1,19 @@
 import { os } from "@orpc/server";
-import * as z from "zod";
 import type { IncomingHttpHeaders } from "node:http";
+import * as z from "zod";
 import {
   Schema_Create_Workout,
   Schema_Create_Workout_Output,
   Schema_Update_Workout,
   Schema_Workout,
 } from "../domain/schema-workout";
-import { Schema_Workout_Session } from "../domain/schema-workout-session";
+import {
+  Schema_Workout_Session,
+  Schema_Workout_Session_Create,
+} from "../domain/schema-workout-session";
 import { WorkoutModel } from "../domain/workout";
-import { WorkoutSessionModel } from "../domain/workout-session";
 import { WorkoutExerciseModel } from "../domain/workout-exercise";
-import { ExerciseModel } from "../../exericse/domain/exercise";
+import { WorkoutSessionModel } from "../domain/workout-session";
 
 export const list_workout = os
   .input(
@@ -29,7 +31,7 @@ export const list_workout = os
 export const list_workout_by_user = os
   .input(
     z.object({
-      user_id: z.number().int(),
+      user_id: z.string(),
       pageSize: z.number().int().min(1).max(100).default(10),
       pageIndex: z.number().int().min(0).default(0),
     })
@@ -106,7 +108,7 @@ export const update_workout = os
 export const find_last_session_of_a_user = os
   .input(
     z.object({
-      user_id: z.number().int(),
+      user_id: z.string(),
     })
   )
   .handler(async ({ input }) => {
@@ -117,16 +119,14 @@ export const find_last_session_of_a_user = os
       .orderBy("performed_at", "desc");
   });
 
-export const create_session = os
-  .input(Schema_Workout_Session.omit({ id: true, exercises_done: true }))
-  .handler(async ({ input }) => {
-    return WorkoutSessionModel.query().insert(input);
-  });
+export const create_session = os.input(Schema_Workout_Session_Create).handler(async ({ input }) => {
+  return WorkoutSessionModel.query().insert(input);
+});
 
 export const get_current_streak_for_a_user = os
   .input(
     z.object({
-      user_id: z.number().int(),
+      user_id: z.string(),
     })
   )
   .handler(async ({ input }) => {
@@ -159,7 +159,7 @@ export const get_current_streak_for_a_user = os
 export const check_if_user_has_done_workout_on_this_date = os
   .input(
     z.object({
-      user_id: z.number().int(),
+      user_id: z.string(),
       date: z.string(),
     })
   )
@@ -200,7 +200,7 @@ export const list_exercise_in_a_workout = os
 export const get_streak_based_on_dates = os
   .input(
     z.object({
-      user_id: z.number().int(),
+      user_id: z.string(),
       start_date: z.string(),
       end_date: z.string(),
     })
@@ -238,7 +238,7 @@ export const get_streak_based_on_dates = os
 export const get_workout_history_chart_data = os
   .input(
     z.object({
-      user_id: z.number().int(),
+      user_id: z.string(),
       date: z.string(),
     })
   )

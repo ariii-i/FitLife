@@ -19,11 +19,14 @@ export const workout = {
   list: list_workout,
   find: find_workout,
   list_workout_by_user,
-  find_last_session_of_a_user,
+
   create_session,
-  get_current_streak_for_a_user,
+  find_last_session_of_a_user,
   check_if_user_has_done_workout_on_this_date,
-  list_exercise_in_a_workout,
+
+  // streak
+  get_current_streak_for_a_user,
   get_streak_based_on_dates,
+  list_exercise_in_a_workout,
   get_workout_history_chart_data,
 };

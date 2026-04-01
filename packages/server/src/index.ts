@@ -1,2 +1,4 @@
 // import "./ast-parser/drop-existing-tag";
-import "./orpc-server";
+import { main } from "./orpc-server";
+
+main();

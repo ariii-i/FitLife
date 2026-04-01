@@ -4,10 +4,10 @@ import { Schema_Exercise } from "../../exericse/domain/schema-exercise";
 
 export const Schema_Workout = z.object({
   id: z.number().int().min(1),
-  user_id: z.number(),
+  user_id: z.string(),
   name: z.string(),
   created_at: z.string(),
-  exercises:z.array(Schema_Exercise).optional()
+  exercises: z.array(Schema_Exercise).optional(),
 });
 
 export const Schema_Create_Workout = Schema_Workout.omit({ id: true, created_at: true }).extend({
