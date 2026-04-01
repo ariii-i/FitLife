@@ -58,8 +58,8 @@ export const useWorkoutStore = create<WorkoutStore>((set) => ({
     cb?.();
   },
 
-  fetchSelectedWorkout: async () => {
-    const data = await getSelectedWorkoutApi();
+  fetchSelectedWorkout: async (workout_id: number) => {
+    const data = await getSelectedWorkoutApi(workout_id);
 
     set({ workout: data || null });
   },

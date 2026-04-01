@@ -1,7 +1,8 @@
-import { Card } from "../../components/ui/card";
+import { AddExercises } from "@/features/exercise/make-exercise-request/ui/create-exercises-button";
+import { Case, Switch } from "react-if";
 import { useExerciseStore } from "../../entities/exercise/modal/store";
 import { ExerciseActionMenu } from "../../features/exercise/action-menu/ui";
-import { Switch, Case } from "react-if";
+import { ReusableCardContent } from "../layout/card-content";
 import { ExerciseMetric } from "./ui/exercise-metric";
 
 export const Component = () => {
@@ -31,9 +32,7 @@ export const ExerciseList = () => {
     return (
         <Switch>
             <Case condition={!exercises || exercises.length === 0}>
-                <Card className="bg-gray-800 border-gray-700 p-7 rounded-xl text-stone-100 font-semibold flex-col flex justify-center items-center text-2xl">
-                    <p>No exercise yet. Create a new one?</p>
-                </Card>
+                <ReusableCardContent button={<AddExercises />} message="No exercise yet. Create a new one?" />
             </Case>
             <Case condition={exercises && exercises.length > 0}>
                 <Component />

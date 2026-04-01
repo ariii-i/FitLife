@@ -13,7 +13,7 @@ const getDayName = (dateStr: string) => {
 export const StreakView = () => {
   const { streakData, fetchStreak } = useStreakStore();
   const sortedData = [...streakData].sort(
-    (a, b) => new Date(b.date) - new Date(a.date),
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
   );
 
   let streak = 0;
@@ -31,27 +31,29 @@ export const StreakView = () => {
   }, [fetchStreak]);
 
   return (
-    <div className="space-y-4">
-      {streak}
-      {streak > 1 ? " days streaks" : " day streak"}
+    <div className="space-y-3">
+      <p className="text-lg font-semibold">
+        {streak} {streak > 1 ? "days streaks" : "day streak"}
+      </p>
 
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         {streakData.map((item) => (
-          <div className="flex flex-col justify-center items-center">
+          <div
+            key={item.date}
+            className="flex flex-col justify-center items-center w-20 sm:w-24 md:w-28"
+          >
             <Link
-              key={item.date}
               to={`/workout-history-chart/${item.date}`}
               className={cn(
-                "flex flex-col items-center justify-center w-20 h-16 rounded-lg text-black",
-                item.done
-                  ? "bg-[#A1FAFF] cursor-pointer hover:bg-primary_container"
-                  : "bg-[#FFA1A1]",
+                "flex flex-col items-center justify-center w-full h-16 rounded-lg text-black",
+                item.done ? "bg-[#A1FAFF]" : "bg-[#FFA1A1]",
               )}
             >
-              {item.done ? <Check /> : ""}
+              {item.done ? <Check className="w-5 h-5" /> : ""}
             </Link>
-
-            <span className="text-center">{getDayName(item.date)}</span>
+            <span className="text-center mt-1 text-sm sm:text-base">
+              {getDayName(item.date)}
+            </span>
           </div>
         ))}
       </div>

@@ -1,7 +1,8 @@
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useWorkoutStore } from "@/entities/workout/modal/store";
 import { WorkoutButton } from "@/features/workouts/make-workout-request/ui/create-workout-button";
+import { ReusableCardContent } from "@/widget/layout/card-content";
+import { DashboardButton } from "@/widget/layout/dashboard-button";
 import { useCallback, useEffect, useState } from "react";
 import { Case, Default, Switch, When } from "react-if";
 import { Link, useParams } from "react-router-dom";
@@ -26,10 +27,7 @@ const Component = () => {
             <p className="text-3xl">{detail?.name}</p>
 
             <When condition={!detail?.exercises || detail.exercises.length === 0}>
-                <Card className="bg-stone-700 p-7 rounded-xl text-stone-100 font-semibold flex-col flex justify-center items-center text-lg">
-                    No exercises yet.
-                    <WorkoutButton />
-                </Card>
+                <ReusableCardContent button={<WorkoutButton/>} message="No exercises yet." />
             </When>
 
             {detail?.exercises?.map((exercise: any) => {
@@ -52,23 +50,18 @@ const Component = () => {
                 );
             })}
 
-            <div className="py-2 flex justify-end text-black">
-                <Link to="/">
-                    <Button type="button" variant="outline">
-                        Back to Dashboard
-                    </Button>
-                </Link>
-            </div>
+            <DashboardButton />
         </div>
     );
 };
+
 export const WorkoutDetail = () => {
     const { workoutId } = useParams<{ workoutId: string }>();
 
     return (
         <Switch>
             <Case condition={!workoutId}>
-                <p>Workout Not Found</p>
+                <ReusableCardContent button={<WorkoutButton/>} message="No exercises yet." />
             </Case>
             <Default>
                 <Component />

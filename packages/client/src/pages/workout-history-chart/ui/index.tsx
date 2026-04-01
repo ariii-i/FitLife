@@ -12,6 +12,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { DashboardButton } from "@/widget/layout/dashboard-button";
 import { auth } from "@/shared/lib/firebase";
 
 const get_today_date = () => {
@@ -52,16 +53,11 @@ export const WorkoutHistoryChartPage = () => {
         <p className="text-gray-400">
           No workout data found for {effectiveDate}
         </p>
-        <Link to="/">
-          <Button variant="link" className="mt-2">
-            Back to Home
-          </Button>
-        </Link>
+
+        <DashboardButton />
       </div>
     );
   }
-
-  // return <pre>{JSON.stringify(chartData, null, 2)}</pre>;
 
   return (
     <div className="p-4 space-y-8 ">

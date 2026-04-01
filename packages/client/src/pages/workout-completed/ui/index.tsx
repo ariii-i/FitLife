@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
+import { DashboardButton } from "@/widget/layout/dashboard-button";
 import { CircleCheckBig } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export const WorkoutCompletedPage = () => {
     const location = useLocation();
@@ -31,9 +31,7 @@ export const WorkoutCompletedPage = () => {
                     </div>
                 </div>
 
-                <Link to="/" className="text-center">
-                    <Button type="button" variant="ghost" className="bg-emerald-800 hover:bg-emerald-700 hover:text-white">Back to Dashboard</Button>
-                </Link>
+                <DashboardButton/>
 
             </div>
         </>

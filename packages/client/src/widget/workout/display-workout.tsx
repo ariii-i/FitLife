@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
+import { useWorkoutStore } from "@/entities/workout/modal/store";
 import { WorkoutActionMenu } from "@/features/workouts/action-menu/ui";
-import { useWorkoutStore } from "../../entities/workout/modal/store";
+import { Link } from "react-router-dom";
 
 export const DisplayWorkout = () => {
     const { workouts } = useWorkoutStore();
@@ -11,11 +12,11 @@ export const DisplayWorkout = () => {
                 {workouts.length} {workouts.length <= 1 ? "workout" : "workouts"}
             </p>
 
-            {workouts.map((workout) => (
-                <Card
+            {workouts.map((workout: any) => (
+                <Card 
                     key={workout.id}
                     className="bg-gray-800 border border-gray-700 rounded-md p-5 text-stone-100 font-semibold text-lg flex justify-between mt-2" >
-                    {workout.name}
+                    <Link to={`/workout/${workout.id}/${workout.name}`} className="flex-1">{workout.name}</Link>
                     <WorkoutActionMenu selectedWorkout={workout} />
                 </Card>
             ))}

@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useWorkoutSessionStore } from "@/entities/workout-session/modal/store";
+import { DashboardButton } from "@/widget/layout/dashboard-button";
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { StopWatch } from "./stopwatch";
 import { auth } from "@/shared/lib/firebase";
@@ -147,11 +148,7 @@ export const SessionPage = () => {
         </div>
       )}
 
-      <div className="py-2 flex justify-end">
-        <Link to="/">
-          <Button variant="link">Back to Dashboard</Button>
-        </Link>
-      </div>
+      <DashboardButton />
     </div>
   );
 };
