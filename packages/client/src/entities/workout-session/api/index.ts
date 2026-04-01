@@ -3,7 +3,7 @@ import { Schema_Workout_Session_Create } from "server/src/orpc-server/packages/w
 import z from "zod";
 
 export const create_session = async (
-  payload: z.infer<typeof Schema_Workout_Session_Create>,
+    payload: z.infer<typeof Schema_Workout_Session_Create>,
 ) => {
-  return orpc.workout.create_session(payload);
+    return orpc.workout.create_session(payload);
 };

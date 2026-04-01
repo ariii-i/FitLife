@@ -7,26 +7,26 @@ import { DisplayWorkout } from "@/widget/workout/display-workout";
 import { useEffect } from "react";
 
 export const Workout = () => {
-  const { fetchWorkouts } = useWorkoutStore();
-  const { fetchExercises } = useExerciseStore();
-  const { filters } = useExerciseFilterStore();
+    const { fetchWorkouts } = useWorkoutStore();
+    const { fetchExercises } = useExerciseStore();
+    const { filters } = useExerciseFilterStore();
 
-  useEffect(() => {
-    fetchWorkouts({
-      pageIndex: 0,
-      pageSize: 100,
-      user_id: auth.currentUser?.uid || "", // TODO: replace with actual user id
-    });
-    fetchExercises({ ...filters, user_id: auth?.currentUser?.uid as string });
-  }, []);
+    useEffect(() => {
+        fetchWorkouts({
+            pageIndex: 0,
+            pageSize: 100,
+            user_id: auth.currentUser?.uid || "",
+        });
+        fetchExercises({ ...filters, user_id: auth?.currentUser?.uid as string });
+    }, []);
 
-  return (
-    <div>
-      <div className="flex justify-between items-center font-semibold text-xl">
-        Workouts
-        <WorkoutButton />
-      </div>
-      <DisplayWorkout />
-    </div>
-  );
+    return (
+        <div>
+            <div className="flex justify-between items-center font-semibold text-xl">
+                Workouts
+                <WorkoutButton />
+            </div>
+            <DisplayWorkout />
+        </div>
+    );
 };
