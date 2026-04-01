@@ -11,44 +11,35 @@ import "./App.css";
 import { WorkoutDetail } from "./pages/workout-detail/ui";
 import { WorkoutHistoryChartPage } from "./pages/workout-history-chart/ui";
 import { WorkoutCompletedPage } from "./pages/workout-completed/ui";
+import { ExerciseDetail } from "./pages/exercise-detail/ui";
 
 function App() {
-  return (
-    <div className=" bg-gray-900 text-gray-100 h-screen max-h-screen overflow-y-auto">
-      <div className="max-w-7xl mx-auto h-full">
-        <BrowserRouter>
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route
-              element={
-                <ProtectedRoute>
-                  <Layout />
-                </ProtectedRoute>
-              }
-            >
-              <Route path="/" element={<HomePage />} />
-              <Route
-                path="/workout-history-chart/:date"
-                element={<WorkoutHistoryChartPage />}
-              />
-              <Route path="/workout/:workoutId" element={<WorkoutDetail />} />
-              <Route
-                path="/workout/:workoutId/session/:exerciseId"
-                element={<SessionPage />}
-              />
-              <Route
-                path="/workout-completed"
-                element={<WorkoutCompletedPage />}
-              />
-              <Route path="/exercise" element={<Exercise />} />
-              <Route path="/workout" element={<Workout />} />
-              <Route path="/profile" element={<Profile />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </div>
-    </div>
-  );
+    return (
+        <div className=" bg-gray-900 text-gray-100 h-screen max-h-screen overflow-y-auto">
+            <div className="max-w-7xl mx-auto h-full">
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route
+                            element={<ProtectedRoute>
+                                <Layout />
+                            </ProtectedRoute>}
+                        >
+                            <Route path="/" element={<HomePage />} />
+                            <Route path="/workout-history-chart/:date" element={<WorkoutHistoryChartPage />} />
+                            <Route path="/workout/:workoutId" element={<WorkoutDetail />} />
+                            <Route path="/workout/:workoutId/:workoutName" element={<ExerciseDetail />} />
+                            <Route path="/workout/:workoutId/session/:exerciseId" element={<SessionPage />} />
+                            <Route path="/workout-completed" element={<WorkoutCompletedPage />} />
+                            <Route path="/exercise" element={<Exercise />} />
+                            <Route path="/workout" element={<Workout />} />
+                            <Route path="/profile" element={<Profile />} />
+                        </Route>
+                    </Routes>
+                </BrowserRouter>
+            </div>
+        </div>
+    );
 }
 
 export default App;

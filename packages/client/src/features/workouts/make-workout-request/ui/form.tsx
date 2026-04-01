@@ -48,17 +48,19 @@ export const WorkoutForm = ({
         id: selectedWorkout.id,
         name: data.name,
         user_id: auth.currentUser?.uid as string,
-        exercises: data.exercises.map((exercise: any) => ({
-          exercise_id: exercise.exercise_id,
-          sets: Number(exercise.sets),
-          reps: Number(exercise.reps),
-        })),
+        exercises: data.exercises
+          .filter((ex: any) => (ex.selected && ex.sets > 0) || ex.reps > 0)
+          .map((exercise: any) => ({
+            exercise_id: exercise.exercise_id,
+            sets: Number(exercise.sets),
+            reps: Number(exercise.reps),
+          })),
       };
       await updateWorkout(payload);
       toast.success("Workout updated successfully");
       setOpen(false);
       await fetchWorkouts({
-        pageIndex: 1,
+        pageIndex: 0,
         pageSize: 100,
         user_id: auth.currentUser?.uid || "", // TODO: replace with actual user id
       });
