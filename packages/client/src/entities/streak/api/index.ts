@@ -1,22 +1,22 @@
 import { orpc } from "@/shared/lib/orpc";
 
 export const getStreakApi = async (
-  user_id: string,
-  start_date: string,
-  end_date: string,
+    user_id: string,
+    start_date: string,
+    end_date: string,
 ) => {
-  return orpc.workout.get_streak_based_on_dates({
-    user_id,
-    start_date,
-    end_date,
-  });
+    return orpc.workout.get_streak_based_on_dates({
+        user_id,
+        start_date,
+        end_date,
+    });
 };
 
-export const getUserStreak= async (
-  user_id: string,
-  
+export const getUserStreak = async (
+    user_id: string,
+
 ) => {
-  return orpc.workout.get_current_streak_for_a_user({
-    user_id,
-  });
+    return orpc.workout.get_current_streak_for_a_user({
+        user_id,
+    });
 };
