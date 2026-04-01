@@ -11,3 +11,12 @@ export const getStreakApi = async (
     end_date,
   });
 };
+
+export const getUserStreak= async (
+  user_id: string,
+  
+) => {
+  return orpc.workout.get_current_streak_for_a_user({
+    user_id,
+  });
+};

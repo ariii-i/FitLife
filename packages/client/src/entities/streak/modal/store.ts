@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { getStreakApi } from "../api";
+import { getStreakApi, getUserStreak } from "../api";
 
 type StreakData = {
   date: string;
@@ -8,7 +8,9 @@ type StreakData = {
 
 type StreakStore = {
   streakData: StreakData[];
+  streak: number,
   fetchStreak: (user_id: string) => Promise<void>;
+  getStreak: (user_id: string) => Promise<void>;
 };
 
 const getDateRange = () => {
@@ -26,10 +28,16 @@ const getDateRange = () => {
 
 export const useStreakStore = create<StreakStore>((set) => ({
   streakData: [],
+  streak: 0,
 
   fetchStreak: async (user_id) => {
     const { start_date, end_date } = getDateRange();
     const data = await getStreakApi(user_id, start_date, end_date);
     set({ streakData: data });
+  },
+
+  getStreak: async (user_id) => {
+    const data = await getUserStreak(user_id);
+    set({ streak: data });
   },
 }));
