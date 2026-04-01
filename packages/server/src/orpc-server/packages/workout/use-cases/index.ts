@@ -133,22 +133,22 @@ export const get_current_streak_for_a_user = os
     const result = await WorkoutSessionModel.query().select(
       WorkoutSessionModel.raw(
         `
-    (
-      WITH dates AS (
-        SELECT DISTINCT DATE(performed_at) AS day
-        FROM workout_sessions
-        WHERE user_id = ?
-      ),
-      streak AS (
-        SELECT day,
-               ROW_NUMBER() OVER (ORDER BY day DESC) AS rn
-        FROM dates
-      )
-      SELECT COUNT(*)
-      FROM streak
-      WHERE JULIANDAY('now') - JULIANDAY(day) = rn - 1
-    ) as current_streak
-  `,
+    (
+      WITH dates AS (
+        SELECT DISTINCT DATE(performed_at) AS day
+        FROM workout_sessions
+        WHERE user_id = ?
+      ),
+      streak AS (
+        SELECT day,
+               ROW_NUMBER() OVER (ORDER BY day DESC) AS rn
+        FROM dates
+      )
+      SELECT COUNT(*)
+      FROM streak
+      WHERE JULIANDAY(DATE('now')) - JULIANDAY(day) = rn - 1
+    ) as current_streak
+  `,
         [input.user_id]
       )
     );

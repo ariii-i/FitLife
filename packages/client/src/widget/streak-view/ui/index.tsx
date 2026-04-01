@@ -1,6 +1,8 @@
+import { Card, CardContent } from "@/components/ui/card";
 import { useStreakStore } from "@/entities/streak/modal/store";
 import { auth } from "@/shared/lib/firebase";
 import { cn } from "@/shared/lib/utils";
+import { StreakLog } from "@/widget/streak/ui/streak-log";
 import { Activity, Check } from "lucide-react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -11,20 +13,21 @@ const getDayName = (dateStr: string) => {
 };
 
 export const StreakView = () => {
-  const { streakData, fetchStreak } = useStreakStore();
-  const sortedData = [...streakData].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-  );
+  const { streakData, streak, fetchStreak } = useStreakStore();
 
-  let streak = 0;
+  // const sortedData = [...streakData].sort(
+  //   (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+  // );
 
-  for (const day of sortedData) {
-    if (day.done) {
-      streak++;
-    } else {
-      break;
-    }
-  }
+  // let streak = 0;
+
+  // for (const day of sortedData) {
+  //   if (day.done) {
+  //     streak++;
+  //   } else {
+  //     break;
+  //   }
+  // }
 
   useEffect(() => {
     fetchStreak(auth.currentUser?.uid || "");
@@ -32,9 +35,6 @@ export const StreakView = () => {
 
   return (
     <div className="space-y-3">
-      <p className="text-lg font-semibold">
-        {streak} {streak > 1 ? "days streaks" : "day streak"}
-      </p>
 
       <div className="flex flex-wrap gap-2">
         {streakData.map((item) => (
