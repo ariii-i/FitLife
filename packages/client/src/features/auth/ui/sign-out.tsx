@@ -1,21 +1,21 @@
-import { toast } from "sonner";
-import { useUserStore } from "@/entities/user/modal/store";
-import { auth } from "@/shared/lib/firebase";
 import { Button } from "@/components/ui/button";
+import { useUserStore } from "@/entities/user/modal/store";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export const SignOut = () => {
     const { signOutUser } = useUserStore();
+    const navigate = useNavigate();
 
     const handleSignOut = async () => {
         try {
-            await signOutUser(auth);
-            console.log("Signed out successfully");
+            await signOutUser(navigate);
             toast.success("Signed out");
-        } catch (error) {
-            console.error(error);
+        } catch (error: any) {
+            console.log(error.message);
             toast.error("Unable to sign out");
         }
     };
 
-    return <Button onClick={handleSignOut}>Sign Out</Button>
-}
+    return <Button onClick={handleSignOut}>Sign Out</Button>;
+};

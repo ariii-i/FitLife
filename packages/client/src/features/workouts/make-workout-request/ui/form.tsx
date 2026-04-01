@@ -14,7 +14,11 @@ import { useWorkoutStore } from "@/entities/workout/modal/store";
 import { toast } from "sonner";
 import z from "zod";
 import { WorkoutFieldSet } from "./field-set";
-import { Schema_Create_Workout, Schema_Update_Workout } from "server/src/orpc-server/packages/workout/domain/schema-workout";
+import {
+    Schema_Create_Workout,
+    Schema_Update_Workout,
+} from "server/src/orpc-server/packages/workout/domain/schema-workout";
+import { auth } from "@/shared/lib/firebase";
 
 export type PlannedValue = {
     _key?: string;
@@ -43,22 +47,28 @@ export const WorkoutForm = ({
             const payload: z.infer<typeof Schema_Update_Workout> = {
                 id: selectedWorkout.id,
                 name: data.name,
-                user_id: 1,
-                exercises: data.exercises.filter((ex:any) => ex.selected && ex.sets > 0 || ex.reps > 0).map((exercise: any) => ({
-                    exercise_id: exercise.exercise_id,
-                    sets: Number(exercise.sets),
-                    reps: Number(exercise.reps),
-                })),
+                user_id: auth.currentUser?.uid as string,
+                exercises: data.exercises
+                    .filter((ex: any) => (ex.selected && ex.sets > 0) && ex.reps > 0)
+                    .map((exercise: any) => ({
+                        exercise_id: exercise.exercise_id,
+                        sets: Number(exercise.sets),
+                        reps: Number(exercise.reps),
+                    })),
             };
             await updateWorkout(payload);
             toast.success("Workout updated successfully");
+            await fetchWorkouts({
+                pageIndex: 0,
+                pageSize: 100,
+                user_id: auth.currentUser?.uid || "",
+            });
             setOpen(false);
-            await fetchWorkouts();
         } else {
             try {
                 const payload: z.infer<typeof Schema_Create_Workout> = {
                     name: data.name,
-                    user_id: 1,
+                    user_id: auth.currentUser?.uid as string,
                     exercises: data.exercises.map((exercise: any) => ({
                         exercise_id: exercise.exercise_id,
                         sets: Number(exercise.sets),
@@ -75,9 +85,12 @@ export const WorkoutForm = ({
 
                 await createWorkout(payload);
                 toast.success("Workout created successfully");
-
+                await fetchWorkouts({
+                    pageIndex: 0,
+                    pageSize: 100,
+                    user_id: auth.currentUser?.uid || "",
+                });
                 setOpen(false);
-                await fetchWorkouts();
             } catch (error) {
                 toast.error("Unable to create exercise.");
             }
@@ -87,8 +100,10 @@ export const WorkoutForm = ({
     return (
         <Drawer open={open} onOpenChange={setOpen} direction="right">
             <DrawerContent className="bg-gray-900 border-gray-900 ">
-                <FormProvider className="flex flex-col flex-1 overflow-y-auto" onSubmit={onSubmit}>
-
+                <FormProvider
+                    className="flex flex-col flex-1 overflow-y-auto"
+                    onSubmit={onSubmit}
+                >
                     <DrawerHeader className="gap-1">
                         <DrawerTitle className="text-white">
                             {selectedWorkout?.id ? "Edit Workout" : "New Workout"}
@@ -105,7 +120,10 @@ export const WorkoutForm = ({
                         <ConnectForm<FormData>>
                             {({ formState }) => {
                                 return (
-                                    <Button type="submit" className="bg-emerald-800 hover:bg-emerald-700 hover:text-white">
+                                    <Button
+                                        type="submit"
+                                        className="bg-emerald-800 hover:bg-emerald-700 hover:text-white"
+                                    >
                                         {formState.isSubmitting ? "Saving..." : "Save"}
                                     </Button>
                                 );
@@ -113,7 +131,12 @@ export const WorkoutForm = ({
                         </ConnectForm>
 
                         <DrawerClose asChild>
-                            <Button variant="outline" className="bg-gray-600 border-0 text-white hover:bg-gray-500 hover:text-white">Done</Button>
+                            <Button
+                                variant="outline"
+                                className="bg-gray-600 border-0 text-white hover:bg-gray-500 hover:text-white"
+                            >
+                                Done
+                            </Button>
                         </DrawerClose>
                     </DrawerFooter>
                 </FormProvider>

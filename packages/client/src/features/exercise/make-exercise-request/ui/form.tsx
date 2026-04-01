@@ -1,5 +1,7 @@
 import { ConnectForm } from "@/custom-components/ui/connect-form";
 import { FormProvider } from "@/custom-components/ui/form-provider";
+import { useExerciseFilterStore } from "@/entities/exercise/modal/use-exercise-filter-store";
+import { auth } from "@/shared/lib/firebase";
 import { SubmitHandler } from "react-hook-form";
 import { Schema_Exercise } from "server/src/orpc-server/packages/exericse/domain/schema-exercise";
 import { toast } from "sonner";
@@ -32,6 +34,7 @@ export const ExerciseForm = ({
     selectedExercise,
 }: ExerciseFormProp) => {
     const { createExercise, editExercise, fetchExercises } = useExerciseStore();
+    const { filters } = useExerciseFilterStore();
 
     const handleSubmitExercise: SubmitHandler<FormValue> = async (data) => {
         if (!data.name?.trim()) {
@@ -41,14 +44,20 @@ export const ExerciseForm = ({
 
         try {
             if (selectedExercise) {
-                await editExercise(data);
+                await editExercise({ ...data, user_id: auth?.currentUser?.uid || "" });
                 toast.success("Exercise updated!");
             } else {
-                await createExercise(data);
+                await createExercise({
+                    ...data,
+                    user_id: auth?.currentUser?.uid || "",
+                });
                 toast.success("Exercise added!");
             }
 
-            await fetchExercises();
+            await fetchExercises({
+                ...filters,
+                user_id: auth?.currentUser?.uid || "",
+            });
             //   reset();
             setOpen(false);
         } catch (error) {
@@ -68,7 +77,8 @@ export const ExerciseForm = ({
                         <DrawerTitle className="text-white">
                             {selectedExercise?.id ? "Edit Exercise" : "New Exercise"}
                         </DrawerTitle>
-                        <DrawerDescription >
+
+                        <DrawerDescription>
                             {selectedExercise ? "Update exercise" : "Create a new exercise"}
                         </DrawerDescription>
                     </DrawerHeader>
@@ -79,7 +89,10 @@ export const ExerciseForm = ({
                         <ConnectForm<FormData>>
                             {({ formState }) => {
                                 return (
-                                    <Button type="submit" className="bg-emerald-800 hover:bg-emerald-700 hover:text-white">
+                                    <Button
+                                        type="submit"
+                                        className="bg-emerald-800 hover:bg-emerald-700 hover:text-white"
+                                    >
                                         {formState.isSubmitting ? "Saving..." : "Save"}
                                     </Button>
                                 );
@@ -87,7 +100,12 @@ export const ExerciseForm = ({
                         </ConnectForm>
 
                         <DrawerClose asChild>
-                            <Button variant="outline" className="bg-gray-600 border-0 text-white hover:bg-gray-500 hover:text-white">Done</Button>
+                            <Button
+                                variant="outline"
+                                className="bg-gray-600 border-0 text-white hover:bg-gray-500 hover:text-white"
+                            >
+                                Done
+                            </Button>
                         </DrawerClose>
                     </DrawerFooter>
                 </FormProvider>
