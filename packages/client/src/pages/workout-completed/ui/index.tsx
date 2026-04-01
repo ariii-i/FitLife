@@ -1,16 +1,21 @@
 import { DashboardButton } from "@/widget/layout/dashboard-button";
 import { CircleCheckBig } from "lucide-react";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import confetti from "canvas-confetti";
 
 export const WorkoutCompletedPage = () => {
     const location = useLocation();
     const state = location.state || {};
 
+    useEffect(() => {
+        confetti();
+    }, [])
 
     return (
         <>
             <div className="text-5xl font-semibold flex flex-col gap-8">
-                
+
                 <div className="w-full flex justify-center">
                     <div className="bg-gray-800 rounded-md p-5 flex justify-center border border-gray-700 ">
                         <CircleCheckBig size="40" />
@@ -31,10 +36,11 @@ export const WorkoutCompletedPage = () => {
                     </div>
                 </div>
 
-                <DashboardButton/>
+                <div className="flex justify-center">
+                    <DashboardButton />
+                </div>
 
             </div>
         </>
-
     );
 };
