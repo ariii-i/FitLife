@@ -1,5 +1,5 @@
 import { BicepsFlexed, CircleUserRound, Dumbbell, House } from "lucide-react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 type LinkCardProps = {
     to: string;
@@ -9,13 +9,16 @@ type LinkCardProps = {
 
 const LinkCard = ({ to, icon, label }: LinkCardProps) => {
     return (
-        <Link
+        <NavLink
             to={to}
-            className="bg-transparent flex flex-col items-center justify-center rounded-md hover:bg-stone-700 duration-150 transition-all px-3 py-2"
+            className={({ isActive }) =>
+                `flex flex-col items-center justify-center rounded-md px-3 py-2 transition-all duration-150 font-medium
+                ${isActive ? "text-emerald-400 bg-stone-700" : "text-stone-300 hover:bg-stone-700"}`
+            }
         >
             {icon}
             <span className="text-xs sm:text-sm mt-1">{label}</span>
-        </Link>
+        </NavLink>
     );
 };
 

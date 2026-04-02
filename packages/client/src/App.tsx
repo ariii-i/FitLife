@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import "./App.css";
 import { ProtectedRoute } from "./features/auth/protected-route";
 import { Exercise } from "./pages/exercise/ui";
 import { HomePage } from "./pages/home";
