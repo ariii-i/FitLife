@@ -48,7 +48,7 @@ export const ExerciseList = () => {
     return (
         <Switch>
             <Case condition={!exercises || exercises.length === 0}>
-                <ReusableCardContent button={<AddExercises />} message="No exercise yet. Create a new one?" />
+                <ReusableCardContent message="No exercise yet. Create a new one?" />
             </Case>
             <Case condition={exercises && exercises.length > 0}>
                 <Component />

@@ -13,20 +13,6 @@ const getDayName = (dateStr: string) => {
 export const StreakView = () => {
 	const { streakData, fetchStreak } = useStreakStore();
 
-	// const sortedData = [...streakData].sort(
-	//   (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-	// );
-
-	// let streak = 0;
-
-	// for (const day of sortedData) {
-	//   if (day.done) {
-	//     streak++;
-	//   } else {
-	//     break;
-	//   }
-	// }
-
 	useEffect(() => {
 		fetchStreak(auth.currentUser?.uid || "");
 	}, [fetchStreak]);
