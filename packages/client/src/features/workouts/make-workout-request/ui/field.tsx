@@ -43,7 +43,7 @@ export const ExerciseListField = () => {
     });
 
     return (
-        <div className="space-y-4 text-white max-h-screen overflow-y-auto">
+        <div className="space-y-4 text-white">
             {fields.map((field: any, index) => (
                 <div key={field.id} className="border border-stone-700 p-4 rounded-xl">
 

@@ -11,8 +11,7 @@ as a user, i want to:
 as a user i want to:
 - create an workout [X]
 - view workout [X]
-- edit workout []
-- delete []
+- edit workout [X]
 
 as a user, i want to:
 - create a workout,
@@ -21,7 +20,6 @@ as a user, i want to:
 - select number of sets, reps and weight
 
 
-- create an workoutlog []
-- view workoutlog []
-- edit workoutlog []
-- delete []
+- create an workoutlog [X]
+- view workoutlog [X]
+- edit workoutlog [X]
