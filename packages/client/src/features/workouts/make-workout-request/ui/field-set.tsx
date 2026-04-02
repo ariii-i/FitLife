@@ -1,8 +1,8 @@
 import { useExerciseStore } from "@/entities/exercise/modal/store";
-import React, { useEffect } from "react";
+import { useWorkoutStore } from "@/entities/workout/modal/store";
+import { useCallback, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { ExerciseListField, WorkoutNameField } from "./field";
-import { useWorkoutStore } from "@/entities/workout/modal/store";
 export const WorkoutFieldSet = ({
     selectedWorkout,
 }: {
@@ -12,7 +12,7 @@ export const WorkoutFieldSet = ({
     const { setValue } = useFormContext();
 
     const { fetchWorkoutDetail } = useWorkoutStore();
-    const init = React.useCallback(async () => {
+    const init = useCallback(async () => {
         if (selectedWorkout) {
             const res = await fetchWorkoutDetail(selectedWorkout.id);
             console.warn(res);

@@ -5,9 +5,7 @@ import { create_session } from "../api";
 
 type WorkoutSessionStore = {
     workoutSession: Array<z.infer<typeof Schema_Workout_Session_Create>>;
-    createSession: (
-        payload: z.infer<typeof Schema_Workout_Session_Create>,
-    ) => Promise<void>;
+    createSession: (payload: z.infer<typeof Schema_Workout_Session_Create>) => Promise<void>;
 };
 
 export const useWorkoutSessionStore = create<WorkoutSessionStore>((set) => ({

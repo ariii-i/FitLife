@@ -7,18 +7,10 @@ import { Schema_Exercise } from "server/src/orpc-server/packages/exericse/domain
 import { toast } from "sonner";
 import z from "zod";
 import { Button } from "../../../../components/ui/button";
-import {
-    Drawer,
-    DrawerClose,
-    DrawerContent,
-    DrawerDescription,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerTitle,
-} from "../../../../components/ui/drawer";
 import { ExerciseFormSchema } from "../../../../entities/exercise/api";
 import { useExerciseStore } from "../../../../entities/exercise/modal/store";
 import { ExerciseFieldSet } from "./field-set";
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 
 type FormValue = z.infer<typeof ExerciseFormSchema>;
 
@@ -49,14 +41,14 @@ export const ExerciseForm = ({
             } else {
                 await createExercise({
                     ...data,
-                    user_id: auth?.currentUser?.uid || "",
+                    user_id: auth?.currentUser?.uid as string,
                 });
                 toast.success("Exercise added!");
             }
 
             await fetchExercises({
                 ...filters,
-                user_id: auth?.currentUser?.uid || "",
+                user_id: auth?.currentUser?.uid as string,
             });
             //   reset();
             setOpen(false);

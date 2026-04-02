@@ -21,8 +21,8 @@ export const Component = () => {
                         className="bg-gray-800 border border-gray-700 rounded-md p-2 text-stone-100 font-semibold flex flex-col w-full sm:w-[48%] lg:w-[30%]"
                     >
                         <CardHeader className="text-2xl font-semibold py-2">
-                            {work.name}
-                        </CardHeader>
+                            {work.name} 
+                        </CardHeader> 
 
                         <CardContent className="h-36">
                             <ul className="grid grid-rows-3 auto-cols-max [grid-auto-flow:column] gap-2 h-full">
