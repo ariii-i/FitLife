@@ -1,11 +1,10 @@
-import { AddExercises } from "@/features/exercise/make-exercise-request/ui/create-exercises-button";
+import { IMAGE_PATH_BASE } from "@/shared/lib/orpc";
 import { Case, Else, If, Switch, Then } from "react-if";
+import { Link } from "react-router-dom";
 import { useExerciseStore } from "../../entities/exercise/modal/store";
 import { ExerciseActionMenu } from "../../features/exercise/action-menu/ui";
 import { ReusableCardContent } from "../layout/card-content";
 import { ExerciseMetric } from "./ui/exercise-metric";
-import { IMAGE_PATH_BASE } from "@/shared/lib/orpc";
-import { Link } from "react-router-dom";
 
 export const Component = () => {
     const { exercises } = useExerciseStore();
@@ -48,7 +47,7 @@ export const ExerciseList = () => {
     return (
         <Switch>
             <Case condition={!exercises || exercises.length === 0}>
-                <ReusableCardContent message="No exercise yet. Create a new one?" />
+                <ReusableCardContent message="No exercise yet." />
             </Case>
             <Case condition={exercises && exercises.length > 0}>
                 <Component />

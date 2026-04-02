@@ -16,7 +16,7 @@ export const LoginWithGoogle = () => {
     };
 
     return (
-        <div className="flex flex-col p-5 justify-center items-center gap-2">
+        <div className="flex p-5 justify-center items-center">
             <Button onClick={handle_login}>
                 <FcGoogle /> Sign in with Google
             </Button>
