@@ -5,7 +5,6 @@ type StreakData = {
     date: string;
     done: boolean;
 };
-
 type StreakStore = {
     streakData: StreakData[];
     streak: number,

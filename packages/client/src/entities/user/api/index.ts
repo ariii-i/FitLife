@@ -1,26 +1,7 @@
-import { sanityClient } from "@/shared/lib/sanity";
-import { Auth, signOut } from "firebase/auth";
-
 import { orpc } from "@/shared/lib/orpc";
+import { Auth, signOut } from "firebase/auth";
 import { Schema_User_Create } from "server/src/orpc-server/packages/user/domain/schema-user";
 import z from "zod";
-
-export const getUserByFirebaseUid = async (uid: string) => {
-    return await sanityClient.fetch(
-        `*[_type=="user" && firebaseUid==$uid][0]{
-        _id,
-        firebaseUid,
-        name, 
-        email,
-        photo
-      }`,
-        { uid },
-    );
-};
-
-export const deleteUserApi = async (id: string) => {
-    return await sanityClient.delete(id);
-};
 
 export const createUserApi = async (
     data: z.infer<typeof Schema_User_Create>,

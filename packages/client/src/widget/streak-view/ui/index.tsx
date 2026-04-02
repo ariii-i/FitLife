@@ -1,7 +1,7 @@
 import { useStreakStore } from "@/entities/streak/modal/store";
 import { auth } from "@/shared/lib/firebase";
 import { cn } from "@/shared/lib/utils";
-import { Activity, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
@@ -54,16 +54,6 @@ export const StreakView = () => {
 						</span>
 					</div>
 				))}
-			</div>
-
-			<div className="flex justify-end">
-				<Link
-					to={`/workout-history-chart/${new Date().toISOString().split("T")[0]}`}
-					className="flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300"
-				>
-					<Activity className="w-4 h-4" />
-					View Workout Charts
-				</Link>
 			</div>
 		</div>
 	);

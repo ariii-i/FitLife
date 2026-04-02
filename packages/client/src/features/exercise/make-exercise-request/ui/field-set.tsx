@@ -9,9 +9,7 @@ import {
 	NameField,
 } from "./fields";
 
-export const ExerciseFieldSet = ({
-	selectedExercise,
-}: {
+export const ExerciseFieldSet = ({ selectedExercise }: {
 	selectedExercise?: z.infer<typeof Schema_Exercise>;
 }) => {
 	const { setValue } = useFormContext();

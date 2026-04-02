@@ -1,19 +1,18 @@
 import { useUserStore } from "@/entities/user/modal/store";
+import { auth } from "@/shared/lib/firebase";
 import { UserRound } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
 export const DisplayProfile = () => {
-    const { user } = useUserStore();
+    const { user } = useUserStore()
 
     return (
         <div className="flex flex-col justify-center items-center">
-            <If condition={user?.photo && user.photo !== ""}>
+            <If condition={auth.currentUser?.photoURL && user?.photo !== ""}>
                 <Then>
                     <img
-                        src={
-                            "https://lh3.googleusercontent.com/a/ACg8ocLD6nFneNfXtHGl9iYWQNTsMd4FuBUle6E9uo48oYDLuoxBLbMb=s96-c"
-                        }
-                        alt={user?.name ?? "User Avatar"}
+                        src={auth.currentUser?.photoURL as string}
+                        alt={auth.currentUser?.displayName ?? "User Avatar"}
                         className="w-20 h-20 rounded-full object-cover"
                     />
                 </Then>
@@ -24,8 +23,8 @@ export const DisplayProfile = () => {
                 </Else>
             </If>
 
-            <span className="font-medium text-lg">{user?.name}</span>
-            <span className="text-sm text-stone-300">{user?.email}</span>
+            <span className="font-medium text-lg">{auth.currentUser?.displayName}</span>
+            <span className="text-sm text-stone-300">{auth.currentUser?.email}</span>
         </div>
     );
 };

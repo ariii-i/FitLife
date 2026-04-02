@@ -12,7 +12,6 @@ export const ExerciseActionMenu = ({ selectedRow }: {
 }) => {
 
     const [open, setOpen] = useState(false);
-
     const handleEditButton = () => {
         setOpen(true);
     }
@@ -36,10 +35,7 @@ export const ExerciseActionMenu = ({ selectedRow }: {
             </DropdownMenu>
 
             <When condition={open}>
-                <ExerciseForm
-                    open={open}
-                    setOpen={setOpen}
-                    selectedExercise={selectedRow} />
+                <ExerciseForm open={open} setOpen={setOpen} selectedExercise={selectedRow} />
             </When>
         </div>
     )

@@ -1,14 +1,9 @@
 import { Button } from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { EllipsisVertical } from "lucide-react";
 import { useState } from "react";
 import { When } from "react-if";
 import { WorkoutForm } from "../../make-workout-request/ui/form";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 export const WorkoutActionMenu = ({
     selectedWorkout,

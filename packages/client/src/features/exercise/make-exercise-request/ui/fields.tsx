@@ -9,6 +9,7 @@ import { IMAGE_PATH_BASE } from "../../../../shared/lib/orpc";
 export const NameField = () => {
     const { control, formState } = useFormContext();
     const { errors } = formState;
+    
     return (
         <div className="flex-col gap-4">
             <label className="text-sm text-white ">Name</label>

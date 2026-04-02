@@ -8,7 +8,6 @@ export const StopWatch = ({ isActive }: {
 
     useEffect(() => {
         let interval : any= null;
-
         if (isActive) {
             interval = setInterval(() => {
                 setTime(prev => prev + 1000);

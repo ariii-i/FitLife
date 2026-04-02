@@ -17,6 +17,7 @@ export const list_exercise = os
       .limit(input.pageSize)
       .offset(input.pageIndex * input.pageSize);
   });
+
 export const list_exercise_by_user = os
   .input(
     z.object({
@@ -48,12 +49,14 @@ export const list_exercise_by_user = os
         user_id: e.user_id,
         name: e.name,
         description: e.description,
-        muscle_group: e.muscle_group,
+        muscle_group: e.muscle_group?? "misc",
         image_path: e.image_path ?? "",
       };
     });
 
-    return mapped;
+   const {error} = z.array(Schema_Exercise).safeParse(mapped) 
+   console.log(error) 
+   return mapped;
   });
 
 export const find_exercise = os
