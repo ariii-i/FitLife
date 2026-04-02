@@ -1,13 +1,4 @@
 import { Button } from "@/components/ui/button";
-import {
-    Drawer,
-    DrawerClose,
-    DrawerContent,
-    DrawerDescription,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerTitle,
-} from "@/components/ui/drawer";
 import { ConnectForm } from "@/custom-components/ui/connect-form";
 import { FormProvider } from "@/custom-components/ui/form-provider";
 import { useWorkoutStore } from "@/entities/workout/modal/store";
@@ -19,6 +10,7 @@ import {
     Schema_Update_Workout,
 } from "server/src/orpc-server/packages/workout/domain/schema-workout";
 import { auth } from "@/shared/lib/firebase";
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 
 export type PlannedValue = {
     _key?: string;
@@ -49,7 +41,7 @@ export const WorkoutForm = ({
                 name: data.name,
                 user_id: auth.currentUser?.uid as string,
                 exercises: data.exercises
-                    .filter((ex: any) => (ex.selected && ex.sets > 0) && ex.reps > 0)
+                    .filter((ex: any) => (ex.selected && ex.sets > 0 && ex.reps > 0))
                     .map((exercise: any) => ({
                         exercise_id: exercise.exercise_id,
                         sets: Number(exercise.sets),
@@ -69,11 +61,13 @@ export const WorkoutForm = ({
                 const payload: z.infer<typeof Schema_Create_Workout> = {
                     name: data.name,
                     user_id: auth.currentUser?.uid as string,
-                    exercises: data.exercises.map((exercise: any) => ({
-                        exercise_id: exercise.exercise_id,
-                        sets: Number(exercise.sets),
-                        reps: Number(exercise.reps),
-                    })),
+                    exercises: data.exercises
+                        .filter((ex: any) => (ex.selected && ex.sets > 0 && ex.reps > 0))
+                        .map((exercise: any) => ({
+                            exercise_id: exercise.exercise_id,
+                            sets: Number(exercise.sets),
+                            reps: Number(exercise.reps),
+                        })),
                 };
 
                 const { success, error } = Schema_Create_Workout.safeParse(payload);

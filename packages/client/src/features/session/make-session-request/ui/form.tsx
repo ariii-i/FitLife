@@ -19,12 +19,8 @@ export const SessionForm = ({ openDrawer, setOpenDrawer, startTimeStamp, endTime
     startTimeStamp: string
     endTimeStamp: string
 }) => {
-    const { workoutId, exerciseId } = useParams<{
-        workoutId: string;
-        exerciseId: string;
-    }>();
+    const { workoutId, exerciseId } = useParams<{ workoutId: string; exerciseId: string; }>();
     const navigate = useNavigate();
-
     const { createSession } = useWorkoutSessionStore();
 
 
@@ -56,7 +52,8 @@ export const SessionForm = ({ openDrawer, setOpenDrawer, startTimeStamp, endTime
             console.error(error);
             toast.error("Failed to save session");
         }
-    };
+    }
+
     return (
         <Drawer open={openDrawer} onOpenChange={setOpenDrawer} direction="right">
             <DrawerContent className="bg-gray-900 border-gray-900">

@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Else, If, Then } from "react-if";
 import { useParams } from "react-router-dom";
 
-export const ExerciseDetail = () => {
+export const WorkoutCard = () => {
     const { workoutId, workoutName } = useParams<{ workoutId: string, workoutName: string }>();
     const { fetchWorkoutDetail } = useWorkoutStore();
 

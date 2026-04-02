@@ -1,17 +1,18 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { LoginPage } from "./pages/login";
-import { HomePage } from "./pages/home";
-import { Exercise } from "./pages/exercise/ui";
-import { Workout } from "./pages/workout";
-import { Profile } from "./pages/profile";
-import { Layout } from "./widget/layout";
-import { ProtectedRoute } from "./features/auth/protected-route";
-import { SessionPage } from "./pages/session-page/ui";
 import "./App.css";
+import { ProtectedRoute } from "./features/auth/protected-route";
+import { Exercise } from "./pages/exercise/ui";
+import { HomePage } from "./pages/home";
+import { LoginPage } from "./pages/login";
+import { Profile } from "./pages/profile";
+import { SessionPage } from "./pages/session-page/ui";
+import { Workout } from "./pages/workout";
+import { WorkoutCompletedPage } from "./pages/workout-completed/ui";
 import { WorkoutDetail } from "./pages/workout-detail/ui";
 import { WorkoutHistoryChartPage } from "./pages/workout-history-chart/ui";
-import { WorkoutCompletedPage } from "./pages/workout-completed/ui";
-import { ExerciseDetail } from "./pages/exercise-detail/ui";
+import { Layout } from "./widget/layout";
+import { WorkoutCard } from "./widget/workout/workout-list/ui/workout-card";
+import { ExerciseCard } from "./widget/exercise/exercise-card";
 
 function App() {
     return (
@@ -28,10 +29,11 @@ function App() {
                             <Route path="/" element={<HomePage />} />
                             <Route path="/workout-history-chart/:date" element={<WorkoutHistoryChartPage />} />
                             <Route path="/session/:workoutId" element={<WorkoutDetail />} />
-                            <Route path="/workout/:workoutId/:workoutName" element={<ExerciseDetail />} />
+                            <Route path="/workout/:workoutId/:workoutName" element={<WorkoutCard />} />
                             <Route path="/session/:workoutId/current/:exerciseId" element={<SessionPage />} />
                             <Route path="/workout-completed" element={<WorkoutCompletedPage />} />
                             <Route path="/exercise" element={<Exercise />} />
+                            <Route path="/exercise/:exerciseId" element={<ExerciseCard />} />
                             <Route path="/workout" element={<Workout />} />
                             <Route path="/profile" element={<Profile />} />
                         </Route>
